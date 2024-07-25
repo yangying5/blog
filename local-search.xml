@@ -8,7 +8,7 @@
     <link href="/blog/2024/07/25/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/"/>
     <url>/blog/2024/07/25/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/</url>
     
-    <content type="html"><![CDATA[<ul><li>test text</li><li><img src="/blog/images/WEBRESOURCE5176b2a7af12620d4aca92ec8be86d9a%E6%88%AA%E5%9B%BE.png"></li><li>test</li></ul>]]></content>
+    <content type="html"><![CDATA[<p>这是一篇测试文章</p><p><img src="/blog/images/a.png" alt="图片引用方法三"></p>]]></content>
     
     
     <categories>
