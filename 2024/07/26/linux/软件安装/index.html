@@ -19,19 +19,25 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
-<meta property="og:title" content="My First Post">
-<meta property="og:url" content="http://example.com/2024/07/25/My-First-Post/index.html">
+    <meta name="description" content="linux软件安装常用命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="软件安装">
+<meta property="og:url" content="http://example.com/2024/07/26/linux/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/index.html">
 <meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="linux软件安装常用命令">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-07-25T11:08:30.000Z">
-<meta property="article:modified_time" content="2024-07-25T11:08:30.729Z">
+<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCE39cc36d8b1ca8730d1710b7a43f39378%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCE2a61ac20f438a4376a6f160e72db4265%E6%88%AA%E5%9B%BE.png">
+<meta property="article:published_time" content="2024-07-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-02T07:55:00.719Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/blog/images/WEBRESOURCE39cc36d8b1ca8730d1710b7a43f39378%E6%88%AA%E5%9B%BE.png">
   
   
   
-  <title>My First Post - 杨颖的博客</title>
+  <title>软件安装 - 杨颖的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -197,7 +203,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="My First Post"></span>
+            <span id="subtitle" data-typed-text="软件安装"></span>
           
         </div>
 
@@ -208,8 +214,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-07-25 19:08" pubdate>
-          2024年7月25日 晚上
+        <time datetime="2024-07-26 00:00" pubdate>
+          2024年7月26日 凌晨
         </time>
       </span>
     
@@ -220,7 +226,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          786 字
         
       </span>
     
@@ -231,7 +237,7 @@
         
         
         
-          1 分钟
+          7 分钟
         
       </span>
     
@@ -268,12 +274,46 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">My First Post</h1>
+            <h1 id="seo-header">软件安装</h1>
             
             
               <div class="markdown-body">
                 
-                
+                <h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><p>Linux下的软件包可细分为两种，分别是</p>
+<p><strong>源码包</strong></p>
+<p><strong>二进制包</strong></p>
+<p>二进制包是 Linux 下默认的软件安装包，因此二进制包又被称为默认安装软件包。</p>
+<h6 id="目前主要有以下-2-大主流的二进制包管理系统："><a href="#目前主要有以下-2-大主流的二进制包管理系统：" class="headerlink" title="目前主要有以下 2 大主流的二进制包管理系统："></a>目前主要有以下 2 大主流的二进制包管理系统：</h6><p><strong>RPM 包管理系统</strong></p>
+<p><strong>DPKG 包管理系统</strong></p>
+<p><img src="/blog/images/WEBRESOURCE39cc36d8b1ca8730d1710b7a43f39378%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<p><strong>yum</strong></p>
+<p><strong>apt</strong></p>
+<p><img src="/blog/images/WEBRESOURCE2a61ac20f438a4376a6f160e72db4265%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h3 id="apt-get"><a href="#apt-get" class="headerlink" title="apt-get"></a><strong>apt-get</strong></h3><figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-number">1</span>. sudo apt-<span class="hljs-keyword">get</span> install tree 安装tree<br><span class="hljs-number">2</span>. sudo apt-<span class="hljs-keyword">get</span> <span class="hljs-comment">remove tree 卸载tree</span><br><span class="hljs-number">3</span>. sudo apt-<span class="hljs-keyword">get</span> update 更新软件<br><span class="hljs-number">4</span>. sudo apt-<span class="hljs-keyword">get</span> upgrade<br></code></pre></td></tr></table></figure>
+
+<h3 id="rpm"><a href="#rpm" class="headerlink" title="rpm"></a><strong>rpm</strong></h3><figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs subunit">*  检查某个软件是否安装<br># rpm -qa|grep java（查看java是否安装）<br>* 卸载已安装的软件<br># rpm -e --nodeps *****<br>同时卸载多个软件， 软件之间空格隔开<br>* 安装软件<br># rpm -ivh xxx.rpm<br><br><br>rpm -qa|grep java      #  查看java安装软件，通过 rpm 卸载低版本jdk<br>rpm -e --nodeps java<span class="hljs-string">-1</span>.8.0-openjdk-headless<span class="hljs-string">-1</span>.8.0.262.b10<span class="hljs-string">-1</span>.el7.x86_64<br>rpm -e --nodeps java<span class="hljs-string">-1</span>.8.0-openjdk<span class="hljs-string">-1</span>.8.0.262.b10<span class="hljs-string">-1</span>.el7.x86_64<br>rpm -e --nodeps java<span class="hljs-string">-1</span>.7.0-openjdk-headless<span class="hljs-string">-1</span>.7.0.261<span class="hljs-string">-2</span>.6.22.2.el7_8.x86_64<br>rpm -e --nodeps java<span class="hljs-string">-1</span>.7.0-openjdk<span class="hljs-string">-1</span>.7.0.261<span class="hljs-string">-2</span>.6.22.2.el7_8.x86_64<br></code></pre></td></tr></table></figure>
+
+<h3 id="yum命令"><a href="#yum命令" class="headerlink" title="yum命令"></a><strong>yum命令</strong></h3><blockquote>
+<p>只针对于centos和redhat系统<br>需要配置源<br>软件包依赖关系以及各个软件的安装顺序 </p>
+</blockquote>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-comment"># yum安装jdk</span><br>yum <span class="hljs-keyword">install </span><span class="hljs-keyword">java-11-openjdk-devel.x86_64</span><br><span class="hljs-keyword"></span><span class="hljs-comment"># yum安装redis</span><br>yum <span class="hljs-keyword">install </span>redis<br><span class="hljs-comment"># yum安装nginx</span><br>yum -y <span class="hljs-keyword">install </span>nginx<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="tar命令"><a href="#tar命令" class="headerlink" title="tar命令"></a><strong>tar命令</strong></h3><blockquote>
+<p><strong>用于安装tar包(tar包里面是源码， 需要编译)</strong><br>—– 不推荐使用源码编译方式安装， 较复杂<br><strong>zip软件相关操作</strong><br>前提： 需要linux上安装的是否有zip的操作包<br>检查命令： <strong>rpm -qa | grep zip</strong></p>
+<p><strong>###  解压</strong><br><strong>$ unzip xxx.zip</strong><br><strong>### 压缩为zip文件</strong><br><strong>$ zip yyy.zip filename</strong><br><strong>tar软件相关操作</strong><br><strong>### 解压</strong><br>$ tar -zxvf xxx.tar.gz      （解压到当前目录）<br>$ tar -zxvf xxx.tar.gz -C dirpath    (解压到指定目录)</p>
+<p><strong>## 压缩</strong><br>$ tar zcvf zzz.tar.gz dir&#x2F;filename</p>
+</blockquote>
+<ul>
+<li><strong>压缩包方式：linux安装jdk</strong></li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs awk">第一步： 使用FileZila将jdk包传到linux上<br>第二步： 使用tar -zxvf **jdk**.tar.gz<br>第三步：切换到root用户，配置环境变量<br><span class="hljs-comment"># vi /etc/profile</span><br>编辑内容如下<br><span class="hljs-comment">## JAVA_HOME</span><br>export JAVA_HOME=<span class="hljs-regexp">/opt/</span>java/jdk1.<span class="hljs-number">8.0</span>_381<br>export PATH=<span class="hljs-variable">$PATH</span>:<span class="hljs-variable">$JAVA_HOME</span>/bin<br>下一步：source一下，让命令生效<br>source <span class="hljs-regexp">/etc/</span>profile<br><span class="hljs-keyword">exit</span><br>第四步：检查<br>echo <span class="hljs-variable">$JAVA_HOME</span><br>echo <span class="hljs-variable">$PATH</span><br>java<br>java -version<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>压缩包方式：安装jdk11</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash">1、先新建一个文件夹，<span class="hljs-built_in">mkdir</span> /usr/local/java<br>2、在宿主机执行 scp jdk-11.0.10_linux-x64_bin.tar.gz root@192.168.50.132:/usr/local/java2<br>3、在linux 执行<br>    <span class="hljs-built_in">cd</span>  /usr/local/java2/<br>    tar -zxvf jdk-11.0.10_linux-x64_bin.tar.gz<br>4、vi /etc/profile   <span class="hljs-comment"># 在 尾部添加如下内容：</span><br>    <span class="hljs-built_in">export</span> JAVA_HOME=/usr/local/java/jdk-11.0.10<br>    <span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$PATH</span>:<span class="hljs-variable">$JAVA_HOME</span>/bin<br>    <span class="hljs-comment">#（！！！注意：JAVA_HOME的路径是你实际解压后的JDK的路径，千万别写错了）</span><br>5、<span class="hljs-built_in">source</span> /etc/profile   <span class="hljs-comment"># 刷新 配置文件</span><br>    java -version    <span class="hljs-comment"># 查看配置文件</span><br>    openjdk version <span class="hljs-string">&quot;1.8.0_262&quot;</span><br>    OpenJDK Runtime Environment (build 1.8.0_262-b10)<br>    OpenJDK 64-Bit Server VM (build 25.262-b10, mixed mode)<br></code></pre></td></tr></table></figure>
+
+<h6 id="压缩包方式：安装tomcat"><a href="#压缩包方式：安装tomcat" class="headerlink" title="压缩包方式：安装tomcat"></a>压缩包方式：安装tomcat</h6><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-number">1</span>、在宿主机上，下载地址<br>http:<span class="hljs-regexp">//</span>tomcat.apache.org/download-<span class="hljs-number">10</span>.cgi<br><span class="hljs-number">2</span>、在服务器上 先新建一个文件夹，<br>mkdir <span class="hljs-regexp">/usr/</span>local/tomcat<br><span class="hljs-number">3</span>、在宿主机上 ，执行下面命令 上传安装包<br>scp apache-tomcat-<span class="hljs-number">10.0</span>.<span class="hljs-number">5</span>.zip root@<span class="hljs-number">192.168</span>.<span class="hljs-number">50.132</span>:<span class="hljs-regexp">/usr/</span>local/tomcat<br><span class="hljs-number">4</span>、在服务器上 通过root用户 解压<br>unzip  apache-tomcat-<span class="hljs-number">10.0</span>.<span class="hljs-number">5</span>.zip<br>unzip -l apache-tomcat-<span class="hljs-number">10.0</span>.<span class="hljs-number">5</span>.zip  <span class="hljs-comment"># 只是查看 不解压</span><br><span class="hljs-number">5</span>、启动tomcat服务<br>cd apache-tomcat-<span class="hljs-number">10.0</span>.<span class="hljs-number">5</span>/bin<br>./startup.sh<br>chmod <span class="hljs-number">744</span> ./*.sh<br>./startup.sh<br><span class="hljs-number">6</span>、验证安装<br>netstat -nl  <span class="hljs-comment"># 找到 8080端口 是 LISTEN</span><br>ifconfig<br>systemctl status firewalld  <span class="hljs-comment">#查看防火墙状态</span><br>systemctl stop firewalld   <span class="hljs-comment">#禁用防火墙</span><br>在宿主机浏览器<br>http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">50.132</span>:<span class="hljs-number">8080</span>/<br>显示：<br>Apache Tomcat/<span class="hljs-number">10.0</span>.<span class="hljs-number">5</span><br>If yo<span class="hljs-string">u&#x27;re seeing this, you&#x27;</span>ve successfully installed Tomcat. Congratulations!<br></code></pre></td></tr></table></figure>
                 
               </div>
             
@@ -281,6 +321,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/blog/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/linux/" class="print-no-link">#linux</a>
+      
+    </div>
   
 </div>
 
@@ -290,8 +358,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>My First Post</div>
-      <div>http://example.com/2024/07/25/My-First-Post/</div>
+      <div>软件安装</div>
+      <div>http://example.com/2024/07/26/linux/软件安装/</div>
     </div>
     <div class="license-meta">
       
@@ -303,7 +371,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年7月25日</div>
+          <div>2024年7月26日</div>
         </div>
       
       
@@ -335,15 +403,21 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2024/07/26/linux/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" title="软件安装">
+                      <a href="/blog/2024/07/26/linux/%E8%BF%9C%E7%A8%8B%E6%93%8D%E4%BD%9C/" title="远程操作">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">软件安装</span>
+                        <span class="hidden-mobile">远程操作</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/blog/2024/07/25/My-First-Post/" title="My First Post">
+                        <span class="hidden-mobile">My First Post</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
