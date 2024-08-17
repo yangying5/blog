@@ -27,7 +27,7 @@
 <meta property="og:description" content="linux远程操作常用命令">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-07-25T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-08-02T07:55:00.754Z">
+<meta property="article:modified_time" content="2024-08-17T07:54:35.211Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
@@ -276,61 +276,34 @@
             
               <div class="markdown-body">
                 
-                <ol start="2">
-<li><strong>ifconfig</strong></li>
-</ol>
-<blockquote>
+                <h2 id="ifconfig"><a href="#ifconfig" class="headerlink" title="ifconfig"></a><strong>ifconfig</strong></h2><blockquote>
 <p>ifconfig 可以查看／配置计算机当前的网卡配置信息<br>   $ ifconfig # 查看网卡配置信息<br>   $ ifconfig | grep inet # 查看网卡对应的 IP 地址<br>提示：一台计算机中有可能会有一个 物理网卡 和 多个虚拟网卡，在 Linux 中物理网卡的名字通常以 ensXX 表示</p>
 </blockquote>
-<ol>
-<li><strong>ping</strong></li>
-</ol>
-<blockquote>
+<h2 id="ping"><a href="#ping" class="headerlink" title="ping"></a><strong>ping</strong></h2><blockquote>
 <p>$ ping IP地址 # 检测到目标主机是否连接正常<br>$ ping 127.0.0.1 # 检测本地网卡工作正常<br>ping 一般用于检测当前计算机到目标计算机之间的网络 是否通畅，数值越大，速度越慢<br>原理：网络上的机器都有 唯一确定的 IP 地址，我们给目标 IP 地址发送一个数据包，对方就要返回一个数据包，根据返回的数据包以及时间，我们可以确定目标主机的存在</p>
 </blockquote>
-<ol>
-<li><p><strong>ssh远程连接</strong></p>
-</li>
-<li><p><strong>主机名和ip地址的映射</strong></p>
-</li>
-</ol>
-<blockquote>
-<p>修宿主机hosts 文件，添加ip地址和域名映射 。linux 也存在hosts 文件。<br>win：C:\Windows\System32\drivers\etc\hosts     linux：&#x2F;etc&#x2F;hosts<br>添加：<br>192.168.50.129  vmware.lnx01<br>192.168.50.128  vmware.lnx02<br>使用域名登录<br>ssh <a href="mailto:&#x72;&#x6f;&#111;&#x74;&#x40;&#118;&#x6d;&#119;&#97;&#x72;&#x65;&#x2e;&#x6c;&#x6e;&#120;&#x30;&#49;">&#x72;&#x6f;&#111;&#x74;&#x40;&#118;&#x6d;&#119;&#97;&#x72;&#x65;&#x2e;&#x6c;&#x6e;&#120;&#x30;&#49;</a></p>
+<h2 id="ssh远程连接"><a href="#ssh远程连接" class="headerlink" title="ssh远程连接"></a>ssh远程连接</h2><h3 id="主机名和ip地址的映射"><a href="#主机名和ip地址的映射" class="headerlink" title="主机名和ip地址的映射"></a>主机名和ip地址的映射</h3><blockquote>
+<p>修宿主机hosts 文件，添加ip地址和域名映射 。linux 也存在hosts 文件。<br>win：C:\Windows\System32\drivers\etc\hosts     linux：&#x2F;etc&#x2F;hosts<br>添加：<br>192.168.50.129  vmware.lnx01<br>192.168.50.128  vmware.lnx02<br>使用域名登录<br>ssh <a href="mailto:&#x72;&#x6f;&#x6f;&#x74;&#x40;&#x76;&#x6d;&#119;&#97;&#114;&#x65;&#x2e;&#108;&#x6e;&#x78;&#48;&#x31;">&#x72;&#x6f;&#x6f;&#x74;&#x40;&#x76;&#x6d;&#119;&#97;&#114;&#x65;&#x2e;&#108;&#x6e;&#x78;&#48;&#x31;</a></p>
 </blockquote>
-<ol>
-<li><strong>修改linux主机名</strong></li>
-</ol>
-<blockquote>
+<h3 id="修改linux主机名"><a href="#修改linux主机名" class="headerlink" title="修改linux主机名"></a>修改linux主机名</h3><blockquote>
 <p>Linux系统安装好后，都会有默认的主机名， CentOS系统默认的主机名是localhost.localdomain，为了便于使用，我们常常需要修改主机名<br>1.显示主机名称： hostname  |  uname -n | hostnamectl<centos7><br>2.设置主机名称：hostname 名称<br>     注意：这种方式设置主机名称，仅仅在当前使用没有问题，当机器重启之后，主机名称会变化。<br>     原因：在linux系统中，系统配置的信息都是来自于文件中，这种设置方式没有写入文件中<br>3.永久设置主机名称：      cat &#x2F;etc&#x2F;system-release: 查看服务器的linux版本<br>      方式1：hostnamectl set-hostname vm_lnx  #修改主机名, 重新连接主机即可看到主机名发生了改变，不需要重启机器<br>      方式2：centos7.3 前的系统<br>             1：cat &#x2F;etc&#x2F;sysconfig&#x2F;network   (cat  文件名： 读取文件内容)<br>             2    vi &#x2F;etc&#x2F;sysconfig&#x2F;network<br>             3    编辑hostname&#x3D;主机名<br>             4    重启系统：关机：# halt     |      重启：reboot &#x2F; init6(安全重启) &#x2F; shutdown<br>    方式3：centos7.3 后的系统修改&#x2F;etc&#x2F;hostname 文件内容，并重启生效</p>
 <p>注意：centos上再重命名主机名字的时候， 主机名字不要使用  下划线_,   会出现很多错误</p>
 </blockquote>
-<ol>
-<li><strong>简单连接</strong></li>
-</ol>
-<blockquote>
+<h3 id="简单连接"><a href="#简单连接" class="headerlink" title="简单连接"></a>简单连接</h3><blockquote>
 <p>ssh [-p port]<br>•user 是在远程机器上的用户名，如果不指定的话默认为当前用户<br>•remote 是远程机器的地址，可以是 IP／域名，或者是 后面会提到的别名<br>•port 是 SSH Server 监听的端口，如果不指定，就为默认值 22<br>使用 exit 退出当前用户的登录<br>SSH 服务器的端口号很有可能不是 22，如果遇到这种情况就需要使用 -p 选项，指定正确的端口号，否则无法正常连接到服务器</p>
 </blockquote>
-<ol>
-<li><strong>免密码连接</strong></li>
-</ol>
-<blockquote>
+<h3 id="免密码连接"><a href="#免密码连接" class="headerlink" title="免密码连接"></a>免密码连接</h3><blockquote>
 <ol>
 <li>生成钥匙，一路回车：ssh-keygen</li>
 <li>配置公钥到服务器：<br>  a. ssh-copy-id -p port user@remote，可以让远程服务器记住我们的公钥<br>  b. win不支持a命令，可以手动配置：将生成的id_rsa.pub内容拷贝到authorized_keys文件中</li>
 </ol>
 </blockquote>
-<ol>
-<li><strong>scp远程拷贝</strong></li>
-</ol>
-<blockquote>
+<h2 id="scp远程拷贝"><a href="#scp远程拷贝" class="headerlink" title="scp远程拷贝"></a>scp远程拷贝</h2><blockquote>
 <p>远程复制：<br>      scp file root@ip:dir 上传<br>      scp root@ip:file &#x2F;dir 下载<br>选项<br>      -r 若给出的源文件是目录文件，则 scp 将递归复制该目录下的所有子目录和文件，目标文件必须为一个目录名<br>      -P 若远程 SSH 服务器的端口不是 22，需要使用大写字母 -P 选项指定端</p>
 </blockquote>
 <figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-comment"># 把本地当前目录下的 01.py 文件 复制到 远程 家目录下的 Desktop/01.py</span><br><span class="hljs-comment"># 注意：`:` 后面的路径如果不是绝对路径，则以用户的家目录作为参照路径</span><br>scp -P port <span class="hljs-number">01</span>.py user<span class="hljs-variable">@remote</span><span class="hljs-symbol">:Desktop/</span><span class="hljs-number">01</span>.py<br>scp -P port user<span class="hljs-variable">@remote</span><span class="hljs-symbol">:Desktop/</span><span class="hljs-number">01</span>.py <span class="hljs-number">01</span>.py <span class="hljs-comment"># 把远程 家目录下的 Desktop/01.py 文件 复制到 本地当前目录下的 01.py</span><br>scp -r demo user<span class="hljs-variable">@remote</span><span class="hljs-symbol">:/opt/yyang25</span>  <span class="hljs-comment"># 加上 -r 选项可以传送文件夹,把当前目录下的 demo 文件夹 复制到 远程 家目录下的 /opt/yyang25</span><br>scp -r user<span class="hljs-variable">@remote</span><span class="hljs-symbol">:Desktop</span> demo         <span class="hljs-comment"># 把远程 家目录下的 Desktop 复制到 当前目录下的 demo 文件夹</span><br><br>scp jdk<span class="hljs-number">-11.0</span>.<span class="hljs-number">12_</span>linux-x64_bin.tar.gz <span class="hljs-title class_">SERVER_USERNAME</span><span class="hljs-variable">@HOSTNAME_OR_IP</span><span class="hljs-symbol">:</span>.<br><span class="hljs-symbol">:</span>后面跟路径<br><span class="hljs-symbol">example:</span> scp <span class="hljs-symbol">D:</span>\<span class="hljs-title class_">Users</span>\yyang25\<span class="hljs-title class_">Downloads</span>\test.apk root<span class="hljs-variable">@182</span>.<span class="hljs-number">92.164</span>.<span class="hljs-number">32</span><span class="hljs-symbol">:</span>. --&gt;.表示上传到home目录<br><span class="hljs-symbol">example:</span> scp <span class="hljs-symbol">D:</span>\<span class="hljs-title class_">Users</span>\yyang25\<span class="hljs-title class_">Downloads</span>\test.apk root<span class="hljs-variable">@182</span>.<span class="hljs-number">92.164</span>.<span class="hljs-number">32</span><span class="hljs-symbol">:/opt/yyang25/software</span> --&gt;<span class="hljs-symbol">:</span>后面跟路径<br><span class="hljs-symbol">example:</span> scp  root<span class="hljs-variable">@182</span>.<span class="hljs-number">92.164</span>.<span class="hljs-number">32</span><span class="hljs-symbol">:/opt/yyang25/software/test</span>.apk <span class="hljs-symbol">D:</span>\<span class="hljs-title class_">Users</span>\yyang25\<span class="hljs-title class_">Downloads</span> --&gt;从远程拉取文件<br><span class="hljs-symbol">example:</span> scp  root<span class="hljs-variable">@182</span>.<span class="hljs-number">92.164</span>.<span class="hljs-number">32</span><span class="hljs-symbol">:</span>./test.apk root<span class="hljs-variable">@182</span>.<span class="hljs-number">92.164</span>.<span class="hljs-number">32</span><span class="hljs-symbol">:</span>. --&gt;两个服务器之间推拉文件; 注意：需要在服务器配置公钥，比如scp a b; 要把b服务器home目录下.ssh目录中把公钥复制到a服务器下.ssh/目录下的auth..keys文件中<br></code></pre></td></tr></table></figure>
 
-<ol>
-<li><strong>Rsync远程数据同步</strong></li>
-</ol>
-<p>Rsync（remote synchronize）是一个远程数据同步工具，可通过LAN&#x2F;WAN快速同步多台主机间的文件。Rsync使用所谓的“Rsync算法”来使本地和远程两个主机之间的文件达到同步，这个算法只传送两个文件的不同部分，而不是每次都整份传送，因此速度相当快。</p>
+<h2 id="Rsync远程数据同步"><a href="#Rsync远程数据同步" class="headerlink" title="Rsync远程数据同步"></a>Rsync远程数据同步</h2><p>Rsync（remote synchronize）是一个远程数据同步工具，可通过LAN&#x2F;WAN快速同步多台主机间的文件。Rsync使用所谓的“Rsync算法”来使本地和远程两个主机之间的文件达到同步，这个算法只传送两个文件的不同部分，而不是每次都整份传送，因此速度相当快。</p>
 <p>rsync [OPTION]… SRC DEST</p>
 <p>rsync [OPTION]… SRC [USER@]HOST:DEST</p>
 <p>rsync [OPTION]… [USER@]HOST:SRC DEST</p>
