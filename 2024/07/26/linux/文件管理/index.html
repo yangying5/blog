@@ -27,7 +27,7 @@
 <meta property="og:description" content="linux文件管理常用命令">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-07-25T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-08-02T07:55:00.779Z">
+<meta property="article:modified_time" content="2024-08-17T07:49:24.630Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
@@ -276,10 +276,10 @@
             
               <div class="markdown-body">
                 
-                <h1 id="文件"><a href="#文件" class="headerlink" title="文件"></a><strong>文件</strong></h1><h6 id="linux下文件类型-常见三种文件-："><a href="#linux下文件类型-常见三种文件-：" class="headerlink" title="linux下文件类型(常见三种文件)："></a><strong>linux下文件类型(常见三种文件)：</strong></h6><blockquote>
+                <h1 id="文件"><a href="#文件" class="headerlink" title="文件"></a><strong>文件</strong></h1><h2 id="linux下文件类型-常见三种文件-："><a href="#linux下文件类型-常见三种文件-：" class="headerlink" title="linux下文件类型(常见三种文件)："></a><strong>linux下文件类型(常见三种文件)：</strong></h2><blockquote>
 <p>***** 文件：表示符： <strong>-</strong><br>*** <strong>目录(类似win7下的文件夹)：表示符：</strong>d**<br>*** <strong>链接(类似win7下的快捷方式)：表示符：</strong>l**</p>
 </blockquote>
-<h6 id="文件权限"><a href="#文件权限" class="headerlink" title="文件权限"></a><strong>文件权限</strong></h6><blockquote>
+<h2 id="文件权限"><a href="#文件权限" class="headerlink" title="文件权限"></a><strong>文件权限</strong></h2><blockquote>
 <ul>
 <li>可读  r</li>
 <li>可写  w</li>
@@ -288,7 +288,7 @@
 </ul>
 <p>权限的数字表示方法：<br>*** rw-  **     —&gt; 6<br>*** 二进制数字之和的方式**<br>R          W        X<br>2^2      2^1      2^0<br>  4          2          1  </p>
 </blockquote>
-<h6 id="文件归属"><a href="#文件归属" class="headerlink" title="文件归属"></a><strong>文件归属</strong></h6><blockquote>
+<h2 id="文件归属"><a href="#文件归属" class="headerlink" title="文件归属"></a><strong>文件归属</strong></h2><blockquote>
 <ul>
 <li>拥有着    owner  ** u**</li>
 <li>属于组    grouip   <strong>g</strong></li>
@@ -297,75 +297,73 @@
 </blockquote>
 <figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">-rw-rw-r--   <span class="hljs-number">2</span> <span class="hljs-keyword">beifeng </span><span class="hljs-keyword">beifeng </span><span class="hljs-number">4096</span> May <span class="hljs-number">30</span> <span class="hljs-number">15</span>:<span class="hljs-number">15</span> <span class="hljs-keyword">bin</span><br><span class="hljs-keyword"></span><br>第一部分：-rw-rw-r--<br>十个字符，代表不同的意义<br>-   rw-   rw-    r--       ----&gt;  数字表示权限：<span class="hljs-number">664</span><br>第一个字符：<br>表示的是文件的类型<br>后面的<span class="hljs-number">9</span>个字符，分为<span class="hljs-number">3</span>组，表示的是此文件针对不同用户的权限关系<br>为什么是三组呢？<br>因为一个文件对于用户来说，属于三个部分<br>* 拥有着    rw-<br>* 所属组    rw-<br>* 其他人    r--<br>第二部分：<span class="hljs-number">2</span>       硬链接数，通俗地讲，就是有多少种方式，可以访问到当前目录／文件<br>第三部分：<span class="hljs-keyword">beifeng </span><span class="hljs-keyword">beifeng</span><br><span class="hljs-keyword"></span>* 第一个字符串表示的是   文件的拥有者，<span class="hljs-keyword">beifeng </span><br>* 第二个字符串表示的是   文件所属组， <span class="hljs-keyword">beifeng</span><br><span class="hljs-keyword"></span><br>第四部分：<span class="hljs-number">4096</span><br>如果是文件夹，表示文件夹中多少文件<br>如果是文件，表示文件大小<br></code></pre></td></tr></table></figure>
 
-<h1 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h1><ol>
-<li><p><strong>创建文件</strong></p>
-</li>
-<li><p>使用touch命令： touch test.py</p>
-</li>
-</ol>
-<p>2 使用vi&#x2F;vim方式：本意是修改文件，如果不存在，则创建：$ vi test.py</p>
-<p>3 使用echo命令， 覆盖 | 追加：对文件内容进行追加  $ echo “******”  &gt;&gt; text.py</p>
-<ol>
-<li><p><strong>编辑文件</strong></p>
-</li>
+<h1 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h1><h2 id="操作文件"><a href="#操作文件" class="headerlink" title="操作文件"></a>操作文件</h2><h3 id="创建文件"><a href="#创建文件" class="headerlink" title="创建文件"></a><strong>创建文件</strong></h3><figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-number">1</span>. 使用touch命令： touch test.py<br><span class="hljs-symbol">2 </span>使用vi/vim方式：本意是修改文件，如果不存在，则创建：$ vi test.py<br><span class="hljs-symbol">3 </span>使用echo命令， 覆盖 | 追加：对文件内容进行追加  $ echo <span class="hljs-string">&quot;******&quot;</span>  &gt;&gt; text.py<br></code></pre></td></tr></table></figure>
+
+<h3 id="编辑文件"><a href="#编辑文件" class="headerlink" title="编辑文件"></a><strong>编辑文件</strong></h3><ul>
 <li><p>vi | vim：</p>
-</li>
-</ol>
 <blockquote>
 <p>1.dd：表示删除光标所在行的内容<br>2. u: 撤销上次命令<br>3. ctrl + r: 恢复撤销的命令<br>4. o：表示光标进入下一行，并进行插入数据模式<br>5. 异常处理&#x2F;交换文件：vim -r 文件名: 恢复交换文件；rm *.swp：删除交换文件<br>6. shift + G: vi跳到文件末尾</p>
 </blockquote>
-<ol start="2">
-<li>echo：</li>
-</ol>
+</li>
+<li><p>echo：</p>
 <blockquote>
 <p>追加内容至末尾：echo aaaaa &gt;&gt; 1.txt<br>覆盖原有内容：echo aaaaa &gt; 1.txt</p>
 </blockquote>
-<ol>
-<li><p><strong>查看文件</strong></p>
 </li>
+</ul>
+<h3 id="查看文件"><a href="#查看文件" class="headerlink" title="查看文件"></a><strong>查看文件</strong></h3><ul>
 <li><p>wc：统计文本中行数、字数、字符数</p>
 </li>
-</ol>
-<p>2 cat：查看文件的全部内容， 适用于文件内容较小的文件</p>
-<p>2 more： 翻页查看，适用于文件内容较大的文件</p>
+<li><p>cat：查看文件的全部内容， 适用于文件内容较小的文件</p>
+</li>
+<li><p>more： 翻页查看，适用于文件内容较大的文件</p>
+</li>
+</ul>
 <blockquote>
 <p>回车多显示一行，空格就一页一页的走<br>:q  退出查看</p>
 </blockquote>
-<ol start="3">
+<ul>
 <li>less：翻页查看，more只能往后翻，less可以往前</li>
-</ol>
+</ul>
 <blockquote>
 <p>回车多显示一行，空格就一页一页的走<br>:q  退出查看<br>b：回滚一屏<br>f：前滚一屏</p>
 </blockquote>
-<p>3 tail：从文件末尾开始查看</p>
+<ul>
+<li>tail：从文件末尾开始查看</li>
+</ul>
 <blockquote>
 <p><strong>通常与  -f   参数连用，适合查看服务的实时动态的日志信息</strong><br>eg：<br>tail -f  ****.log<br>tail -200f  ****.log       (查看日志文件最后的两百行日志)</p>
 </blockquote>
-<p>4 head：查看文件的开头文件， 通常用于查看文件格式，内容模板样式</p>
-<ol start="5">
-<li>grep：匹配文件内容</li>
-</ol>
+<ul>
+<li><p>head：查看文件的开头文件， 通常用于查看文件格式，内容模板样式</p>
+</li>
+<li><p>grep：匹配文件内容</p>
+</li>
+</ul>
 <blockquote>
 <p>-c 仅列出文件中包含模式的行数。<br>-i 忽略模式中的字母大小写。<br>参数<br>    ^a 行首，搜寻以 a 开头的行<br>    ke$ 行尾，搜寻以 ke 结束的行</p>
 </blockquote>
 <blockquote>
 <p>grep Setup 1.txt<br>grep setup 1.txt<br>grep -i setup 1.txt： -i  忽略大小写<br>grep -c setup 1.txt<br>grep -ic setup 1.txt<br>grep ^% 1.txt<br>grep -i c$ 1.txt<br>grep -i [a-z]ystem 1.txt</p>
 </blockquote>
-<ol>
-<li><p><strong>删除文件：****rm；</strong>-f 强制删除，忽略不存在的文件，无需提示；-r 递归删除目录下的内容</p>
-</li>
-<li><p><strong>拷贝文件：</strong>cp；-i 覆盖文件前提示； -r 若给出的源文件是目录文件，则 cp 将递归复制该目录下的所有子目录和文件，目标文件必须为一个目录名</p>
-</li>
-<li><p><strong>合并文件：</strong>cat  可以文件合并：cat  file1 file2 &gt; file3</p>
-</li>
-<li><p><strong>移动文件：</strong>mv；-i 默认选项，覆盖文件前提示； -f 强制覆盖，不提示；-b 当目标文件存在时，先进行备份在覆盖</p>
-</li>
-<li><p><strong>搜索文件：</strong>find 搜索路径 -name 搜索文件名；</p>
-</li>
-</ol>
+<h3 id="删除文件"><a href="#删除文件" class="headerlink" title="**删除文件"></a>**删除文件</h3><blockquote>
+<p>**<strong>rm；</strong>-f 强制删除，忽略不存在的文件，无需提示；-r 递归删除目录下的内容</p>
+</blockquote>
+<h3 id="拷贝文件"><a href="#拷贝文件" class="headerlink" title="**拷贝文件"></a>**拷贝文件</h3><blockquote>
+<p>**cp；-i 覆盖文件前提示； -r 若给出的源文件是目录文件，则 cp 将递归复制该目录下的所有子目录和文件，目标文件必须为一个目录名</p>
+</blockquote>
+<h3 id="合并文件"><a href="#合并文件" class="headerlink" title="**合并文件"></a>**合并文件</h3><blockquote>
+<p>**cat  可以文件合并：cat  file1 file2 &gt; file3</p>
+</blockquote>
+<h3 id="移动文件"><a href="#移动文件" class="headerlink" title="**移动文件"></a>**移动文件</h3><blockquote>
+<p>**mv；-i 默认选项，覆盖文件前提示； -f 强制覆盖，不提示；-b 当目标文件存在时，先进行备份在覆盖</p>
+</blockquote>
+<h3 id="搜索文件"><a href="#搜索文件" class="headerlink" title="**搜索文件"></a>**搜索文件</h3><blockquote>
+<p>**find 搜索路径 -name 搜索文件名；</p>
+</blockquote>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">find</span> ~/ -name ab.txt<br><span class="hljs-built_in">find</span> ~/ -name ab\*    (模糊查询)<br></code></pre></td></tr></table></figure>
 
-<h5 id="目录操作"><a href="#目录操作" class="headerlink" title="目录操作"></a>目录操作</h5><ol>
+<h2 id="目录操作"><a href="#目录操作" class="headerlink" title="目录操作"></a>目录操作</h2><ol>
 <li><p>创建目录：mkdir；-p 可以递归创建目录。同级的目录或文件，都不能重名</p>
 </li>
 <li><p>删除目录：<strong>rm；</strong>-f 强制删除，忽略不存在的文件，无需提示；-r 递归地删除目录下的内容</p>
@@ -385,7 +383,7 @@
 </ol>
 <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">ls</span> -<span class="hljs-keyword">l</span>  # 列出可见文件详细信息<br><span class="hljs-keyword">ll</span>     # 列出可见文件详细信息  等效 <span class="hljs-keyword">ls</span> -<span class="hljs-keyword">l</span><br><span class="hljs-keyword">ls</span> -<span class="hljs-keyword">al</span> # 列出所有文件详细信息，包括隐藏文件<br><span class="hljs-keyword">ll</span> -<span class="hljs-keyword">a</span>  # 列出所有文件详细信息，包括隐藏文件 等效 <span class="hljs-keyword">ll</span> -<span class="hljs-keyword">a</span><br><span class="hljs-keyword">ll</span> -ah<br><span class="hljs-keyword">ll</span> dirname：列出dirname目录下的文件<br><br>占位符：* 匹配多个；?匹配一个<br><span class="hljs-keyword">ll</span> <span class="hljs-keyword">y</span>*<br><span class="hljs-keyword">ll</span> *.txt<br><br><span class="hljs-keyword">ll</span> <span class="hljs-keyword">y</span>*d*<br><span class="hljs-keyword">ll</span> <span class="hljs-keyword">y</span>??<br><span class="hljs-keyword">ll</span> /usr/bin # 列出指定路径的文件信息<br></code></pre></td></tr></table></figure>
 
-<h5 id="连接："><a href="#连接：" class="headerlink" title="连接："></a><strong>连接：</strong></h5><blockquote>
+<h2 id="连接："><a href="#连接：" class="headerlink" title="连接："></a><strong>连接：</strong></h2><blockquote>
 <p>软连接：相当于win7快捷键<br>硬连接：相当于拷贝文件<br>区别：在删除链接时，是否删除源文件</p>
 </blockquote>
 <ol>
@@ -396,7 +394,7 @@
 </ol>
 <figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-comment">## 创建一个软链接</span><br><span class="hljs-built_in">ln</span> -s readme.txt link.txt<br>lrwxrwxrwx. <span class="hljs-number">1</span> baby baby    <span class="hljs-number">4</span> Jun  <span class="hljs-number">9</span> <span class="hljs-number">02</span>:<span class="hljs-number">24</span> rm.txt -&gt; <span class="hljs-keyword">a</span>.py<br><span class="hljs-comment">## 创建一个硬链接</span><br>$ <span class="hljs-built_in">ln</span> ab.txt baby.<span class="hljs-built_in">log</span><br></code></pre></td></tr></table></figure>
 
-<h5 id="修改文件权限"><a href="#修改文件权限" class="headerlink" title="修改文件权限"></a>修改文件权限</h5><ol>
+<h2 id="修改文件权限"><a href="#修改文件权限" class="headerlink" title="修改文件权限"></a>修改文件权限</h2><ol>
 <li><p>chmod：设置文件对不同用户的权限，需要使用root用户</p>
 </li>
 <li><p>chgrp：修改组</p>
@@ -405,23 +403,16 @@
 </li>
 </ol>
 <blockquote>
-<p>chown 用户名 文件名|目录名 # 修改文件|目录的拥有者<br>chgrp -R 组名 文件名|目录名 # 递归修改文件|目录的组<br>chmod -R 755 文件名|目录名 # 递归修改文件权限<br>chmod 在设置权限时，可以简单地使用三个数字分别对应拥有者／ 组和其他用户的权限</p>
-<h1 id="直接修改文件-目录的-读-写-执行-权限，但是不能精确到-拥有者-组-其他"><a href="#直接修改文件-目录的-读-写-执行-权限，但是不能精确到-拥有者-组-其他" class="headerlink" title="直接修改文件|目录的 读|写|执行 权限，但是不能精确到 拥有者|组|其他"></a>直接修改文件|目录的 读|写|执行 权限，但是不能精确到 拥有者|组|其他</h1><p>chmod +&#x2F;-rwx 文件名|目录名 # 一次性修改 拥有者 &#x2F; 组 权限</p>
+<p>chown 用户名 文件名|目录名 # 修改文件|目录的拥有者<br>chgrp -R 组名 文件名|目录名 # 递归修改文件|目录的组<br>chmod -R 755 文件名|目录名 # 递归修改文件权限<br>chmod 在设置权限时，可以简单地使用三个数字分别对应拥有者／ 组和其他用户的权限<br>直接修改文件|目录的 读|写|执行 权限，但是不能精确到 拥有者|组|其他<br>chmod +&#x2F;-rwx 文件名|目录名 # 一次性修改 拥有者 &#x2F; 组 权限</p>
 </blockquote>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># chmod</span><br>eg: -rw-rw-r--. 1 baby baby 0 May 31 16:02 a.py<br>需求：对于同组用户来说，仅仅可读，对于其他用户不可读不可写<br>    权限字符形式操作：<br>        <span class="hljs-comment"># chmod  g-w a.py      (表示对于同组u用户，删除可写权限)</span><br>        <span class="hljs-comment"># chmod  o-r a.py    (表示对于其他用户，删除读和写权限)</span><br>        <span class="hljs-comment"># chmod g-r-w a.py  (表示对于同组用户，删除读和写权限)</span><br>    <br>    权限数字形式权限：<br>        <span class="hljs-comment"># chmod 664  (表示对拥有着可读可写，同组用户可读可写，其他用户可读)</span><br><br>    问题：如果针对一个目录，设置权限呢？且目录中有许多文件，这些文件都需要同样的权限设置。<br>        -R, --recursive  递归<br>        <span class="hljs-comment"># chmod -R 664 /opt/softwares</span><br><br><span class="hljs-comment"># chown</span><br>    <span class="hljs-built_in">chown</span> baby /home/a.py<br><span class="hljs-comment"># chgrp</span><br>    <span class="hljs-built_in">chgrp</span> baby /home/a.py<br>    经测，两个命令都要运行，才会改变(不一定)<br><span class="hljs-comment"># 如果针对目录：递归</span><br>    <span class="hljs-built_in">chown</span> -R baby /opt/softwares<br>    <span class="hljs-built_in">chgrp</span> -R baby /opt/softwares<br><span class="hljs-comment"># 将/home/a.py文件的所属用户和所属组改为senior用户和senior组</span><br>    可以使用一个命令完成：<br>    <span class="hljs-built_in">chown</span> senior:senior /home/a.py<br>    senior:senior: 第一个senior代表用户，第二个senior代表组<br></code></pre></td></tr></table></figure>
 
-<h5 id="打包与压缩"><a href="#打包与压缩" class="headerlink" title="打包与压缩"></a>打包与压缩</h5><ol>
-<li><strong>tar</strong></li>
-</ol>
-<blockquote>
+<h2 id="打包与压缩"><a href="#打包与压缩" class="headerlink" title="打包与压缩"></a>打包与压缩</h2><h3 id="tar"><a href="#tar" class="headerlink" title="tar"></a><strong>tar</strong></h3><blockquote>
 <p>c 生成档案文件，创建打包文件<br>x 解开档案文件<br>v 列出归档解档的详细过程，显示进度<br>f 指定档案文件名称，f 后面一定是 .tar 文件，所以必须放选项最后，其他选项顺序可以随意<br>z 可以调用gzip进行压缩</p>
 </blockquote>
 <figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">tar -cvf 打包文件<span class="hljs-string">.tar</span> 被打包的文件／路径 <span class="hljs-comment"># 打包文件</span><br>tar -xvf 打包文件<span class="hljs-string">.tar</span> <span class="hljs-comment"># 解包文件</span><br>tar -zcvf 打包文件<span class="hljs-string">.tar.gz</span> 要被压缩的文件/路径   <span class="hljs-comment"># 压缩文件</span><br>tar -zxvf filename.tar.gz                     <span class="hljs-comment"># 解压缩文件</span><br>tar -zxvf filename.tar.gz -C 目标路径         <span class="hljs-comment"># 解压缩到指定路径；选项-C 解压缩到指定目录，注意：要解压缩的目录必须存在 </span><br></code></pre></td></tr></table></figure>
 
-<ol>
-<li><strong>zip</strong></li>
-</ol>
-<p><strong>zip</strong></p>
+<h3 id="zip"><a href="#zip" class="headerlink" title="zip"></a><strong>zip</strong></h3><p><strong>zip</strong></p>
 <blockquote>
 <p>zip -q -r html.zip &#x2F;home&#x2F;html # 将 &#x2F;home&#x2F;html&#x2F; 这个目录下所有文件和文件夹打包为当前目录下的 html.zip<br>zip -q -r html.zip * # 如果在我们在 &#x2F;home&#x2F;html 目录下<br>zip -dv cp.zip a.c #从压缩文件 cp.zip 中删除文件 a.c</p>
 </blockquote>
