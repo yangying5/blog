@@ -19,28 +19,40 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="linux入门知识汇总">
+    <meta name="description" content="基于JavaAgent探针技术的慢SQL治理实践">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基础知识">
-<meta property="og:url" content="http://example.com/2024/07/26/linux/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:title" content="基于JavaAgent探针技术的慢SQL治理实践">
+<meta property="og:url" content="http://example.com/2024/08/18/mysql/%E5%9F%BA%E4%BA%8EJavaAgent%E6%8E%A2%E9%92%88%E6%8A%80%E6%9C%AF%E7%9A%84%E6%85%A2SQL%E6%B2%BB%E7%90%86%E5%AE%9E%E8%B7%B5/index.html">
 <meta property="og:site_name" content="杨颖的博客">
-<meta property="og:description" content="linux入门知识汇总">
+<meta property="og:description" content="基于JavaAgent探针技术的慢SQL治理实践">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEdea7cd4b5044f1814039227aa57292f3%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCE9731d18bcb5321cfa264a5153b5dbc4a%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEe65ac98f274d246b4cac2da80154c292%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEd609518d33a119b1d3f1200067f3950d%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEfd92c04351383b1e3171fb103f8757cc%E6%88%AA%E5%9B%BE.png">
-<meta property="article:published_time" content="2024-07-25T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-08-02T06:38:34.075Z">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent1.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent2.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent3.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent4.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent5.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent6.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent7.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent8.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent9.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent10.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent11.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent12.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent13.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent14.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent15.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql_agent16.png">
+<meta property="article:published_time" content="2024-08-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-18T09:20:28.473Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="linux">
+<meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/blog/images/WEBRESOURCEdea7cd4b5044f1814039227aa57292f3%E6%88%AA%E5%9B%BE.png">
+<meta name="twitter:image" content="http://example.com/blog/images/mysql_agent.png">
   
   
   
-  <title>基础知识 - 杨颖的博客</title>
+  <title>基于JavaAgent探针技术的慢SQL治理实践 - 杨颖的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -206,7 +218,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="基础知识"></span>
+            <span id="subtitle" data-typed-text="基于JavaAgent探针技术的慢SQL治理实践"></span>
           
         </div>
 
@@ -217,8 +229,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-07-26 00:00" pubdate>
-          2024年7月26日 凌晨
+        <time datetime="2024-08-18 00:00" pubdate>
+          2024年8月18日 凌晨
         </time>
       </span>
     
@@ -229,7 +241,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.1k 字
+          1.2k 字
         
       </span>
     
@@ -240,7 +252,7 @@
         
         
         
-          18 分钟
+          11 分钟
         
       </span>
     
@@ -277,56 +289,133 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">基础知识</h1>
+            <h1 id="seo-header">基于JavaAgent探针技术的慢SQL治理实践</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="linux的发行版本"><a href="#linux的发行版本" class="headerlink" title="linux的发行版本"></a>linux的发行版本</h3><p><img src="/blog/images/WEBRESOURCEdea7cd4b5044f1814039227aa57292f3%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
-<h3 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h3><ul>
-<li>Linux下的软件包可细分为两种，分别是<strong>源码包</strong>和<strong>二进制包</strong></li>
-<li>源码包就是一大堆源代码程序，一般包含多个文件，为了方便发布，通常会将源码包做打包压缩处理，Linux 中最常用的打包压缩格式为“tar.gz”，因此源码包又被称为 Tarball。因为可能会需要一些依赖环境，所以安装前就需要先安装这些依赖环境</li>
-<li>二进制包：是源码包经过成功编译之后产生的包。由于二进制包在发布之前就已经完成了编译的工作，因此用户安装软件的速度较快（同 Windows下安装软件速度相当），且安装过程报错几率大大减小。因为已经编译过，依赖环境已经编译进二进制文件中，所以会省去很多麻烦</li>
-<li>二进制包是 Linux 下默认的软件安装包，因此二进制包又被称为默认安装软件包。</li>
-</ul>
-<h4 id="目前主要有以下-2-大主流的二进制包管理系统："><a href="#目前主要有以下-2-大主流的二进制包管理系统：" class="headerlink" title="目前主要有以下 2 大主流的二进制包管理系统："></a>目前主要有以下 2 大主流的二进制包管理系统：</h4><p><strong>RPM 包管理系统</strong>： 功能强大，安装、升级、査询和卸载非常简单方便，因此很多 Linux 发行版都默认使用此机制作为软件安装的管理方式，例如 Fedora、CentOS、SuSE 等</p>
-<p><strong>DPKG 包管理系统</strong>： 由 Debian Linux 所开发的包管理机制，通过 DPKG 包，Debian Linux 就可以进行软件包管理，主要应用在 Debian 和 Ubuntu 中</p>
-<p><img src="/blog/images/WEBRESOURCE9731d18bcb5321cfa264a5153b5dbc4a%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
-<p><strong>yum</strong>：全称“Yellow dog Updater, Modified”，是一个专门为了解决包的依赖关系而存在的软件包管理器。就好像 Windows 系统上可以通过 360 软件管家实现软件的一键安装、升级和卸载</p>
-<p><strong>apt</strong>：是 Advanced Packaging Tool，是 Linux 下的一款安装包管理工具，可以在终端中方便的 安装／卸载／更新软件包</p>
-<p><img src="/blog/images/WEBRESOURCEe65ac98f274d246b4cac2da80154c292%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
-<h3 id="Linux的设计思想：一切皆文件"><a href="#Linux的设计思想：一切皆文件" class="headerlink" title="Linux的设计思想：一切皆文件"></a>Linux的设计思想：一切皆文件</h3><p>Linux 中所有内容都是以文件的形式保存和管理的，即一切皆文件 。具体可分为以下几种类型：</p>
-<ol>
-<li>- 普通文件：类似 mp4、pdf、html 这样，可直接拿来使用的文件都属于普通文件</li>
-<li>d 目录文件：目录文件包含了此目录中各个文件的文件名以及指向这些文件的指针，打开目录等同于打开目录文件，只要你有权限，可以随意访问目录中的任何文件。</li>
-<li>c 字符设备文件：这些文件通常隐藏在 &#x2F;dev&#x2F; 目录下，当进行设备读取或外设交互时才会被使用。例如，磁盘光驱属于块设备文件，串口设备则属于字符设备文件。 Linux 系统中的所有设备，要么是块设备文件，要么是字符设备文件。 </li>
-<li>s 套接字文件（socket）：套接字文件一般隐藏在 &#x2F;var&#x2F;run&#x2F; 目录下，用于进程间的网络通信。 </li>
-<li>l 链接文件（symbolic link）：类似与 Windows 中的快捷方式，是指向另一文件的简介指针（也就是软链接）。 </li>
-<li>p 管道文件（pipe）：主要用于进程间通信。例如，使用 mkfifo 命令创建一个 FIFO 文件，与此同时，启用进程 A 从FIFO文件读数据，启用进程 B 从 FIFO文件中写数据，随写随读。</li>
-</ol>
-<h3 id="Linux文件目录结构"><a href="#Linux文件目录结构" class="headerlink" title="Linux文件目录结构"></a>Linux文件目录结构</h3><ul>
-<li>&#x2F;：根目录，一般根目录下只存放目录，不要存放文件，&#x2F;etc、&#x2F;bin、&#x2F;dev、&#x2F;lib、&#x2F;sbin应该和根目录放置在一个分区中  </li>
-<li>&#x2F;bin: &#x2F;usr&#x2F;bin:可执行二进制文件的目录，如常用的命令ls、tar、mv、cat等。 </li>
-<li>&#x2F;boot：放置linux系统启动时用到的一些文件，比如内核文件和启动引导文件。&#x2F;boot&#x2F;vmlinuz为linux的内核文件，以及&#x2F;boot&#x2F;gurb。建议单独分区，分区大小100M即可 </li>
-<li>&#x2F;dev：存放linux系统下的设备文件，访问该目录下某个文件，相当于访问某个设备，常用的是挂载光驱mount &#x2F;dev&#x2F;cdrom &#x2F;mnt。 </li>
-<li>&#x2F;etc：系统配置文件存放的目录，系统通过rpm默认安装方式的配置文件全都在这个目录。不建议在此目录下存放可执行文件，重要的配置文件有&#x2F;etc&#x2F;inittab、&#x2F;etc&#x2F;fstab、&#x2F;etc&#x2F;init.d、&#x2F;etc&#x2F;X11、&#x2F;etc&#x2F;sysconfig、&#x2F;etc&#x2F;xinetd.d修改配置文件之前记得备份。 注：&#x2F;etc&#x2F;X11存放与x windows有关的设置。 </li>
-<li>&#x2F;home：系统默认的用户家目录，新增用户账号时，用户的家目录都存放在此目录下，<del>表示当前用户的家目录，</del>test表示用户test的家目录。建议单独分区，并设置较大的磁盘空间，方便用户存放数据 </li>
-<li>&#x2F;lib:&#x2F;usr&#x2F;lib:&#x2F;usr&#x2F;local&#x2F;lib：系统调用的函数库的目录，程序在执行过程中，需要调用一些额外的参数时需要函数库的协助，比较重要的目录为&#x2F;lib&#x2F;modules。</li>
-<li>&#x2F;mnt:&#x2F;media:&#x2F;misc：光盘默认挂载点，通常光盘挂载于&#x2F;mnt&#x2F;cdrom下，也不一定，可以选择任意位置进行挂载 </li>
-<li>&#x2F;opt：给主机额外安装软件所摆放的目录,即第三方软件的安装位置。手工安装的包都可以放在这个位置。如：FC4使用的Fedora 社群开发软件，如果想要自行安装新的KDE 桌面软件，可以将该软件安装在该目录下。以前的 Linux 系统中，习惯放置在 &#x2F;usr&#x2F;local 目录下</li>
-<li>&#x2F;root：系统管理员root的家目录，系统第一个启动的分区为&#x2F;，所以最好将&#x2F;root和&#x2F;放置在一个分区下。</li>
-<li>&#x2F;sbin:&#x2F;usr&#x2F;sbin:&#x2F;usr&#x2F;local&#x2F;sbin：放置系统管理员使用的可执行命令即系统环境设置相关命令，如fdisk、shutdown、mount等。与&#x2F;bin不同的是，这几个目录是给系统管理员root使用的命令，一般用户只能”查看”而不能设置和使用。</li>
-<li>&#x2F;srv：服务启动之后需要访问的数据目录，如www服务需要访问的网页数据存放在&#x2F;srv&#x2F;www内</li>
-<li>&#x2F;tmp：一般用户或正在执行的程序临时存放文件的目录,任何人都可以访问,重要数据不可放置在此目录下</li>
-<li>&#x2F;proc：此目录的数据都在内存中，如系统核心，外部设备，网络状态，由于数据都存放于内存中，所以不占用磁盘空间，比较重要的目录有&#x2F;proc&#x2F;cpuinfo、&#x2F;proc&#x2F;interrupts、&#x2F;proc&#x2F;dma、&#x2F;proc&#x2F;ioports、&#x2F;proc&#x2F;net&#x2F;*等</li>
-<li>&#x2F;lost+fount：系统异常产生错误时，会将一些遗失的片段放置于此目录下，通常这个目录会自动出现在装置目录下。如加载硬盘于&#x2F;disk 中，此目录下就会自动产生目录&#x2F;disk&#x2F;lost+found </li>
-<li>&#x2F;usr：应用程序存放目录，全称为 Unix Software Resource，此目录用于存储系统软件资源。FHS 建议所有开发者，应把软件产品的数据合理的放置在 &#x2F;usr 目录下的各子目录中，而不是为他们的产品创建单独的目录。&#x2F;usr&#x2F;bin存放应用程序，&#x2F;usr&#x2F;share存放共享数据，&#x2F;usr&#x2F;lib存放不能直接运行的，却是许多程序运行所必需的一些函数库文件。&#x2F;usr&#x2F;local:存放软件升级包。&#x2F;usr&#x2F;share&#x2F;doc:系统说明文件存放目录。&#x2F;usr&#x2F;share&#x2F;man:?程序说明文件存放目录，使用 man ls时会查询&#x2F;usr&#x2F;share&#x2F;man&#x2F;man1&#x2F;ls.1.gz的内容建议单独分区，设置较大的磁盘空间</li>
-</ul>
-<p><img src="/blog/images/WEBRESOURCEd609518d33a119b1d3f1200067f3950d%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+                <h1 id="慢查询的现状"><a href="#慢查询的现状" class="headerlink" title="慢查询的现状"></a>慢查询的现状</h1><h2 id="企业内部的现状"><a href="#企业内部的现状" class="headerlink" title="企业内部的现状"></a>企业内部的现状</h2><p><img src="/blog/images/mysql_agent.png" srcset="/blog/img/loading.gif" lazyload></p>
 <ul>
-<li>&#x2F;var：放置系统执行过程中经常变化的文件，如随时更改的日志文件&#x2F;var&#x2F;log，&#x2F;var&#x2F;log&#x2F;message：所有的登录文件存放目录，&#x2F;var&#x2F;spool&#x2F;mail：邮件存放的目录，&#x2F;var&#x2F;run:程序或服务启动后，其PID存放在该目录下。建议单独分区，设置较大的磁盘空间</li>
+<li>大部分数据库是共享集群,一个实例下会有多个DB, 是为了节省成本; 给每个db都做一个独立的集群，费用会非常高； </li>
+<li>共享集群问题：集群内一个实例打满资源会影响其他业务</li>
+<li>集团2022发生了多起慢查询引起的故障</li>
+<li>针对慢查询的治理较为滞后</li>
+<li>无法有效处理低频的慢SQL(DBA记录慢SQL对次数和频率有要求)</li>
+<li>SQL的规范较依赖研发个人自觉;无法有效约束</li>
 </ul>
-<p><img src="/blog/images/WEBRESOURCEfd92c04351383b1e3171fb103f8757cc%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h2 id="DBA目前如何处理"><a href="#DBA目前如何处理" class="headerlink" title="DBA目前如何处理"></a>DBA目前如何处理</h2><p><img src="/blog/images/mysql_agent1.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>慢查询出现 &amp; 并发50，触发循环Killer<ul>
+<li>随机kill正常请求和慢查询请求</li>
+<li>这里应改为随机kill慢查询请求，否则会误伤正常请求</li>
+</ul>
+</li>
+<li>滞后触发可能无法成功接入<ul>
+<li>因为是滞后的操作，如果QPS高，在killer没有介入前，机器可能就被打挂了</li>
+<li>这里是否被打挂取决于killer介入的阈值，接入的时机可以取决于：<ul>
+<li>机器剩余资源的阈值</li>
+<li>单个慢sql 持续的时间</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="SRE如何处理"><a href="#SRE如何处理" class="headerlink" title="SRE如何处理"></a>SRE如何处理</h2><p><img src="/blog/images/mysql_agent2.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h1 id="全生命周期治理方案"><a href="#全生命周期治理方案" class="headerlink" title="全生命周期治理方案"></a>全生命周期治理方案</h1><p><img src="/blog/images/mysql_agent3.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>设计阶段(堵源头)：<ul>
+<li>添加SQL人工评审环节，加载SQL规范宣讲</li>
+<li>未来方向：SQL评审上系统评审，通过系统输入SQL来检测SQL是否满足规范</li>
+</ul>
+</li>
+<li>研发阶段(禁新增)：<strong>检测不合理的SQL</strong>并进行告警阻断(按级别)</li>
+<li>生产阶段(减存量)：<ul>
+<li>对不合理的SQL进行告警(按级别)</li>
+<li>对耗时异常增长的SQL进行告警(此时慢SQL还没发生)</li>
+</ul>
+</li>
+<li>故障阶段(控影响)：发生故障时<strong>主动Kill掉慢查询</strong>，减少同集群其他业务影响</li>
+</ul>
+<h2 id="主动KILL慢查询"><a href="#主动KILL慢查询" class="headerlink" title="主动KILL慢查询"></a>主动KILL慢查询</h2><h3 id="JDBC的超时参数"><a href="#JDBC的超时参数" class="headerlink" title="JDBC的超时参数"></a>JDBC的超时参数</h3><p><img src="/blog/images/mysql_agent4.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>JDBC的超时参数包含以上三个</li>
+<li>因为事务超时 &gt; 查询超时 &gt; 网络超时；所以设置超时参数必须满足前面的公式，否则冲突则不生效</li>
+</ul>
+<h3 id="JDBC原理"><a href="#JDBC原理" class="headerlink" title="JDBC原理"></a>JDBC原理</h3><p><img src="/blog/images/mysql_agent5.png" srcset="/blog/img/loading.gif" lazyload></p>
+<p>设置完超时，jdbc会做什么呢</p>
+<ol>
+<li>查询的同时创建一个定时任务</li>
+<li>定时任务被调度时查询还没完成则发起KILL</li>
+<li>查询完成时取消定时任务<br><img src="/blog/images/mysql_agent6.png" srcset="/blog/img/loading.gif" lazyload></li>
+</ol>
+<h2 id="检测不合理SQL"><a href="#检测不合理SQL" class="headerlink" title="检测不合理SQL"></a>检测不合理SQL</h2><p><img src="/blog/images/mysql_agent7.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h3 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h3><ul>
+<li>ORM框架众多(DAL, MyBatis, Spring Data Jpa)</li>
+<li>99%使用预编译模板，参数与SQL分离</li>
+</ul>
+<h3 id="可选方案"><a href="#可选方案" class="headerlink" title="可选方案"></a>可选方案</h3><ul>
+<li>在应用层采集</li>
+<li>在ORM层采集</li>
+<li>在JDBC层采集</li>
+<li>在驱动层采集(使用Agent探针)：选择该方案，越底层越能覆盖到更多的SQL，比如在应用层做，如果公司程序员使用多个应用框架，就只能覆盖指定框架的SQL</li>
+<li>在服务端采集</li>
+</ul>
+<h3 id="Java-Agent"><a href="#Java-Agent" class="headerlink" title="Java Agent"></a>Java Agent</h3><ul>
+<li>Java Agent Instrument 是一种能够在编译后运行时修改字节码的技术<br><img src="/blog/images/mysql_agent8.png" srcset="/blog/img/loading.gif" lazyload><br><img src="/blog/images/mysql_agent9.png" srcset="/blog/img/loading.gif" lazyload></li>
+</ul>
+<h4 id="Java-Agent：正常CLass加载过程"><a href="#Java-Agent：正常CLass加载过程" class="headerlink" title="Java Agent：正常CLass加载过程"></a>Java Agent：正常CLass加载过程</h4><p><img src="/blog/images/mysql_agent10.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h4 id="Java-Agent：增强class加载过程"><a href="#Java-Agent：增强class加载过程" class="headerlink" title="Java Agent：增强class加载过程"></a>Java Agent：增强class加载过程</h4><p><img src="/blog/images/mysql_agent11.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h4 id="Java-Agent：静态模式"><a href="#Java-Agent：静态模式" class="headerlink" title="Java Agent：静态模式"></a>Java Agent：静态模式</h4><blockquote>
+<p>java -javaagent:myAgent.jar -javaagent:myAgent2.jar -jar App.jar</p>
+</blockquote>
+<h4 id="Java-Agent-动态模式"><a href="#Java-Agent-动态模式" class="headerlink" title="Java Agent: 动态模式"></a>Java Agent: 动态模式</h4><ul>
+<li>99.99%的选择：动态模式</li>
+<li>步骤：<blockquote>
+<p>VirtualMachine vm &#x3D; VirtualMachine.attach(“目标程序的pid”);  # 拿到目标程序的VM<br>vm.loadAgent(“myAgent-1.0.jar”);  # 把Agent发送到目标VM</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/blog/images/mysql_agent12.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h4 id="Java-Agent-字节码增强的过程"><a href="#Java-Agent-字节码增强的过程" class="headerlink" title="Java Agent: 字节码增强的过程"></a>Java Agent: 字节码增强的过程</h4><p><img src="/blog/images/mysql_agent13.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>最后都会进入VM_Operation, 这里会暂停jvm的运行</li>
+<li>注意：因为会暂停jvm的运行，所以使用agent时要考虑它的性能，高QPS还是要慎用</li>
+<li>agent对资源的消耗占比情况：有埋点，也就是agent接和不接 在资源消耗上和性能方面有什么区别，结论是：做了以上几个步骤，整体的耗时不会超过1毫秒；大多数场景都是可接受</li>
+</ul>
+<h4 id="Java-Agent：字节码增强工具对比"><a href="#Java-Agent：字节码增强工具对比" class="headerlink" title="Java Agent：字节码增强工具对比"></a>Java Agent：字节码增强工具对比</h4><p><img src="/blog/images/mysql_agent14.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>虽然ASM增能最高，但是这里还是选择ByteBuddy，原因<ul>
+<li>ByteBuddy也是基于ASM做的</li>
+<li>扩展性更好，社区活跃度高，编程方便</li>
+</ul>
+</li>
+</ul>
+<h2 id="Luna组件"><a href="#Luna组件" class="headerlink" title="Luna组件"></a>Luna组件</h2><p><img src="/blog/images/mysql_agent15.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h3 id="Agent主要功能"><a href="#Agent主要功能" class="headerlink" title="Agent主要功能"></a>Agent主要功能</h3><ul>
+<li>动态设置超时</li>
+<li>主动kill超时的查询</li>
+<li>方法级别的耗时埋点</li>
+<li>驱动层拦截SQL</li>
+</ul>
+<h3 id="Service主要功能"><a href="#Service主要功能" class="headerlink" title="Service主要功能"></a>Service主要功能</h3><ul>
+<li>分析采集到的SQL</li>
+<li>查询SQL执行计划</li>
+<li>对不合理SQL进行告警</li>
+<li>对耗时异常SQL进行预警</li>
+<li>对全表扫描SQL进行告警</li>
+<li>检测索引并提示优化</li>
+<li>对发生Kill的SQL进行告警</li>
+</ul>
+<h3 id="动态设置超时"><a href="#动态设置超时" class="headerlink" title="动态设置超时"></a>动态设置超时</h3><p><img src="/blog/images/mysql_agent16.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>要根据业务场景设置超时，比如核心业务，订单服务，那目标应该是尽全力保证这条sql被执行到</li>
+<li>负载高，超时时间设置低一点；负载很低，那就是有大把的资源，超时时间设置高一点；能尽量保证业务被执行完</li>
+<li>负载采集对实时性要求高，比如高qps场景，采集慢，很有可能适得其反；也就是实际上资源已经被打满了，采集的慢，可能我们得到的结论是还有资源</li>
+</ul>
+<h3 id="接入指南"><a href="#接入指南" class="headerlink" title="接入指南"></a>接入指南</h3><ul>
+<li>应用接入</li>
+<li>部门接入：即框架接入，部门包含很多应用，如果应用级别接入，成本高</li>
+</ul>
 
                 
               </div>
@@ -345,7 +434,7 @@
     
       <span class="category-chain">
         
-  <a href="/blog/categories/linux/" class="category-chain-item">linux</a>
+  <a href="/blog/categories/mysql/" class="category-chain-item">mysql</a>
   
   
 
@@ -360,7 +449,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/blog/tags/linux/" class="print-no-link">#linux</a>
+        <a href="/blog/tags/mysql/" class="print-no-link">#mysql</a>
       
     </div>
   
@@ -372,8 +461,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>基础知识</div>
-      <div>http://example.com/2024/07/26/linux/基础知识/</div>
+      <div>基于JavaAgent探针技术的慢SQL治理实践</div>
+      <div>http://example.com/2024/08/18/mysql/基于JavaAgent探针技术的慢SQL治理实践/</div>
     </div>
     <div class="license-meta">
       
@@ -385,7 +474,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年7月26日</div>
+          <div>2024年8月18日</div>
         </div>
       
       
@@ -417,18 +506,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2024/08/17/mysql/mysql%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84/" title="mysql高可用架构">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">mysql高可用架构</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/blog/2024/07/26/linux/%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="文件管理">
-                        <span class="hidden-mobile">文件管理</span>
+                      <a href="/blog/2024/08/17/mysql/%E9%94%81%E5%92%8C%E4%BA%8B%E7%89%A9/" title="锁和事务">
+                        <span class="hidden-mobile">锁和事务</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

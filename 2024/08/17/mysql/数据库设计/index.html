@@ -19,28 +19,28 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="linux入门知识汇总">
+    <meta name="description" content="通过范式和反范式的方式进行数据库设计">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基础知识">
-<meta property="og:url" content="http://example.com/2024/07/26/linux/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:title" content="数据库设计方法论">
+<meta property="og:url" content="http://example.com/2024/08/17/mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/index.html">
 <meta property="og:site_name" content="杨颖的博客">
-<meta property="og:description" content="linux入门知识汇总">
+<meta property="og:description" content="通过范式和反范式的方式进行数据库设计">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEdea7cd4b5044f1814039227aa57292f3%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCE9731d18bcb5321cfa264a5153b5dbc4a%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEe65ac98f274d246b4cac2da80154c292%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEd609518d33a119b1d3f1200067f3950d%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEfd92c04351383b1e3171fb103f8757cc%E6%88%AA%E5%9B%BE.png">
-<meta property="article:published_time" content="2024-07-25T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-08-02T06:38:34.075Z">
+<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEc8ed773eefcbc91783928825fb5c0df0%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEa9a08b63b4500123dbdb098c36340347%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCE548f2769b62bbbdb03a0d46ba5004a20%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEc6dc04d7db6d4913e78fcc0e35d99db9%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCE725e5c11fba9fed200a9d464fd0695ec%E6%88%AA%E5%9B%BE.png">
+<meta property="article:published_time" content="2024-08-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-17T08:33:41.683Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="linux">
+<meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/blog/images/WEBRESOURCEdea7cd4b5044f1814039227aa57292f3%E6%88%AA%E5%9B%BE.png">
+<meta name="twitter:image" content="http://example.com/blog/images/WEBRESOURCEc8ed773eefcbc91783928825fb5c0df0%E6%88%AA%E5%9B%BE.png">
   
   
   
-  <title>基础知识 - 杨颖的博客</title>
+  <title>数据库设计方法论 - 杨颖的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -206,7 +206,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="基础知识"></span>
+            <span id="subtitle" data-typed-text="数据库设计方法论"></span>
           
         </div>
 
@@ -217,8 +217,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-07-26 00:00" pubdate>
-          2024年7月26日 凌晨
+        <time datetime="2024-08-17 00:00" pubdate>
+          2024年8月17日 凌晨
         </time>
       </span>
     
@@ -229,7 +229,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.1k 字
+          1.4k 字
         
       </span>
     
@@ -240,7 +240,7 @@
         
         
         
-          18 分钟
+          12 分钟
         
       </span>
     
@@ -277,56 +277,58 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">基础知识</h1>
+            <h1 id="seo-header">数据库设计方法论</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="linux的发行版本"><a href="#linux的发行版本" class="headerlink" title="linux的发行版本"></a>linux的发行版本</h3><p><img src="/blog/images/WEBRESOURCEdea7cd4b5044f1814039227aa57292f3%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
-<h3 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h3><ul>
-<li>Linux下的软件包可细分为两种，分别是<strong>源码包</strong>和<strong>二进制包</strong></li>
-<li>源码包就是一大堆源代码程序，一般包含多个文件，为了方便发布，通常会将源码包做打包压缩处理，Linux 中最常用的打包压缩格式为“tar.gz”，因此源码包又被称为 Tarball。因为可能会需要一些依赖环境，所以安装前就需要先安装这些依赖环境</li>
-<li>二进制包：是源码包经过成功编译之后产生的包。由于二进制包在发布之前就已经完成了编译的工作，因此用户安装软件的速度较快（同 Windows下安装软件速度相当），且安装过程报错几率大大减小。因为已经编译过，依赖环境已经编译进二进制文件中，所以会省去很多麻烦</li>
-<li>二进制包是 Linux 下默认的软件安装包，因此二进制包又被称为默认安装软件包。</li>
+                <h1 id="数据库设计的基本步骤"><a href="#数据库设计的基本步骤" class="headerlink" title="数据库设计的基本步骤"></a>数据库设计的基本步骤</h1><blockquote>
+<p>需求分析：是数据库设计的第一步，是最困难、最耗费时间的一步，也是整个设计过程的基础。<br>概要设计：是数据库设计的关键，通过综合、归纳与抽象用户需求，形成一个具体 DBMS 的概念模型，也就是绘制数据库的 E-R 图。<br>逻辑结构设计：将 E-R 图转换为多张表，进行逻辑设计，确认各表的主外键，并应用数据库设计的三大范式进行审核，对其优化。<br>物理设计阶段：确定 E-R 图后，根据项目的技术实现，团队开发能力及项目的成本预算，选择具体的数据库（如 MySQL 或 Oracle 等）进行物理实现。<br>数据库实施：运用 DBMS 提供的数据语言（例如 SQL）、工具及宿主语言（例如 Java），根据逻辑设计和物理设计的结果建立数据库，编制与调试应用程序，组织数据入库，并进行试运行。<br>数据库运行和维护：数据库应用系统经过试运行后即可投入正式运行。在运行过程中必须不断地对其进行评价、调整与修改。<br>总之设计一个完善的数据库应用系统是不可能一蹴而就的，它是上述 6 个阶段的不断反复</p>
+</blockquote>
+<h2 id="概要设计"><a href="#概要设计" class="headerlink" title="概要设计"></a>概要设计</h2><h3 id="E-R图介绍"><a href="#E-R图介绍" class="headerlink" title="E-R图介绍"></a>E-R图介绍</h3><blockquote>
+<p>为什么要叫关系型数据库，是因为关系型数据库就是在研究实体与实体的关系，属性与属性的关系<br>E-R图是设计数据库的工具之一，用于建立数据库的概念模型。<br>实体、属性和关系是构成 E-R图的基本要素。</p>
+</blockquote>
+<h4 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h4><ul>
+<li>指现实世界中客观存在并可以相互区分的对象或事物。</li>
+<li>实体往往指某类事物的集合。可以是具体的人和事物，也可以是抽象的概念、联系。</li>
+<li>实体一般是名词，对应表中的一行数据。例如，用户张三是一个实体，他对应于客人表中“张三”所在的一行数据，包括客人姓名、身份证号等信息。</li>
+<li>严格的说，实体用来指表中的一行特定数据。但在开发时，我们也常常把表称为一个实体。</li>
 </ul>
-<h4 id="目前主要有以下-2-大主流的二进制包管理系统："><a href="#目前主要有以下-2-大主流的二进制包管理系统：" class="headerlink" title="目前主要有以下 2 大主流的二进制包管理系统："></a>目前主要有以下 2 大主流的二进制包管理系统：</h4><p><strong>RPM 包管理系统</strong>： 功能强大，安装、升级、査询和卸载非常简单方便，因此很多 Linux 发行版都默认使用此机制作为软件安装的管理方式，例如 Fedora、CentOS、SuSE 等</p>
-<p><strong>DPKG 包管理系统</strong>： 由 Debian Linux 所开发的包管理机制，通过 DPKG 包，Debian Linux 就可以进行软件包管理，主要应用在 Debian 和 Ubuntu 中</p>
-<p><img src="/blog/images/WEBRESOURCE9731d18bcb5321cfa264a5153b5dbc4a%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
-<p><strong>yum</strong>：全称“Yellow dog Updater, Modified”，是一个专门为了解决包的依赖关系而存在的软件包管理器。就好像 Windows 系统上可以通过 360 软件管家实现软件的一键安装、升级和卸载</p>
-<p><strong>apt</strong>：是 Advanced Packaging Tool，是 Linux 下的一款安装包管理工具，可以在终端中方便的 安装／卸载／更新软件包</p>
-<p><img src="/blog/images/WEBRESOURCEe65ac98f274d246b4cac2da80154c292%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
-<h3 id="Linux的设计思想：一切皆文件"><a href="#Linux的设计思想：一切皆文件" class="headerlink" title="Linux的设计思想：一切皆文件"></a>Linux的设计思想：一切皆文件</h3><p>Linux 中所有内容都是以文件的形式保存和管理的，即一切皆文件 。具体可分为以下几种类型：</p>
-<ol>
-<li>- 普通文件：类似 mp4、pdf、html 这样，可直接拿来使用的文件都属于普通文件</li>
-<li>d 目录文件：目录文件包含了此目录中各个文件的文件名以及指向这些文件的指针，打开目录等同于打开目录文件，只要你有权限，可以随意访问目录中的任何文件。</li>
-<li>c 字符设备文件：这些文件通常隐藏在 &#x2F;dev&#x2F; 目录下，当进行设备读取或外设交互时才会被使用。例如，磁盘光驱属于块设备文件，串口设备则属于字符设备文件。 Linux 系统中的所有设备，要么是块设备文件，要么是字符设备文件。 </li>
-<li>s 套接字文件（socket）：套接字文件一般隐藏在 &#x2F;var&#x2F;run&#x2F; 目录下，用于进程间的网络通信。 </li>
-<li>l 链接文件（symbolic link）：类似与 Windows 中的快捷方式，是指向另一文件的简介指针（也就是软链接）。 </li>
-<li>p 管道文件（pipe）：主要用于进程间通信。例如，使用 mkfifo 命令创建一个 FIFO 文件，与此同时，启用进程 A 从FIFO文件读数据，启用进程 B 从 FIFO文件中写数据，随写随读。</li>
-</ol>
-<h3 id="Linux文件目录结构"><a href="#Linux文件目录结构" class="headerlink" title="Linux文件目录结构"></a>Linux文件目录结构</h3><ul>
-<li>&#x2F;：根目录，一般根目录下只存放目录，不要存放文件，&#x2F;etc、&#x2F;bin、&#x2F;dev、&#x2F;lib、&#x2F;sbin应该和根目录放置在一个分区中  </li>
-<li>&#x2F;bin: &#x2F;usr&#x2F;bin:可执行二进制文件的目录，如常用的命令ls、tar、mv、cat等。 </li>
-<li>&#x2F;boot：放置linux系统启动时用到的一些文件，比如内核文件和启动引导文件。&#x2F;boot&#x2F;vmlinuz为linux的内核文件，以及&#x2F;boot&#x2F;gurb。建议单独分区，分区大小100M即可 </li>
-<li>&#x2F;dev：存放linux系统下的设备文件，访问该目录下某个文件，相当于访问某个设备，常用的是挂载光驱mount &#x2F;dev&#x2F;cdrom &#x2F;mnt。 </li>
-<li>&#x2F;etc：系统配置文件存放的目录，系统通过rpm默认安装方式的配置文件全都在这个目录。不建议在此目录下存放可执行文件，重要的配置文件有&#x2F;etc&#x2F;inittab、&#x2F;etc&#x2F;fstab、&#x2F;etc&#x2F;init.d、&#x2F;etc&#x2F;X11、&#x2F;etc&#x2F;sysconfig、&#x2F;etc&#x2F;xinetd.d修改配置文件之前记得备份。 注：&#x2F;etc&#x2F;X11存放与x windows有关的设置。 </li>
-<li>&#x2F;home：系统默认的用户家目录，新增用户账号时，用户的家目录都存放在此目录下，<del>表示当前用户的家目录，</del>test表示用户test的家目录。建议单独分区，并设置较大的磁盘空间，方便用户存放数据 </li>
-<li>&#x2F;lib:&#x2F;usr&#x2F;lib:&#x2F;usr&#x2F;local&#x2F;lib：系统调用的函数库的目录，程序在执行过程中，需要调用一些额外的参数时需要函数库的协助，比较重要的目录为&#x2F;lib&#x2F;modules。</li>
-<li>&#x2F;mnt:&#x2F;media:&#x2F;misc：光盘默认挂载点，通常光盘挂载于&#x2F;mnt&#x2F;cdrom下，也不一定，可以选择任意位置进行挂载 </li>
-<li>&#x2F;opt：给主机额外安装软件所摆放的目录,即第三方软件的安装位置。手工安装的包都可以放在这个位置。如：FC4使用的Fedora 社群开发软件，如果想要自行安装新的KDE 桌面软件，可以将该软件安装在该目录下。以前的 Linux 系统中，习惯放置在 &#x2F;usr&#x2F;local 目录下</li>
-<li>&#x2F;root：系统管理员root的家目录，系统第一个启动的分区为&#x2F;，所以最好将&#x2F;root和&#x2F;放置在一个分区下。</li>
-<li>&#x2F;sbin:&#x2F;usr&#x2F;sbin:&#x2F;usr&#x2F;local&#x2F;sbin：放置系统管理员使用的可执行命令即系统环境设置相关命令，如fdisk、shutdown、mount等。与&#x2F;bin不同的是，这几个目录是给系统管理员root使用的命令，一般用户只能”查看”而不能设置和使用。</li>
-<li>&#x2F;srv：服务启动之后需要访问的数据目录，如www服务需要访问的网页数据存放在&#x2F;srv&#x2F;www内</li>
-<li>&#x2F;tmp：一般用户或正在执行的程序临时存放文件的目录,任何人都可以访问,重要数据不可放置在此目录下</li>
-<li>&#x2F;proc：此目录的数据都在内存中，如系统核心，外部设备，网络状态，由于数据都存放于内存中，所以不占用磁盘空间，比较重要的目录有&#x2F;proc&#x2F;cpuinfo、&#x2F;proc&#x2F;interrupts、&#x2F;proc&#x2F;dma、&#x2F;proc&#x2F;ioports、&#x2F;proc&#x2F;net&#x2F;*等</li>
-<li>&#x2F;lost+fount：系统异常产生错误时，会将一些遗失的片段放置于此目录下，通常这个目录会自动出现在装置目录下。如加载硬盘于&#x2F;disk 中，此目录下就会自动产生目录&#x2F;disk&#x2F;lost+found </li>
-<li>&#x2F;usr：应用程序存放目录，全称为 Unix Software Resource，此目录用于存储系统软件资源。FHS 建议所有开发者，应把软件产品的数据合理的放置在 &#x2F;usr 目录下的各子目录中，而不是为他们的产品创建单独的目录。&#x2F;usr&#x2F;bin存放应用程序，&#x2F;usr&#x2F;share存放共享数据，&#x2F;usr&#x2F;lib存放不能直接运行的，却是许多程序运行所必需的一些函数库文件。&#x2F;usr&#x2F;local:存放软件升级包。&#x2F;usr&#x2F;share&#x2F;doc:系统说明文件存放目录。&#x2F;usr&#x2F;share&#x2F;man:?程序说明文件存放目录，使用 man ls时会查询&#x2F;usr&#x2F;share&#x2F;man&#x2F;man1&#x2F;ls.1.gz的内容建议单独分区，设置较大的磁盘空间</li>
+<h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4><ul>
+<li>可以理解为实体的特征。</li>
 </ul>
-<p><img src="/blog/images/WEBRESOURCEd609518d33a119b1d3f1200067f3950d%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
-<ul>
-<li>&#x2F;var：放置系统执行过程中经常变化的文件，如随时更改的日志文件&#x2F;var&#x2F;log，&#x2F;var&#x2F;log&#x2F;message：所有的登录文件存放目录，&#x2F;var&#x2F;spool&#x2F;mail：邮件存放的目录，&#x2F;var&#x2F;run:程序或服务启动后，其PID存放在该目录下。建议单独分区，设置较大的磁盘空间</li>
+<h4 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h4><ul>
+<li>两个或多个实体之间的关联关系。</li>
+<li>关系可分为以下 4 种类型，例如对于实体 X 和 Y 之间的关系就必须为以下任意一种：<ul>
+<li>一对一:X 中的一个实体最多与 Y 中的一个实体关联，并且 Y 中的一个实体最多与 X 中的一个实体关联。 </li>
+<li>一对多:X 中的一个实体可以与 Y 中任意数量的实体关联，Y 中的一个实体最多与 X 中的一个实体关联。 </li>
+<li>多对一:X 中的一个实体最多与 Y 中的一个实体关联，Y 中的一个实体可以与 X 中的任意数量的实体关联。 </li>
+<li>多对多:X 中的一个实体可以与 Y 中的任意数量的实体关联，反之亦然。</li>
 </ul>
-<p><img src="/blog/images/WEBRESOURCEfd92c04351383b1e3171fb103f8757cc%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+</li>
+</ul>
+<h3 id="绘制ER图"><a href="#绘制ER图" class="headerlink" title="绘制ER图"></a>绘制ER图</h3><p>E-R 图以图形的方式来表示数据库的整个逻辑结构，如下：<br>实体：用矩形表示<br>属性：用椭圆形表示<br>关系：用菱形表示<br>使用直线连接属性和实体，以及连接实体和关系</p>
+<p><img src="/blog/images/WEBRESOURCEc8ed773eefcbc91783928825fb5c0df0%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h2 id="逻辑结构设计"><a href="#逻辑结构设计" class="headerlink" title="逻辑结构设计"></a>逻辑结构设计</h2><h3 id="范式"><a href="#范式" class="headerlink" title="范式"></a>范式</h3><blockquote>
+<p>数据库范式(Normal form，简称NF) ：理解就是按照面向对象的思想 拆分到不能拆分为止符合某一种级别的关系模式的集合，表示一个关系内部各属性之间的联系的合理化程度 。 数据库模型设计的一系列规范 ，分成6个等级，一级比一级要求得严格。满足这些规范的数据库是简洁的、结构明晰的，同时，不会发生插入(insert)、删除(delete)和更新(update)操作异常。避免不需要的数据冗余<br>逻辑主键：哪个字段 或者哪几个字段 加在一起，这条数据不会重复，就是逻辑主键</p>
+</blockquote>
+<h4 id="1NF"><a href="#1NF" class="headerlink" title="1NF"></a>1NF</h4><p>强调列的原子性，拆到不能再拆</p>
+<p><img src="/blog/images/WEBRESOURCEa9a08b63b4500123dbdb098c36340347%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<p><img src="/blog/images/WEBRESOURCE548f2769b62bbbdb03a0d46ba5004a20%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h4 id="2NF"><a href="#2NF" class="headerlink" title="2NF"></a>2NF</h4><p>在满足1NF的基础上，非主属性必须完全依赖于主属性，部分依赖&lt;比如学号和科目为主属性。姓名依赖于学号，但是不依赖于科目。即非主属性只依赖于主属性的一部分&gt;则不符合2NF</p>
+<p><img src="/blog/images/WEBRESOURCEc6dc04d7db6d4913e78fcc0e35d99db9%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h4 id="3NF"><a href="#3NF" class="headerlink" title="3NF"></a>3NF</h4><p>消除非主属性传递依赖主属性</p>
+<p><img src="/blog/images/WEBRESOURCE725e5c11fba9fed200a9d464fd0695ec%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<p>巴斯-科德范式（Boyce-Codd Normal Form ，BCNF）在3NF基础上，任何非主属性不能对主键子集依赖（在3NF基础上消除对主码子集的依赖）</p>
+<h3 id="反范式"><a href="#反范式" class="headerlink" title="反范式"></a>反范式</h3><p>• 范式越高意味着表的划分更细，一个数据库中需要的表也就越多，用户不得不将原本相关联的数据分摊到多个表中。同时把多个表联接在一起的花费是巨大的， 这严重地降低了系统运行性能。<br>• 反范式化的数据库因为所有的数据都在一张表中，可以很好地避免关联。<br>• 平时工作中，我们通常是将范式和反范式混合使用，相互结合。</p>
+<h3 id="数据库范式化和反范式化："><a href="#数据库范式化和反范式化：" class="headerlink" title="数据库范式化和反范式化："></a>数据库范式化和反范式化：</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>可以减少表的关联</li>
+<li>可以更好的进行索引优化</li>
+</ul>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>数据表存在数据冗余及数据维护异常，空间换时间</li>
+<li>对数据的修改需要更多的成本</li>
+</ul>
 
                 
               </div>
@@ -345,7 +347,7 @@
     
       <span class="category-chain">
         
-  <a href="/blog/categories/linux/" class="category-chain-item">linux</a>
+  <a href="/blog/categories/mysql/" class="category-chain-item">mysql</a>
   
   
 
@@ -360,7 +362,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/blog/tags/linux/" class="print-no-link">#linux</a>
+        <a href="/blog/tags/mysql/" class="print-no-link">#mysql</a>
       
     </div>
   
@@ -372,8 +374,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>基础知识</div>
-      <div>http://example.com/2024/07/26/linux/基础知识/</div>
+      <div>数据库设计方法论</div>
+      <div>http://example.com/2024/08/17/mysql/数据库设计/</div>
     </div>
     <div class="license-meta">
       
@@ -385,7 +387,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年7月26日</div>
+          <div>2024年8月17日</div>
         </div>
       
       
@@ -417,9 +419,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2024/08/17/mysql/mysql%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84/" title="mysql高可用架构">
+                      <a href="/blog/2024/08/17/mysql/%E9%94%81%E5%92%8C%E4%BA%8B%E7%89%A9/" title="锁和事务">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">mysql高可用架构</span>
+                        <span class="hidden-mobile">锁和事务</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -427,8 +429,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/blog/2024/07/26/linux/%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="文件管理">
-                        <span class="hidden-mobile">文件管理</span>
+                      <a href="/blog/2024/08/17/mysql/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" title="mysql存储引擎">
+                        <span class="hidden-mobile">mysql存储引擎</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

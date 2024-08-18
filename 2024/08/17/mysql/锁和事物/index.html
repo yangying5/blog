@@ -1,0 +1,725 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="mysql进阶，锁和事务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="锁和事务">
+<meta property="og:url" content="http://example.com/2024/08/17/mysql/%E9%94%81%E5%92%8C%E4%BA%8B%E7%89%A9/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="mysql进阶，锁和事务">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCE61e8039a40a805c0085374c5dd75149c%E6%88%AA%E5%9B%BE.png">
+<meta property="article:published_time" content="2024-08-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-17T08:33:41.676Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/blog/images/WEBRESOURCE61e8039a40a805c0085374c5dd75149c%E6%88%AA%E5%9B%BE.png">
+  
+  
+  
+  <title>锁和事务 - 杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="锁和事务"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-08-17 00:00" pubdate>
+          2024年8月17日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">锁和事务</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="MySQL锁机制"><a href="#MySQL锁机制" class="headerlink" title="MySQL锁机制"></a>MySQL锁机制</h1><ul>
+<li>锁机制: 是为了保证数据库并发访问时的一致性和有效性的一系列规则。锁机制的优劣直接影响到数据库的并发处理能力和系统性能，所以锁机制也就成为了各种数据库的核心技术之一。</li>
+</ul>
+<h2 id="按锁级别分类"><a href="#按锁级别分类" class="headerlink" title="按锁级别分类"></a>按锁级别分类</h2><ul>
+<li>可分为共享锁、排他锁和意向锁 <ul>
+<li>共享锁(S,是Share的缩写，也称读锁): 锁粒度是行或者元组（多个行）。一个事务获取了共享锁之后，可以对锁定范围内的数据执行读操作。会阻止其它事务获得相同数据集的排他锁X。上了读锁的数据，其他事务只能读取，不能被修改和删除。</li>
+<li>排他锁(X,是eXclusive的缩写，也称写锁): 锁粒度是行或者元组。一个事务获取了排他锁之后，可以对锁定范围内的数据执行写操作。阻止其它事务取得相同数据集的共享锁S和排他锁X。上了写锁的数据只能被当前事务修改和删除，其他事务不能读也不能写。</li>
+<li>意向锁：锁定的粒度是整张表，分为意向共享锁（IS）和意向排他锁（IX）两类。“意向”表示事务想执行但还没有真正执行</li>
+</ul>
+</li>
+</ul>
+<h2 id="MySQL-锁机制的相容和互斥"><a href="#MySQL-锁机制的相容和互斥" class="headerlink" title="MySQL 锁机制的相容和互斥"></a>MySQL 锁机制的相容和互斥</h2><ul>
+<li>锁和锁之间的关系，要么是相容的，要么是互斥的。</li>
+<li>锁a和锁b相容是指：操作同样一组数据时，如果事务t1获取了锁a，另一个事务t2还可以获取锁b；</li>
+<li>锁a和锁b互斥是指：操作同样一组数据时，如果事务t1获取了锁 a，另一个事务t2在t1释放锁 a 之前无法释放锁b。</li>
+<li>锁模式的兼容情况 其中Y表示相容，N表示互斥。</li>
+</ul>
+<p><img src="/blog/images/WEBRESOURCE61e8039a40a805c0085374c5dd75149c%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>为了尽可能提高数据库的并发量; 需每次锁定的数据范围越小越好，越小的锁其耗费的系统资源越多，系统性能下降。为在高并发响应和系统性能两方面进行平衡，这样就产生了“锁粒度”的概念</li>
+</ul>
+<h2 id="按锁的粒度分类"><a href="#按锁的粒度分类" class="headerlink" title="按锁的粒度分类"></a>按锁的粒度分类</h2><ul>
+<li>可以细分为行级锁、页级锁和表级锁</li>
+</ul>
+<h3 id="表级锁（table-lock）"><a href="#表级锁（table-lock）" class="headerlink" title="表级锁（table lock）"></a>表级锁（table lock）</h3><ul>
+<li>会锁定整张表，可以很好的避免死锁，是 MySQL 中最大颗粒度的锁定机制。</li>
+<li>一个用户在对表进行写操作（插入、删除、更新等）时，需要先获得写锁，这会阻塞其它用户对该表的所有读写操作。没有写锁时，其它读取的用户才能获得读锁，读锁之间是不相互阻塞的 </li>
+<li>表级锁最大的特点就是实现逻辑非常简单，带来的系统负面影响最小。所以获取锁和释放锁的速度很快。• 出现锁定资源争用的概率会很高，致使并发度大打折扣。 </li>
+<li>使用表级锁的主要是 MyISAM，MEMORY，CSV 等一些非事务性存储引擎。</li>
+<li>尽管存储引擎可以管理自己的锁，MySQL 本身还是会使用各种有效的表级锁来实现不同的目的。例如，服务器会为诸如 ALTER TABLE 之类的语句使用表级锁，而忽略存储引擎的锁机制</li>
+</ul>
+<h3 id="页级锁（page-lock）"><a href="#页级锁（page-lock）" class="headerlink" title="页级锁（page lock）"></a>页级锁（page lock）</h3><ul>
+<li>页级锁是 MySQL 中比较独特的一种锁定级别，在其他数据库管理软件中并不常见。</li>
+<li>页级锁的颗粒度介于行级锁与表级锁之间，资源开销，并发处理能力也是介于上面二者之间。</li>
+<li>页级锁和行级锁一样，会发生死锁。</li>
+<li>页级锁主要应用于 BDB 存储引擎。</li>
+</ul>
+<h3 id="行级锁（row-lock）"><a href="#行级锁（row-lock）" class="headerlink" title="行级锁（row lock）"></a>行级锁（row lock）</h3><ul>
+<li>行级锁的锁定颗粒度是最小的，只针对操作的当前行进行加锁，所以行级锁发生锁定资源争用的概率也最小。</li>
+<li>最大程度地支持并发处理。</li>
+<li>每次获取锁和释放锁，系统消耗较大</li>
+<li>容易发生死锁。</li>
+<li>行级锁主要应用于 InnoDB 存储引擎</li>
+</ul>
+<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><ul>
+<li><p><strong>数据库的事务（Transaction）</strong> 是一种机制、一个操作序列，包含了一组数据库操作命令。事务把所有的命令作为一个整体一起向系统提交或撤销操作请求，即这一组数据库命令要么都执行，要么都不执行 。保障数据有效性</p>
+</li>
+<li><p>事务具有 4 个特性：简称为 ACID</p>
+<ul>
+<li><strong>• 原子性（Atomicity）</strong>: 所有元素必须作为一个整体提交或回滚。如果事务中的任何元素失败，则整个事务将失败。</li>
+<li><strong>• 一致性（Consistency）</strong>: 是事务机制的目的，保障数据与现实业务的一致。一致性：就是保证不出现错误的数据，保持数据与我们想要的结果一致，不会因为底层操作而被篡改等等</li>
+<li><strong>• 隔离性（Isolation）</strong>: 所有并发事务是彼此隔离的，独立的。不以任何方式依赖于或影响其他事务。</li>
+<li><strong>• 持久性（Durability）</strong>: 事务被提交，事务对数据所做的任何变动都会被永久地保留在数据库中</li>
+</ul>
+</li>
+<li><p>InnoDB 存储引擎事务主要通过 UNDO 日志和 REDO 日志实现，MyISAM 存储引擎不支持事务。</p>
+<ul>
+<li>UNDO 日志 ：复制事务执行前的数据，用于在事务发生异常时回滚数据。 </li>
+<li>REDO 日志 ：记录在事务执行中，每条对数据进行更新的操作，当事务提交时，该内容将被刷新到磁盘。 </li>
+<li>默认设置下，每条SQL 语句就是一个事务，即执行SQL语句后自动提交。 </li>
+<li>为了达到将几个操作做为一个整体的目的，需要使用<blockquote>
+<p><strong>BEGIN 或 START TRANSACTION</strong> #开启一个事务，或者禁止当前会话的自动提交。<br>**COMMIT; **表示提交事务， 将事务中所有对数据库的更新都写到磁盘上的物理数据库中，事务正常结束。<br>**ROLLBACK; **:表示撤销事务， 事务不能继续执行，系统将事务中对数据库的所有已完成的操作全部撤销，回滚到事务开始时的状态</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="案例演示"><a href="#案例演示" class="headerlink" title="案例演示"></a>案例演示</h1><h3 id="演示设置，方便复现"><a href="#演示设置，方便复现" class="headerlink" title="演示设置，方便复现"></a>演示设置，方便复现</h3><blockquote>
+<p>为了演示锁等待效果，让锁等待长一些，不然很快就 终止等待了.等待语句并未执行。事务也不回滚。<br>SHOW VARIABLES LIKE ‘%innodb_lock_wait%’; # 查看 锁等待超时时间<br>set innodb_lock_wait_timeout&#x3D;300 ;        # 设置锁等待超时秒数 。如果并未杀掉持有锁的线程：则第二个update语句提示等待锁超时</p>
+<p>SHOW VARIABLES LIKE ‘%innodb_deadlock%’;<br>set global innodb_deadlock_detect &#x3D;off ;         # 为了演示死锁 ，把死锁检测 关闭。</p>
+</blockquote>
+<h3 id="事物及行级锁演示"><a href="#事物及行级锁演示" class="headerlink" title="事物及行级锁演示"></a>事物及行级锁演示</h3><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"># 创建一个Innodb 的表<br># 课上演示翻车 ，就是因为上次课修改了 会话参数 默认存储引擎 为 MyISAM ，未修改回来，导致建表 默认成了MyISAM，不支持事务 。<br><span class="hljs-keyword">SHOW</span> VARIABLES <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;default_storage_engine%&#x27;</span>;<br>#临时修改默认存储引擎<br># <span class="hljs-keyword">SET</span> default_storage_engine=&lt; 存储引擎名 &gt;<br><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> account(<br>    id <span class="hljs-type">int</span> <span class="hljs-keyword">primary key</span> ,<br>    <span class="hljs-type">name</span> <span class="hljs-type">varchar</span>(<span class="hljs-number">10</span>) ,<br>    balance <span class="hljs-type">decimal</span>(<span class="hljs-number">18</span>,<span class="hljs-number">2</span>)<br>   )ENGINE=innodb ;   # 保险起见 ，加上存储引擎限制 。<br><br><span class="hljs-keyword">insert</span> <span class="hljs-keyword">into</span> account <span class="hljs-keyword">values</span> (<span class="hljs-number">1</span>,<span class="hljs-string">&#x27;刘备&#x27;</span>,<span class="hljs-number">1000</span>) , (<span class="hljs-number">2</span>,<span class="hljs-string">&#x27;张飞&#x27;</span>,<span class="hljs-number">1</span>) ;<br><br><br># <span class="hljs-comment">-------A会话： 运用 事务进行转账操作</span><br><span class="hljs-keyword">BEGIN</span>;          # 开始A事务 和 <span class="hljs-keyword">START</span>  <span class="hljs-keyword">TRANSACTION</span>等效 ， 转账事务 <br>   #   第<span class="hljs-number">1</span>步 ，从转出账户转出金额 ，即更新 转出账户金额 自减 <span class="hljs-number">500</span>元 ；<br>   #获取行级写锁<span class="hljs-number">1</span> ，在提交事务之前，其他的事务不能修改此条数据 。不信？ 你可以在B事务 更新试试，看看什么效果<br>  <span class="hljs-keyword">UPDATE</span> account<br>  <span class="hljs-keyword">SET</span> balance = balance<span class="hljs-number">-500</span><br>  <span class="hljs-keyword">WHERE</span>  id=<span class="hljs-number">1</span>  #  <span class="hljs-string">&#x27;刘备&#x27;</span><br>  ;<br>  #   第<span class="hljs-number">2</span>步 ，转入账户接收金额 ，即更新 转入账户金额 自加 <span class="hljs-number">500</span>元 ；<br>   #获取行级写锁<span class="hljs-number">2</span> ，在提交事务之前，其他的事务不能修改此条数据<br>  <span class="hljs-keyword">UPDATE</span> account<br>  <span class="hljs-keyword">SET</span> balance = balance+<span class="hljs-number">500</span><br>  <span class="hljs-keyword">WHERE</span>  id=<span class="hljs-number">2</span>   #  <span class="hljs-string">&#x27;张飞&#x27;</span> ， 获取行级写锁  <span class="hljs-number">2</span><br>  ;<br><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> test_db.account;   # 查看事务内部过程 数据<br><br># <span class="hljs-comment">-------B会话：  在A事务提交之前， 查看账户信息</span><br><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> test_db.account;  # 对比 A事务内部结果 ，发现结果不一致，说明事务的 “隔离性”。<br># <span class="hljs-comment">-------继续在 B会话操作：</span><br><span class="hljs-keyword">BEGIN</span>;  # 开始B事务 , 不知道A事务在转账 ，二不拉几的也 在执行转账，我们看他是怎么搞乱世界的。<br>      #   第<span class="hljs-number">1</span>步 ，他竟然先 让接收账户接收 转账金额， 增加了<span class="hljs-number">500</span> ；<br> <span class="hljs-keyword">UPDATE</span> account <span class="hljs-keyword">SET</span> balance = balance+<span class="hljs-number">500</span><br>           <span class="hljs-keyword">WHERE</span>  id=<span class="hljs-number">2</span>  # <span class="hljs-type">Name</span>=<span class="hljs-string">&#x27;张飞&#x27;</span>;   # 如果A未提交，你会发现 此条语句卡住了<br># 切换到A 会话 执行提交动作 。 注意观察 ，B事务 同时执行成功，返回执行结果<br> <span class="hljs-keyword">commit</span>；<br>  <span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> test_db.account; # 看看更新效果<br><span class="hljs-keyword">ROLLBACK</span>;    #  可以试验一下回滚操作 好不好使 ，说明事务 的  “原子性”<br> <span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> test_db.account;  # 验证一下是否回滚<br></code></pre></td></tr></table></figure>
+
+<h6 id="死锁演示"><a href="#死锁演示" class="headerlink" title="死锁演示"></a>死锁演示</h6><blockquote>
+<p>我要的东西在你手里，你要的东西在我手里</p>
+</blockquote>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-meta">##### 死锁 演示 ：新建两个 会话 ，A 和B</span><br><span class="hljs-meta"># 1、在A会话 ： 锁住 id=1 的记录</span><br> UPDATE account<br>  SET balance = <span class="hljs-built_in">balance</span><span class="hljs-number">-500</span><br>  <span class="hljs-built_in">WHERE</span>  id=<span class="hljs-number">1</span>  <span class="hljs-meta">#  &#x27;刘备&#x27;</span><br>  ;<br><span class="hljs-meta"># 2、在B会话： 锁住 id=2 的记录</span><br> UPDATE account<br>  SET balance = <span class="hljs-built_in">balance</span>+<span class="hljs-number">500</span><br>  <span class="hljs-built_in">WHERE</span>  id=<span class="hljs-number">2</span>  <span class="hljs-meta">#  &#x27;张飞&#x27;</span><br>  ;<br><span class="hljs-meta">#3、在A会话 ：执行id=2的修改，即索要id=2的写锁 ，但是 此数据已被B 抢先锁住，A进入等待</span><br>UPDATE account<br>  SET balance = <span class="hljs-built_in">balance</span>+<span class="hljs-number">500</span><br>  <span class="hljs-built_in">WHERE</span>  id=<span class="hljs-number">2</span>  <span class="hljs-meta">#  &#x27;张飞&#x27;</span><br>  ;<br><span class="hljs-meta">#4、在B会话：执行 id=1 的修改，即索要id=1的写锁，但是 此数据已被 A抢先锁住，A、B进入死锁</span><br><span class="hljs-meta">#此时 如 innodb_deadlock_detect =on ，则此语句终止，避免死锁。否则一直等待</span><br> UPDATE account<br>  SET balance = <span class="hljs-built_in">balance</span><span class="hljs-number">-500</span><br>  <span class="hljs-built_in">WHERE</span>  id=<span class="hljs-number">1</span>  <span class="hljs-meta">#  &#x27;刘备飞&#x27;</span><br>  ;<br><span class="hljs-meta"># 如果从业务流程上规范： 一律先执行扣减，再执行加钱，即可避免死锁 。</span><br><span class="hljs-meta"># 就是说，会话B 也先执行id=1的变更 ，他就会跟着 A 后面顺利执行，顶多等待一会儿，而不会死锁。</span><br><br>set autocommit = <span class="hljs-number">0</span>; <span class="hljs-meta"># 取消自动提交,只有当执行 commit才提交 。</span><br><br><span class="hljs-built_in">SELECT</span> * FROM INFORMATION_SCHEMA.INNODB_TRX ;        <span class="hljs-meta">#查询 正在执行的事务：</span><br><span class="hljs-built_in">SELECT</span> * FROM INFORMATION_SCHEMA.INNODB_LOCKS ;      <span class="hljs-meta">#查询 正在锁的事务 ,Mysql 8.0版本 以前</span><br> <span class="hljs-built_in">SELECT</span> * FROM performance_schema.data_locks\G ；     <span class="hljs-meta">#查询 正在锁的事务 ,Mysql 8.0版本 以后</span><br><span class="hljs-built_in">SELECT</span> * FROM INFORMATION_SCHEMA.INNODB_LOCK_WAITS ; <span class="hljs-meta">#查询 等待锁的事务,Mysql 8.0版本 以前</span><br><span class="hljs-built_in">SELECT</span> * FROM performance_schema.data_lock_waits\G ; <span class="hljs-meta">#查询 等待锁的事务,Mysql 8.0版本 以后</span><br><span class="hljs-built_in">select</span> * from INFORMATION_SCHEMA.`PROCESSLIST` ;   <span class="hljs-meta">#查询mysql数据库中存在的进程</span><br><span class="hljs-keyword">show</span> processlist;<br><span class="hljs-keyword">show</span> full processlist; <span class="hljs-meta">#查询进程列表— #返回的结果是实时变化的，是对mysql链接执行的现场快照，所以用来处理突发事件非常有用。</span><br> <span class="hljs-meta">#它可以查看当前mysql的一些运行情况，是否有压力，都在执行什么sql，语句耗时时间，有没有慢sql在执行等等。</span><br><span class="hljs-meta">#当发现一些执行时间很长的sql时，就需要多注意一下了，必要时kill掉，先解决问题。</span><br><br>kill 线程id <span class="hljs-meta">#杀掉线程</span><br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/blog/categories/mysql/" class="category-chain-item">mysql</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/mysql/" class="print-no-link">#mysql</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>锁和事务</div>
+      <div>http://example.com/2024/08/17/mysql/锁和事物/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年8月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2024/08/18/mysql/%E5%9F%BA%E4%BA%8EJavaAgent%E6%8E%A2%E9%92%88%E6%8A%80%E6%9C%AF%E7%9A%84%E6%85%A2SQL%E6%B2%BB%E7%90%86%E5%AE%9E%E8%B7%B5/" title="基于JavaAgent探针技术的慢SQL治理实践">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">基于JavaAgent探针技术的慢SQL治理实践</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2024/08/17/mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/" title="数据库设计方法论">
+                        <span class="hidden-mobile">数据库设计方法论</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

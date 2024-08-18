@@ -19,28 +19,25 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="linux入门知识汇总">
+    <meta name="description" content="mysql性能调优：存储引擎，根据场景选择不同引擎">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基础知识">
-<meta property="og:url" content="http://example.com/2024/07/26/linux/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:title" content="mysql存储引擎">
+<meta property="og:url" content="http://example.com/2024/08/17/mysql/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/index.html">
 <meta property="og:site_name" content="杨颖的博客">
-<meta property="og:description" content="linux入门知识汇总">
+<meta property="og:description" content="mysql性能调优：存储引擎，根据场景选择不同引擎">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEdea7cd4b5044f1814039227aa57292f3%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCE9731d18bcb5321cfa264a5153b5dbc4a%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEe65ac98f274d246b4cac2da80154c292%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEd609518d33a119b1d3f1200067f3950d%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEfd92c04351383b1e3171fb103f8757cc%E6%88%AA%E5%9B%BE.png">
-<meta property="article:published_time" content="2024-07-25T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-08-02T06:38:34.075Z">
+<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEabb8d38db6ce58876a64c2e9a58e1c96%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCE01b02b785fca235bdee784c85e3f1932%E6%88%AA%E5%9B%BE.png">
+<meta property="article:published_time" content="2024-08-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-17T08:49:16.509Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="linux">
+<meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/blog/images/WEBRESOURCEdea7cd4b5044f1814039227aa57292f3%E6%88%AA%E5%9B%BE.png">
+<meta name="twitter:image" content="http://example.com/blog/images/WEBRESOURCEabb8d38db6ce58876a64c2e9a58e1c96%E6%88%AA%E5%9B%BE.png">
   
   
   
-  <title>基础知识 - 杨颖的博客</title>
+  <title>mysql存储引擎 - 杨颖的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -206,7 +203,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="基础知识"></span>
+            <span id="subtitle" data-typed-text="mysql存储引擎"></span>
           
         </div>
 
@@ -217,8 +214,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-07-26 00:00" pubdate>
-          2024年7月26日 凌晨
+        <time datetime="2024-08-17 00:00" pubdate>
+          2024年8月17日 凌晨
         </time>
       </span>
     
@@ -229,7 +226,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.1k 字
+          1.3k 字
         
       </span>
     
@@ -240,7 +237,7 @@
         
         
         
-          18 分钟
+          12 分钟
         
       </span>
     
@@ -277,57 +274,61 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">基础知识</h1>
+            <h1 id="seo-header">mysql存储引擎</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="linux的发行版本"><a href="#linux的发行版本" class="headerlink" title="linux的发行版本"></a>linux的发行版本</h3><p><img src="/blog/images/WEBRESOURCEdea7cd4b5044f1814039227aa57292f3%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
-<h3 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h3><ul>
-<li>Linux下的软件包可细分为两种，分别是<strong>源码包</strong>和<strong>二进制包</strong></li>
-<li>源码包就是一大堆源代码程序，一般包含多个文件，为了方便发布，通常会将源码包做打包压缩处理，Linux 中最常用的打包压缩格式为“tar.gz”，因此源码包又被称为 Tarball。因为可能会需要一些依赖环境，所以安装前就需要先安装这些依赖环境</li>
-<li>二进制包：是源码包经过成功编译之后产生的包。由于二进制包在发布之前就已经完成了编译的工作，因此用户安装软件的速度较快（同 Windows下安装软件速度相当），且安装过程报错几率大大减小。因为已经编译过，依赖环境已经编译进二进制文件中，所以会省去很多麻烦</li>
-<li>二进制包是 Linux 下默认的软件安装包，因此二进制包又被称为默认安装软件包。</li>
+                <ul>
+<li>是数据库管理系统（DBMS）的核心软件组件， 决定了表在计算机中的</li>
+<li>MySQL 提供了多个不同的存储引擎，包括处理事务安全表的引擎和处理非事务安全表的引擎。 不需要在整个服务器中使用同一种存储引擎，针对具体的要求，可以对每一个表使用不同的存储引擎。</li>
+<li>MySQL 5.5 后，默认存储引擎由 MyISAM 修改为 InnoDB。</li>
+<li>MySQL 5.7 支持的存储引擎有 InnoDB、MyISAM、Memory、Merge、Archive、CSV、BLACKHOLE 等。</li>
 </ul>
-<h4 id="目前主要有以下-2-大主流的二进制包管理系统："><a href="#目前主要有以下-2-大主流的二进制包管理系统：" class="headerlink" title="目前主要有以下 2 大主流的二进制包管理系统："></a>目前主要有以下 2 大主流的二进制包管理系统：</h4><p><strong>RPM 包管理系统</strong>： 功能强大，安装、升级、査询和卸载非常简单方便，因此很多 Linux 发行版都默认使用此机制作为软件安装的管理方式，例如 Fedora、CentOS、SuSE 等</p>
-<p><strong>DPKG 包管理系统</strong>： 由 Debian Linux 所开发的包管理机制，通过 DPKG 包，Debian Linux 就可以进行软件包管理，主要应用在 Debian 和 Ubuntu 中</p>
-<p><img src="/blog/images/WEBRESOURCE9731d18bcb5321cfa264a5153b5dbc4a%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
-<p><strong>yum</strong>：全称“Yellow dog Updater, Modified”，是一个专门为了解决包的依赖关系而存在的软件包管理器。就好像 Windows 系统上可以通过 360 软件管家实现软件的一键安装、升级和卸载</p>
-<p><strong>apt</strong>：是 Advanced Packaging Tool，是 Linux 下的一款安装包管理工具，可以在终端中方便的 安装／卸载／更新软件包</p>
-<p><img src="/blog/images/WEBRESOURCEe65ac98f274d246b4cac2da80154c292%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
-<h3 id="Linux的设计思想：一切皆文件"><a href="#Linux的设计思想：一切皆文件" class="headerlink" title="Linux的设计思想：一切皆文件"></a>Linux的设计思想：一切皆文件</h3><p>Linux 中所有内容都是以文件的形式保存和管理的，即一切皆文件 。具体可分为以下几种类型：</p>
-<ol>
-<li>- 普通文件：类似 mp4、pdf、html 这样，可直接拿来使用的文件都属于普通文件</li>
-<li>d 目录文件：目录文件包含了此目录中各个文件的文件名以及指向这些文件的指针，打开目录等同于打开目录文件，只要你有权限，可以随意访问目录中的任何文件。</li>
-<li>c 字符设备文件：这些文件通常隐藏在 &#x2F;dev&#x2F; 目录下，当进行设备读取或外设交互时才会被使用。例如，磁盘光驱属于块设备文件，串口设备则属于字符设备文件。 Linux 系统中的所有设备，要么是块设备文件，要么是字符设备文件。 </li>
-<li>s 套接字文件（socket）：套接字文件一般隐藏在 &#x2F;var&#x2F;run&#x2F; 目录下，用于进程间的网络通信。 </li>
-<li>l 链接文件（symbolic link）：类似与 Windows 中的快捷方式，是指向另一文件的简介指针（也就是软链接）。 </li>
-<li>p 管道文件（pipe）：主要用于进程间通信。例如，使用 mkfifo 命令创建一个 FIFO 文件，与此同时，启用进程 A 从FIFO文件读数据，启用进程 B 从 FIFO文件中写数据，随写随读。</li>
-</ol>
-<h3 id="Linux文件目录结构"><a href="#Linux文件目录结构" class="headerlink" title="Linux文件目录结构"></a>Linux文件目录结构</h3><ul>
-<li>&#x2F;：根目录，一般根目录下只存放目录，不要存放文件，&#x2F;etc、&#x2F;bin、&#x2F;dev、&#x2F;lib、&#x2F;sbin应该和根目录放置在一个分区中  </li>
-<li>&#x2F;bin: &#x2F;usr&#x2F;bin:可执行二进制文件的目录，如常用的命令ls、tar、mv、cat等。 </li>
-<li>&#x2F;boot：放置linux系统启动时用到的一些文件，比如内核文件和启动引导文件。&#x2F;boot&#x2F;vmlinuz为linux的内核文件，以及&#x2F;boot&#x2F;gurb。建议单独分区，分区大小100M即可 </li>
-<li>&#x2F;dev：存放linux系统下的设备文件，访问该目录下某个文件，相当于访问某个设备，常用的是挂载光驱mount &#x2F;dev&#x2F;cdrom &#x2F;mnt。 </li>
-<li>&#x2F;etc：系统配置文件存放的目录，系统通过rpm默认安装方式的配置文件全都在这个目录。不建议在此目录下存放可执行文件，重要的配置文件有&#x2F;etc&#x2F;inittab、&#x2F;etc&#x2F;fstab、&#x2F;etc&#x2F;init.d、&#x2F;etc&#x2F;X11、&#x2F;etc&#x2F;sysconfig、&#x2F;etc&#x2F;xinetd.d修改配置文件之前记得备份。 注：&#x2F;etc&#x2F;X11存放与x windows有关的设置。 </li>
-<li>&#x2F;home：系统默认的用户家目录，新增用户账号时，用户的家目录都存放在此目录下，<del>表示当前用户的家目录，</del>test表示用户test的家目录。建议单独分区，并设置较大的磁盘空间，方便用户存放数据 </li>
-<li>&#x2F;lib:&#x2F;usr&#x2F;lib:&#x2F;usr&#x2F;local&#x2F;lib：系统调用的函数库的目录，程序在执行过程中，需要调用一些额外的参数时需要函数库的协助，比较重要的目录为&#x2F;lib&#x2F;modules。</li>
-<li>&#x2F;mnt:&#x2F;media:&#x2F;misc：光盘默认挂载点，通常光盘挂载于&#x2F;mnt&#x2F;cdrom下，也不一定，可以选择任意位置进行挂载 </li>
-<li>&#x2F;opt：给主机额外安装软件所摆放的目录,即第三方软件的安装位置。手工安装的包都可以放在这个位置。如：FC4使用的Fedora 社群开发软件，如果想要自行安装新的KDE 桌面软件，可以将该软件安装在该目录下。以前的 Linux 系统中，习惯放置在 &#x2F;usr&#x2F;local 目录下</li>
-<li>&#x2F;root：系统管理员root的家目录，系统第一个启动的分区为&#x2F;，所以最好将&#x2F;root和&#x2F;放置在一个分区下。</li>
-<li>&#x2F;sbin:&#x2F;usr&#x2F;sbin:&#x2F;usr&#x2F;local&#x2F;sbin：放置系统管理员使用的可执行命令即系统环境设置相关命令，如fdisk、shutdown、mount等。与&#x2F;bin不同的是，这几个目录是给系统管理员root使用的命令，一般用户只能”查看”而不能设置和使用。</li>
-<li>&#x2F;srv：服务启动之后需要访问的数据目录，如www服务需要访问的网页数据存放在&#x2F;srv&#x2F;www内</li>
-<li>&#x2F;tmp：一般用户或正在执行的程序临时存放文件的目录,任何人都可以访问,重要数据不可放置在此目录下</li>
-<li>&#x2F;proc：此目录的数据都在内存中，如系统核心，外部设备，网络状态，由于数据都存放于内存中，所以不占用磁盘空间，比较重要的目录有&#x2F;proc&#x2F;cpuinfo、&#x2F;proc&#x2F;interrupts、&#x2F;proc&#x2F;dma、&#x2F;proc&#x2F;ioports、&#x2F;proc&#x2F;net&#x2F;*等</li>
-<li>&#x2F;lost+fount：系统异常产生错误时，会将一些遗失的片段放置于此目录下，通常这个目录会自动出现在装置目录下。如加载硬盘于&#x2F;disk 中，此目录下就会自动产生目录&#x2F;disk&#x2F;lost+found </li>
-<li>&#x2F;usr：应用程序存放目录，全称为 Unix Software Resource，此目录用于存储系统软件资源。FHS 建议所有开发者，应把软件产品的数据合理的放置在 &#x2F;usr 目录下的各子目录中，而不是为他们的产品创建单独的目录。&#x2F;usr&#x2F;bin存放应用程序，&#x2F;usr&#x2F;share存放共享数据，&#x2F;usr&#x2F;lib存放不能直接运行的，却是许多程序运行所必需的一些函数库文件。&#x2F;usr&#x2F;local:存放软件升级包。&#x2F;usr&#x2F;share&#x2F;doc:系统说明文件存放目录。&#x2F;usr&#x2F;share&#x2F;man:?程序说明文件存放目录，使用 man ls时会查询&#x2F;usr&#x2F;share&#x2F;man&#x2F;man1&#x2F;ls.1.gz的内容建议单独分区，设置较大的磁盘空间</li>
-</ul>
-<p><img src="/blog/images/WEBRESOURCEd609518d33a119b1d3f1200067f3950d%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
-<ul>
-<li>&#x2F;var：放置系统执行过程中经常变化的文件，如随时更改的日志文件&#x2F;var&#x2F;log，&#x2F;var&#x2F;log&#x2F;message：所有的登录文件存放目录，&#x2F;var&#x2F;spool&#x2F;mail：邮件存放的目录，&#x2F;var&#x2F;run:程序或服务启动后，其PID存放在该目录下。建议单独分区，设置较大的磁盘空间</li>
-</ul>
-<p><img src="/blog/images/WEBRESOURCEfd92c04351383b1e3171fb103f8757cc%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<p><img src="/blog/images/WEBRESOURCEabb8d38db6ce58876a64c2e9a58e1c96%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">查看系统所支持的引擎类型<br><span class="hljs-keyword">SHOW</span> ENGINES;<br><span class="hljs-keyword">SHOW</span> VARIABLES <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;default_storage_engine%&#x27;</span>;  // 查看默认存储引擎<br><br>临时修改默认存储引擎<br><span class="hljs-keyword">SET</span> default_storage_engine=&lt; 存储引擎名 &gt;<br>再次重启客户端时失效，默认存储引擎仍然是 InnoDB。<br><br>永久修改默认的存储引擎<br>在my.cnf 配置文件  [mysqld] 后面加入以下语句：<br><span class="hljs-keyword">default</span>-<span class="hljs-keyword">storage</span>-engine=存储引擎名称<br>然后保存就可以了。<br></code></pre></td></tr></table></figure>
 
+<h2 id="行级锁和表级锁"><a href="#行级锁和表级锁" class="headerlink" title="行级锁和表级锁"></a>行级锁和表级锁</h2><blockquote>
+<p>表级锁：&lt;表级锁就是可以锁住表，当同时进行某些操作，只能锁住表，比如我对这个表进行写操作，其他人不能进行操作，不能读写，比如我写操作，就把这张表锁住，我写完了，其他人才能来做操作&gt;<br>行级锁：&lt;可以锁到某条记录，比如不能同时对某一行做某些操作&gt;<br>行级锁更加精细，适用于比如抢票下单业务，下单时锁住某一张票，其他人就不能抢这张票，但是可以抢其他的票</p>
+</blockquote>
+<h2 id="MySQL-InnoDB存储引擎"><a href="#MySQL-InnoDB存储引擎" class="headerlink" title="MySQL InnoDB存储引擎"></a>MySQL InnoDB存储引擎</h2><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ol>
+<li>支持事务 ：实现了 SQL92 标准所要求的数据隔离级别 。 </li>
+<li>使用行级锁 ： 通过索引来完成行锁机制 </li>
+<li>实现了缓冲处理 ：提供了专门的缓存池，实现了缓冲管理，不仅能缓冲索引也能缓冲数据，常用的数据可以直接从内存中处理，比从磁盘获取数据处理速度要快。相比之下，MyISAM 只是缓存了索引。 </li>
+<li>支持外键约束: 检查外键、插入、更新和删除，以确保数据的完整性。</li>
+</ol>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li>使用 InnoDB 存储引擎的读写效率稍差，且占用的数据空间相对较大&lt;因为他日志多，比如回滚操作，肯定是将一些操作记录了下来，回滚的时候翻旧账&gt;，不过他安全，拿空间换安全</li>
+</ol>
+<h2 id="MySQL-MyISAM-存储引擎"><a href="#MySQL-MyISAM-存储引擎" class="headerlink" title="MySQL MyISAM 存储引擎"></a>MySQL MyISAM 存储引擎</h2><blockquote>
+<p>MyISAM 是一直作为 MySQL 数据库的默认存储引擎，直到 MySQL 5.5 版本才被 InnoDB 引擎取代了默认存储引擎的地位。</p>
+</blockquote>
+<h4 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h4><ol>
+<li>占用空间小 </li>
+<li>访问速度快，对事务完整性没有要求，或以 SELECT、INSERT 为主的应用基本上都可以使用这个引擎来创建表。比如像数据交易系统，对于数据一致性有极高的要求，绝对不能出错，这种就不适合MyISAM存储引擎。而对于数据分析型的系统，一次插入多次查询的比如数据仓库，这种就适用于MyISAM </li>
+<li>可以配合锁，实现操作系统下的复制备份 </li>
+<li>支持全文检索（InnoDB 在 MySQL 5.6 版本以后也支持全文检索） </li>
+<li>数据紧凑存储&lt;数据紧凑存储：数据之间碎片化少，所以在读取时 一下子扫描一大片，寻址的过程就很少&gt;，因此可获得更小的索引和更快的全表扫描性能。</li>
+</ol>
+<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li>不支持事务,不能保证数据的一致性 </li>
+<li>不支持行级锁，使用表级锁，并发性差&lt;表锁了之后，别人没法操作，所以并发差&gt;</li>
+<li>数据查询崩溃后无法安全恢复 </li>
+<li>只缓存索引，数据的缓存是利用操作系统缓冲区来实现的</li>
+</ol>
+<h2 id="MySQL存储引擎如何选择"><a href="#MySQL存储引擎如何选择" class="headerlink" title="MySQL存储引擎如何选择"></a>MySQL存储引擎如何选择</h2><h4 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h4><ul>
+<li>如果应用主要以读取和写入为主，只有少量的更新和删除操作，并且对事务的完整性、并发性要求不是很高，可以选择 MyISAM 存储引擎 。</li>
+<li>对于数据分析型的系统，一次插入多次查询的比如数据仓库，这种就适用于MyISAM</li>
+<li>MyISAM 是在 数据仓储 最常使用的存储引擎之一。</li>
+</ul>
+<h4 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h4><ul>
+<li>如果应用对事务的完整性有比较高的要求，在并发条件下要求数据的一致性，数据操作除了插入和查询以外，还包括很多的更新、删除操作，那么 InnoDB 存储引擎是比较合适的选择。</li>
+</ul>
+<h4 id="MEMORY"><a href="#MEMORY" class="headerlink" title="MEMORY"></a>MEMORY</h4><p>MEMORY 存储引擎将所有数据保存在 内存 中，所以该存储引擎的数据访问速度快，但是安全上没有保障</p>
+<p><img src="/blog/images/WEBRESOURCE01b02b785fca235bdee784c85e3f1932%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h2 id="MySQL修改数据表的存储引擎"><a href="#MySQL修改数据表的存储引擎" class="headerlink" title="MySQL修改数据表的存储引擎"></a>MySQL修改数据表的存储引擎</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span> ENGINE<span class="hljs-operator">=</span><span class="hljs-operator">&lt;</span>存储引擎名<span class="hljs-operator">&gt;</span>;<br><span class="hljs-keyword">SHOW</span> <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> student \G #查看 student 表当前的存储引擎<br><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> student ENGINE<span class="hljs-operator">=</span>MyISAM; <br>#将 student 表的存储引擎修改为 MyISAM 类型，在数据多的时候比较慢，影响读取性能，推荐一个比第一种速度快， 安全性高的跟新策略，如下：<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">START</span> <span class="hljs-keyword">TRANSACTION</span>; # 开始事务<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> my_tmp_table <span class="hljs-keyword">LIKE</span> my_table; # 创建表,先创建一个和要操作表一样的表<br><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> my_tmp_table ENGINE=InnoDB; # 然后更改存储引擎为目标引擎<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> my_tmp_table <span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> my_table; # 插入。<br><span class="hljs-keyword">RENAME</span> <span class="hljs-keyword">TABLE</span> my_table <span class="hljs-keyword">to</span> my_table_MyISAM_20201230backup; # 原表命名为备份表<br><span class="hljs-keyword">RENAME</span> <span class="hljs-keyword">TABLE</span> my_tmp_table <span class="hljs-keyword">to</span> my_table ; # 临时表上位<br><span class="hljs-keyword">COMMIT</span>; # 提交事物<br></code></pre></td></tr></table></figure>
                 
               </div>
             
@@ -345,7 +346,7 @@
     
       <span class="category-chain">
         
-  <a href="/blog/categories/linux/" class="category-chain-item">linux</a>
+  <a href="/blog/categories/mysql/" class="category-chain-item">mysql</a>
   
   
 
@@ -360,7 +361,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/blog/tags/linux/" class="print-no-link">#linux</a>
+        <a href="/blog/tags/mysql/" class="print-no-link">#mysql</a>
       
     </div>
   
@@ -372,8 +373,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>基础知识</div>
-      <div>http://example.com/2024/07/26/linux/基础知识/</div>
+      <div>mysql存储引擎</div>
+      <div>http://example.com/2024/08/17/mysql/存储引擎/</div>
     </div>
     <div class="license-meta">
       
@@ -385,7 +386,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年7月26日</div>
+          <div>2024年8月17日</div>
         </div>
       
       
@@ -417,9 +418,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2024/08/17/mysql/mysql%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84/" title="mysql高可用架构">
+                      <a href="/blog/2024/08/17/mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/" title="数据库设计方法论">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">mysql高可用架构</span>
+                        <span class="hidden-mobile">数据库设计方法论</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -427,8 +428,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/blog/2024/07/26/linux/%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="文件管理">
-                        <span class="hidden-mobile">文件管理</span>
+                      <a href="/blog/2024/08/17/mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B0%83%E4%BC%98/" title="mysql性能调优">
+                        <span class="hidden-mobile">mysql性能调优</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -1,0 +1,820 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="mysql高可用架构，包含三种架构方式，以及企业内部如何做高可用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql高可用架构">
+<meta property="og:url" content="http://example.com/2024/08/17/mysql/mysql%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="mysql高可用架构，包含三种架构方式，以及企业内部如何做高可用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A8.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A81.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A82.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A83.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A84.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A85.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A86.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A88.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A87.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A89.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A810.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A811.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A812.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A813.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A814.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A815.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A816.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A818.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A817.png">
+<meta property="article:published_time" content="2024-08-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-17T14:05:34.479Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A8.png">
+  
+  
+  
+  <title>mysql高可用架构 - 杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="mysql高可用架构"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-08-17 00:00" pubdate>
+          2024年8月17日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">mysql高可用架构</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="MMM主备复制-MMM双主复制"><a href="#MMM主备复制-MMM双主复制" class="headerlink" title="MMM主备复制|MMM双主复制"></a>MMM主备复制|MMM双主复制</h1><ul>
+<li>MMM是一套脚本程序，<code>主要用来监控和管理双主复制和故障转移</code></li>
+<li><code>虽然叫做双主复制，但是业务上同一时刻只允许对一个主节点进行写入</code>。另一台备用主节点上提供部分读服务，以加速在切换时刻备选主的预热。</li>
+</ul>
+<p><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A8.png" srcset="/blog/img/loading.gif" lazyload></p>
+<blockquote>
+<p>vip是虚拟ip，可以理解为客户端<br>mmm对两个master进行监控，当发现主节点挂掉，会把vip切到另一个master<br>所以MMM 做的事情只有两个：监控+切换vip</p>
+</blockquote>
+<h1 id="MHA主从复制"><a href="#MHA主从复制" class="headerlink" title="MHA主从复制"></a>MHA主从复制</h1><h3 id="MHA的三大功能"><a href="#MHA的三大功能" class="headerlink" title="MHA的三大功能"></a>MHA的三大功能</h3><ul>
+<li>监控Master状态</li>
+<li>根据binlog自动选主</li>
+<li>对binlog数据补偿</li>
+</ul>
+<h3 id="MHA架构图"><a href="#MHA架构图" class="headerlink" title="MHA架构图"></a>MHA架构图</h3><p><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A81.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>MHA只管master的高可用，只监控master的状态；不管从节点也就是slave的状态；所以所有操作都是对master的操作；</li>
+<li>同一时间只有一个master，有多个slave</li>
+<li>当master挂掉，MHA会选出一个最新的salve做新的master；</li>
+<li>如何选最新的slave：就是根据它的Binlog和Relaylog；这个时候如果master还能连接，会用ssh进入master把剩下的binlog同步出来写到最新的master里。同时也会把其他salve的数据进行补齐</li>
+</ul>
+<h3 id="MMM-VS-MHA"><a href="#MMM-VS-MHA" class="headerlink" title="MMM VS MHA"></a>MMM VS MHA</h3><ul>
+<li>对比MMM架构：MHA比MMM强很多，因为会对最新的数据进行补偿，很大程度减少数据不一致的情况</li>
+</ul>
+<h1 id="mysql原生复制"><a href="#mysql原生复制" class="headerlink" title="mysql原生复制"></a>mysql原生复制</h1><p><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A82.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li><p>以上两种架构都是基于mysql原生复制实现的数据库高可用方案，mysql原生复制主要依赖binlog去做</p>
+</li>
+<li><p>流程：</p>
+<ul>
+<li>Master执行SQL后会产生binlog，Dump线程异步通知Slave去拉取新的binlog</li>
+<li>Slave的IO线程读取BinLog并写入RelayLog</li>
+<li>Slave的SQL线程读取RelayLog并执行</li>
+</ul>
+</li>
+<li><p>原生复制也有很多类型：异步复制、全同步复制、半同步复制、无损复制（增强半同步）；这几种复制方式：在mysql里就是一个模式的配置</p>
+</li>
+</ul>
+<h3 id="异步复制"><a href="#异步复制" class="headerlink" title="异步复制"></a>异步复制</h3><p><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A83.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>复制方式：当binlog落盘后slave异步从master复制，不影响master给数据返回给client</li>
+<li>缺陷：当master挂掉后，并不能保证slave已经收取到binlog，这时会有数据丢失，会数据不一致</li>
+</ul>
+<h3 id="全同步复制"><a href="#全同步复制" class="headerlink" title="全同步复制"></a>全同步复制</h3><p><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A84.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>复制方式：会等待所有的salve都落盘之后，会返回一个ack的消息给master，master收到所有的ack消息后才会返回给客户端；</li>
+<li>优势：解决了异步复制可能出现的数据丢失问题，解决异步复制的不一致风险</li>
+<li>缺陷：效率差，因为要等所有的salve都复制完成；且会有一个木桶效应，最慢的机器会拖慢整体进度</li>
+</ul>
+<h3 id="半同步复制"><a href="#半同步复制" class="headerlink" title="半同步复制"></a>半同步复制</h3><p><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A85.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>复制方式：<ul>
+<li>不会等全部slave，只要一个salve完成就发送ack到master；</li>
+<li>不会等slave落盘，只要写入relay log就返回ack</li>
+</ul>
+</li>
+<li>优势：解决全同步复制的效率问题</li>
+<li>缺陷：当master挂掉 &amp; binlog在master落盘后还没有同步salve &#x3D; 相对于客户端，新老master状态不一致。因为客户端原先读master是能读到的，因为已经落盘了，事务已经提交了，这个时候同步到salve失败，然后把slave又切成master了，这个时候其实是读不到刚才落盘的数据的</li>
+<li>mysql5.5开始支持，MYSQL 5.5~5.6 默认 after_commit</li>
+</ul>
+<h3 id="无损复制"><a href="#无损复制" class="headerlink" title="无损复制"></a>无损复制</h3><p><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A86.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>复制方式：在落盘之前就进行slave同步，同步结束在master落盘</li>
+<li>优势：解决半同步问题</li>
+<li>MYSQL 5.7及以后 默认 after_syn</li>
+</ul>
+<h1 id="MGR组复制"><a href="#MGR组复制" class="headerlink" title="MGR组复制"></a>MGR组复制</h1><h3 id="MGR介绍"><a href="#MGR介绍" class="headerlink" title="MGR介绍"></a>MGR介绍</h3><p><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A88.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>MGR是一个数据库<strong>高可用与高扩展</strong>的解决方案，基于<strong>分布式Paxos协议</strong>实现<strong>组复制</strong>保证数据一致性</li>
+<li>单主模式支持自动选主 <code>多主模式支持多点写入</code></li>
+<li>组复制主要是为了解决传统异步复制和半同步复制可能产生数据不一致的问题。组复制依靠分布式一致性算法（ Paxos）实现了分布式下数据的最终一致性，提供了真正的数据高可用方案。</li>
+<li>本<code>质上是一个状态机复制的集群</code></li>
+</ul>
+<h3 id="Paxos算法"><a href="#Paxos算法" class="headerlink" title="Paxos算法"></a>Paxos算法</h3><ul>
+<li>Paxos算法是一种用于<code>分布式系统中的一致性算法</code></li>
+<li>Paxos算法解决的问题是分布式系统中多个节点之间如何达成一致的问题。在分布式系统中，由于网络延迟、故障等原因，节点之间可能会出现数据不一致的情况。Paxos算法通过在多个节点之间进行消息交换，保证最终所有节点达成一致的状态。</li>
+<li>Paxos算法的核心思想是基于多数派选举的原理，保证多数节点的决策能够被最终采用。在Paxos算法中，有三种角色：提议者、接受者和学习者。提议者向接受者发起提案，接受者可以接受或拒绝提案。当一个提议者获得了多数接受者的接受后，该提议成为了一个被接受的提案，并且被广播给所有学习者。学习者学习到被广播的提案后，就可以采用这个提案。</li>
+</ul>
+<h3 id="MGR架构图"><a href="#MGR架构图" class="headerlink" title="MGR架构图"></a>MGR架构图</h3><p><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A87.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>MGR组复制是mysql官方提出的一种复制机制，也是在主从的基础上做的，不用的点是<ul>
+<li>允许多主：可以有多个master，每个节点都可以写入</li>
+<li>原子广播：<ul>
+<li>事务提交之后，会有一个原子广播的阶段</li>
+<li>原子广播是基于一个分布式协议paxos做的，会把所有的事务分发给每一个master；这个时候有一个事务要执行，会通知其他所有的机器，通过分布式协议协商，协商一致都认为没有冲突之后，后面又会像主从复制一样，唯一的区别就是多了一个分布式协议</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="MGR本质：状态机复制的集群"><a href="#MGR本质：状态机复制的集群" class="headerlink" title="MGR本质：状态机复制的集群"></a>MGR本质：状态机复制的集群</h3><ul>
+<li>状态机原理：初始状态相同，执行操作相同，最终状态相同<br><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A89.png" srcset="/blog/img/loading.gif" lazyload></li>
+<li>状态机复制：把mysql抽象成一个状态机，update数据就可以理解为修改状态机的状态；通过事务分发器来协调顺序</li>
+<li>分布式的状态机复制：分布式协议 协商顺序；就是确保每个事务分发器执行的事务顺序是一样的</li>
+<li>分布式的高可用数据库：状态机的机器同时安装事务分发器，通过分布式协议协商操作顺序</li>
+</ul>
+<h3 id="MGR集群架构部署方式"><a href="#MGR集群架构部署方式" class="headerlink" title="MGR集群架构部署方式"></a>MGR集群架构部署方式</h3><ul>
+<li><p>多主集群架构<br><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A810.png" srcset="/blog/img/loading.gif" lazyload><br><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A811.png" srcset="/blog/img/loading.gif" lazyload></p>
+</li>
+<li><p>MGR单主集群架构<br><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A812.png" srcset="/blog/img/loading.gif" lazyload><br><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A813.png" srcset="/blog/img/loading.gif" lazyload></p>
+</li>
+<li><p>异同</p>
+<ul>
+<li>多主都可以进行读写，全部都是主节点，失联后自动踢掉，写节点就连接到其他节点</li>
+<li>单主只有master可以读写，只有一个主节点，失联后自动踢掉，MGR自动选主，写节点就连接到新的节点</li>
+<li>注意：客户端的故障转移需要自己操作；mgr只处理服务端的高可用，不处理客户端的故障转移，也就是s1被踢掉了，原来链接s1的客户端 需要链接s3，就需要自己处理，也可以使用mysql的官方套件来实现</li>
+</ul>
+</li>
+</ul>
+<h1 id="企业高可用架构"><a href="#企业高可用架构" class="headerlink" title="企业高可用架构"></a>企业高可用架构</h1><h3 id="客户端访问"><a href="#客户端访问" class="headerlink" title="客户端访问"></a>客户端访问</h3><p><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A814.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>两种客户端访问方式：<ul>
+<li>dal方式：有主动推送，DR切换[在数据库发生故障或灾难时，将备份数据库切换为主数据库，以保证业务的持续运行]的时候 会把新的ip推给你，就可以立马连接上，比较快；分钟级别切换，大概率30s左右</li>
+<li>domain方式：连接串的方式；有一个域名缓存，生效时间比较慢</li>
+</ul>
+</li>
+</ul>
+<h3 id="部署的两种方式"><a href="#部署的两种方式" class="headerlink" title="部署的两种方式"></a>部署的两种方式</h3><h4 id="双机房主从"><a href="#双机房主从" class="headerlink" title="双机房主从"></a>双机房主从</h4><p><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A815.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>这是之前的方式，单边机房做master和slave的主从复制，异地机房还有一台slave做DR，数据库DR：数据库灾难回恢复</li>
+<li>骨干网是指连接多个地方网络的高速网络，通常由高速光纤或卫星传输等技术连接起来。骨干网连接了多个地方网络，并提供高速的数据传输和通信服务，承载着大量的网络流量和信息传输。骨干网通常由大型运营商或政府机构建设和管理，是互联网基础设施的重要组成部分。在全球范围内，骨干网通常被称为“Internet Backbone”，是连接全球互联网的关键基础设施。</li>
+<li>骨干网和内网都比较快</li>
+</ul>
+<h4 id="三机房主从"><a href="#三机房主从" class="headerlink" title="三机房主从"></a>三机房主从</h4><p><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A816.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>现在主流的架构</li>
+<li>在三个机房都有mysql实例，一个slave主要是用来做DR；如果发生主从切换，会切换不同机房</li>
+<li>大部分的数据库 读写都是在master；也就是slave和slave-DR都是没有用的</li>
+</ul>
+<h3 id="企业高可用架构：CHMA"><a href="#企业高可用架构：CHMA" class="headerlink" title="企业高可用架构：CHMA"></a>企业高可用架构：CHMA</h3><p><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A818.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>是公司基于mha这个高可用架构上做了一层封装和改造</li>
+<li>CHMA组成：<ul>
+<li>sentinel：哨兵</li>
+<li>mha本身</li>
+</ul>
+</li>
+<li>eosdb：宇宙中心，也就是全公司所有的mysql切换，最底层就是eosdb，会把信息写到eosdb里，根据用的连接方式 用eosdb里读出来</li>
+<li>consul kv<ul>
+<li>选举：通过consul kv选出一个leader，这个consul kv为什么能选，因为本身他就是用分布式协议做的；选出的leader就是manager；manager会探活master，当他发现master挂掉后就会切换到slave，或者切到slave-DR；切完的信息会写到eosdb；</li>
+<li>缓存：会为eosdb做一层缓存的功能；当发生大规模机房级别的切换的时候，consulkv是可以做缓存的，防止把eosdb打挂；</li>
+</ul>
+</li>
+<li>部署：一般情况下cmha都是5个实例去部署，就是会部署在5个机房里</li>
+</ul>
+<h3 id="故障切换"><a href="#故障切换" class="headerlink" title="故障切换"></a>故障切换</h3><p><img src="/blog/images/mysql%E9%AB%98%E5%8F%AF%E7%94%A817.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>当发生dr切换的时候，首先CMHA去探活，发现失败了，就会触发切换的操作；切换的操作不光会修改eosdb，还会通知dns，通知dal cluster，qconfig；会把各个系统里的切换的值给改掉；dns db要修改成新的ip；dalclusterdb要修改成新的master</li>
+<li>这时候客户端会切换到链接新的master；但是这里会有两个隐患：数据不一致<ul>
+<li>数据未传到任何Slave：如果在切换的时候，slave还没有收到任何数据，这个时候就切掉了，master的数据就已经丢了，就属于数据丢失</li>
+<li>集群网络隔离（脑裂）：新老master都还活着，但是中间隔离了，在老的机房还能连上，还会往里面写数据，新的master也会写数据，就脑裂，就存在两个master；就会脑裂</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/blog/categories/mysql/" class="category-chain-item">mysql</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/mysql/" class="print-no-link">#mysql</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>mysql高可用架构</div>
+      <div>http://example.com/2024/08/17/mysql/mysql高可用架构/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年8月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2024/08/17/mysql/%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E5%92%8C%E8%A7%A6%E5%8F%91%E5%99%A8/" title="存储过程和触发器">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">存储过程和触发器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2024/07/26/linux/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="基础知识">
+                        <span class="hidden-mobile">基础知识</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
