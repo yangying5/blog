@@ -1,0 +1,747 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="HA[高可用]Redis架构演进 主从架构 主从模式保证了数据的高可用，并且搭配了哨兵集群，可以实时的监控每个节点的状态变化，如果遇到机器故障就会主动发起主从切换，保证数据的高可用  官方redis cluster架构 随着互联网的发展，数据的存储会越来越大，并发量会越来越高，对于单片[group]的redis 就支撑不下 官方支持了一个redis集群的模式，但是现在使用的并不多，因为有一些限制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2024/08/18/redis/redis%E4%BD%BF%E7%94%A8%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="HA[高可用]Redis架构演进 主从架构 主从模式保证了数据的高可用，并且搭配了哨兵集群，可以实时的监控每个节点的状态变化，如果遇到机器故障就会主动发起主从切换，保证数据的高可用  官方redis cluster架构 随着互联网的发展，数据的存储会越来越大，并发量会越来越高，对于单片[group]的redis 就支撑不下 官方支持了一个redis集群的模式，但是现在使用的并不多，因为有一些限制">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/blog/redis1.png">
+<meta property="og:image" content="http://example.com/blog/redis2.png">
+<meta property="og:image" content="http://example.com/blog/redis3.png">
+<meta property="og:image" content="http://example.com/blog/redis4.png">
+<meta property="og:image" content="http://example.com/blog/redis5.png">
+<meta property="og:image" content="http://example.com/blog/redis6.png">
+<meta property="og:image" content="http://example.com/blog/redis7.png">
+<meta property="og:image" content="http://example.com/blog/img.png">
+<meta property="og:image" content="http://example.com/blog/img_2.png">
+<meta property="og:image" content="http://example.com/blog/img_3.png">
+<meta property="og:image" content="http://example.com/blog/img_4.png">
+<meta property="og:image" content="http://example.com/blog/img_5.png">
+<meta property="og:image" content="http://example.com/blog/img_6.png">
+<meta property="og:image" content="http://example.com/blog/img_7.png">
+<meta property="og:image" content="http://example.com/blog/img_8.png">
+<meta property="og:image" content="http://example.com/blog/img_9.png">
+<meta property="og:image" content="http://example.com/blog/img_10.png">
+<meta property="article:published_time" content="2024-08-18T09:32:36.999Z">
+<meta property="article:modified_time" content="2024-08-18T14:48:43.103Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/blog/redis1.png">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-08-18 17:32" pubdate>
+          2024年8月18日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="HA-高可用"><a href="#HA-高可用" class="headerlink" title="HA[高可用]"></a>HA[高可用]</h1><h2 id="Redis架构演进"><a href="#Redis架构演进" class="headerlink" title="Redis架构演进"></a>Redis架构演进</h2><p><img src="/blog/redis1.png" srcset="/blog/img/loading.gif" lazyload alt="img.png"></p>
+<h3 id="主从架构"><a href="#主从架构" class="headerlink" title="主从架构"></a>主从架构</h3><ul>
+<li>主从模式保证了数据的高可用，并且搭配了哨兵集群，可以实时的监控每个节点的状态变化，如果遇到机器故障就会主动发起主从切换，保证数据的高可用</li>
+</ul>
+<h3 id="官方redis-cluster架构"><a href="#官方redis-cluster架构" class="headerlink" title="官方redis cluster架构"></a>官方redis cluster架构</h3><ul>
+<li>随着互联网的发展，数据的存储会越来越大，并发量会越来越高，对于单片[group]的redis 就支撑不下</li>
+<li>官方支持了一个redis集群的模式，但是现在使用的并不多，因为有一些限制<ul>
+<li>灵活度没有自研的高</li>
+<li>Redis官方出来的比较晚，大部分公司自研redis集群的时候，redis官方还没有集群的功能</li>
+<li>Redis内置的哨兵模式在节点扩展方面有一定的限制，无法支持大规模的Redis集群</li>
+</ul>
+</li>
+</ul>
+<h3 id="自研cluster架构"><a href="#自研cluster架构" class="headerlink" title="自研cluster架构"></a>自研cluster架构</h3><ul>
+<li>公司自研的redis集群架构，通过key的哈希，去找到redis对应的分片进行读写</li>
+<li>内置哨兵集群，对redis集群进行监控</li>
+<li>哨兵集群存在一个或多个哨兵节点，监控着Redis集群中的主节点和从节点的状态，并在主节点出现故障时，自动将从节点升级为新的主节点，保证Redis集群的高可用性</li>
+</ul>
+<h2 id="redis集群类型"><a href="#redis集群类型" class="headerlink" title="redis集群类型"></a>redis集群类型</h2><p><img src="/blog/redis2.png" srcset="/blog/img/loading.gif" lazyload alt="img.png"></p>
+<p>分为四种类型</p>
+<ol>
+<li>单机房缓存：非核心的场景或者出海的场景会使用；他不具备机房之间的故障转移；机房内某个机器故障是可以做到恢复</li>
+<li>本机房缓存：可以做到机房故障之后，客户端通过切流+正常的链接去连接到正常的机房上</li>
+<li>Xpipe单向同步：使用最多；master在一个机房，能保证数据写入的一致性，通过单向同步的方式把数据去同步到另一个机房</li>
+<li>Xpipe双向同步：两边同时可以读写</li>
+</ol>
+<h3 id="Xpipe单向同步-和-Xpipe双向同步的区别"><a href="#Xpipe单向同步-和-Xpipe双向同步的区别" class="headerlink" title="Xpipe单向同步 和 Xpipe双向同步的区别"></a>Xpipe单向同步 和 Xpipe双向同步的区别</h3><ul>
+<li>Xpipe是Redis提供的一种数据同步的解决方案，可以实现Redis集群之间的数据同步和实时备份。Xpipe有两种不同的同步方式：单向同步和双向同步。<ul>
+<li>Xpipe单向同步：指的是从源Redis节点将数据同步到目标Redis节点，实现源节点数据的备份或者实时同步。在单向同步中，数据只能从源节点同步到目标节点，目标节点不会主动将数据同步回源节点。这种方式适用于主从节点的数据同步和备份。</li>
+<li>Xpipe双向同步：指的是源节点和目标节点之间的数据可以相互同步，实现数据的双向同步和备份。在双向同步中，源节点和目标节点都可以作为主节点，相互之间可以进行数据同步和备份。这种方式适用于多节点之间的数据同步和备份。</li>
+</ul>
+</li>
+<li>总的来说，Xpipe单向同步适用于主从节点之间的数据同步和备份，而Xpipe双向同步适用于多节点之间的数据同步和备份。另外，Xpipe双向同步需要注意数据一致性问题，需要进行数据冲突的解决和数据同步的优化。</li>
+</ul>
+<h2 id="集群路由策略"><a href="#集群路由策略" class="headerlink" title="集群路由策略"></a>集群路由策略</h2><p><img src="/blog/redis3.png" srcset="/blog/img/loading.gif" lazyload alt="img.png"></p>
+<ul>
+<li>根据数据不同的适用场景选择</li>
+<li>特殊路由：出现slave全挂等紧急的情况才会使用</li>
+</ul>
+<h1 id="redis-基础知识"><a href="#redis-基础知识" class="headerlink" title="redis 基础知识"></a>redis 基础知识</h1><h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p><img src="/blog/redis4.png" srcset="/blog/img/loading.gif" lazyload alt="img.png"></p>
+<ul>
+<li>这张图是数据类型对应的数据结构</li>
+<li>redis所有的数据实现都遵循的原则是减少内存的使用，因为redis靠内存，内存很昂贵；所以设计的时候充分考虑了内存占用的情况</li>
+</ul>
+<h2 id="数据类型适用场景"><a href="#数据类型适用场景" class="headerlink" title="数据类型适用场景"></a>数据类型适用场景</h2><p><img src="/blog/redis5.png" srcset="/blog/img/loading.gif" lazyload alt="img.png"></p>
+<h2 id="过期删除策略"><a href="#过期删除策略" class="headerlink" title="过期删除策略"></a>过期删除策略</h2><p><img src="/blog/redis6.png" srcset="/blog/img/loading.gif" lazyload alt="img.png"></p>
+<ul>
+<li>主线程：惰性删除：同步删除和异步删除，同步会阻塞；公司默认是异步</li>
+<li>后台线程：定期删除：定期到过期字典里找key删除</li>
+</ul>
+<h2 id="内存淘汰策略"><a href="#内存淘汰策略" class="headerlink" title="内存淘汰策略"></a>内存淘汰策略</h2><p><img src="/blog/redis7.png" srcset="/blog/img/loading.gif" lazyload alt="img.png"></p>
+<ul>
+<li><p>策略分为三类</p>
+<ul>
+<li>noeviction策略：没有淘汰，比较危险，当redis满了，再去写入会报错</li>
+<li>volatile策略：对有ttl过期时间的淘汰策略</li>
+<li>allkey策略：对所有key都会淘汰</li>
+</ul>
+</li>
+<li><p>淘汰算法：</p>
+<ul>
+<li>TTL：如果有设置过期时间，针对过期时间的删除</li>
+<li>Random：随机找key去删除</li>
+<li>LRU算法：目前使用最多的，基于”最近最少使用”原则的缓存淘汰策略，也是公司默认的配置</li>
+<li>LFU：最不频繁使用</li>
+</ul>
+</li>
+</ul>
+<h1 id="redis最佳实践"><a href="#redis最佳实践" class="headerlink" title="redis最佳实践"></a>redis最佳实践</h1><h2 id="Key-Value设计"><a href="#Key-Value设计" class="headerlink" title="Key&#x2F;Value设计"></a>Key&#x2F;Value设计</h2><ul>
+<li>Key可读性和可管理性、控制长度、不包含特殊字符</li>
+<li>Value不要过大(集合类型控制元素个数)<ul>
+<li>（标准：String &lt; 100KB，List&#x2F;Hash&#x2F;Set&#x2F;ZSet &lt; 1万个元素）</li>
+</ul>
+</li>
+<li>设置合理TTL</li>
+<li>缓存信息精简：DB&#x2F;接口获取的结果转换后再写入</li>
+</ul>
+<h3 id="key设计"><a href="#key设计" class="headerlink" title="key设计"></a>key设计</h3><p><img src="/blog/img.png" srcset="/blog/img/loading.gif" lazyload alt="img.png"></p>
+<h3 id="大key危害"><a href="#大key危害" class="headerlink" title="大key危害"></a>大key危害</h3><p><img src="/blog/img_2.png" srcset="/blog/img/loading.gif" lazyload alt="img_2.png"></p>
+<ul>
+<li>阻塞请求</li>
+<li>内存占用大</li>
+<li>阻塞网络</li>
+</ul>
+<h3 id="大key压测结果"><a href="#大key压测结果" class="headerlink" title="大key压测结果"></a>大key压测结果</h3><p><img src="/blog/img_3.png" srcset="/blog/img/loading.gif" lazyload alt="img_3.png"></p>
+<h3 id="大key解决方案"><a href="#大key解决方案" class="headerlink" title="大key解决方案"></a>大key解决方案</h3><h4 id="技术策略-：缓存信息精简"><a href="#技术策略-：缓存信息精简" class="headerlink" title="技术策略 ：缓存信息精简"></a>技术策略 ：缓存信息精简</h4><p><img src="/blog/img_4.png" srcset="/blog/img/loading.gif" lazyload alt="img_4.png"></p>
+<h4 id="技术策略-：拆分多个Key"><a href="#技术策略-：拆分多个Key" class="headerlink" title="技术策略 ：拆分多个Key"></a>技术策略 ：拆分多个Key</h4><p><img src="/blog/img_5.png" srcset="/blog/img/loading.gif" lazyload alt="img_5.png"></p>
+<ul>
+<li>拆分key不宜过多，因为太多会导致性能的影响，因为qps会平摊到redis里去，访问次数和量都会上升</li>
+</ul>
+<h4 id="技术策略-：pb序列化-zstd压缩"><a href="#技术策略-：pb序列化-zstd压缩" class="headerlink" title="技术策略 ：pb序列化 + zstd压缩"></a>技术策略 ：pb序列化 + zstd压缩</h4><p><img src="/blog/img_6.png" srcset="/blog/img/loading.gif" lazyload alt="img_6.png"></p>
+<h3 id="热key危害"><a href="#热key危害" class="headerlink" title="热key危害"></a>热key危害</h3><p><img src="/blog/img_7.png" srcset="/blog/img/loading.gif" lazyload alt="img_7.png"></p>
+<ul>
+<li>热key：比如做秒杀活动，对同一个商品id就会产生热key的访问；这个时候key的数量一般都是几个，一般会录入到固定的redis分片里，这个时候就会导致某一个分片的请求数量过多，导致cpu过高，产生不稳定</li>
+</ul>
+<h3 id="热key如何发现"><a href="#热key如何发现" class="headerlink" title="热key如何发现"></a>热key如何发现</h3><p><img src="/blog/img_8.png" srcset="/blog/img/loading.gif" lazyload alt="img_8.png"><br>针对热key，首先发现热key：<br>    1. 访问量比较高就有问题，所以可以埋点去看每个group的访问量，通过脚本去找到redis访问量比较高的group，就认为她很有可能产生热key的问题<br>    2. 通过dba服务号去抓取热key的操作，找到具体的group后</p>
+<h3 id="热key解决方案"><a href="#热key解决方案" class="headerlink" title="热key解决方案"></a>热key解决方案</h3><h4 id="水平扩容"><a href="#水平扩容" class="headerlink" title="水平扩容"></a>水平扩容</h4><p><img src="/blog/img_9.png" srcset="/blog/img/loading.gif" lazyload alt="img_9.png"><br>找到key怎么解决</p>
+<ol>
+<li>临时的，现在就出现了线上不稳定的现象，找dba对slave进行水平扩容</li>
+<li>长期方案：多级缓存。前面我们也看到了，抓出来的key都是固定的，通过本地缓存去维护一个有限的LRU队列，通过本地缓存找到我们的热key，降低redis的访问量</li>
+</ol>
+<h4 id="多级缓存"><a href="#多级缓存" class="headerlink" title="多级缓存"></a>多级缓存</h4><p><img src="/blog/img_10.png" srcset="/blog/img/loading.gif" lazyload alt="img_10.png"></p>
+<h2 id="面向失败设计"><a href="#面向失败设计" class="headerlink" title="面向失败设计"></a>面向失败设计</h2><ul>
+<li>面向失败设计：不仅是redis。所有的系统设计都需要考虑失败情况的处理，失败情况如何考虑数据的恢复<br>离线计算：</li>
+<li>缓存备份：故障可切备份快恢</li>
+<li>实时计算：<ul>
+<li>具备随时升级Key能力</li>
+<li>自愈：异步刷新缓存</li>
+</ul>
+</li>
+</ul>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><p>读写收口</p>
+<p>异步刷新：每次缓存读取之后，会去拿到缓存里上一次的更新时间，和当前时间做对比，如果他们的间隔时间超过我配置的间隔时间，就起一个异步线程重构缓存</p>
+<h1 id="常见问题与解决方案"><a href="#常见问题与解决方案" class="headerlink" title="常见问题与解决方案"></a>常见问题与解决方案</h1><p>限流: 可以采用redis实现分布式的限流，保证系统的稳定<br>分布式锁，不同的用户抢同一个资源时产生锁竞争，单机的话可以用java提供的解决；分布式下需要引入组件比如redis实现分布式锁，minos是基于哈希实现的分布式锁，基于哈希的好处是可以把当前的线程id保存到我们的哈希表里。然后下一次同一个线程去获取锁的时候 可以实现可重入；如果用其他类型没办法实现可重入</p>
+<p>穿透：比如商品id传入很大的值或负数，他在redis和db并不存在<br>击穿：redis没有，db有；缓存的某一个key过期，正好遇到这个key的热点，大量的流量就会到db，db压力就会大<br>雪崩：完全依赖db，db压力大</p>
+<p>在我们提前知道全量数据的情况下，从过滤器判断是否存在这个值<br>击穿：限制并发数，类似限流的效果，放一定量的请求到db，超过就拒绝或等待<br>过期时间加随机数，让批量过期不会同时触发</p>
+<p>治理<br>无用缓存：占用多且看访问量<br>注意：压缩算法会损耗性能，因为压缩是要消耗性能和cpu的，此时要根据数据量大小来判断是否走压缩</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2024/08/18/redis/redis使用常见问题与最佳实践/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年8月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2024/08/18/mysql/%E5%9F%BA%E4%BA%8EJavaAgent%E6%8E%A2%E9%92%88%E6%8A%80%E6%9C%AF%E7%9A%84%E6%85%A2SQL%E6%B2%BB%E7%90%86%E5%AE%9E%E8%B7%B5/" title="基于JavaAgent探针技术的慢SQL治理实践">
+                        <span class="hidden-mobile">基于JavaAgent探针技术的慢SQL治理实践</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
