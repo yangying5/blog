@@ -26,14 +26,14 @@
 <meta property="og:site_name" content="杨颖的博客">
 <meta property="og:description" content="mysql性能调优：存储引擎，根据场景选择不同引擎">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEabb8d38db6ce58876a64c2e9a58e1c96%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCE01b02b785fca235bdee784c85e3f1932%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/blog/images/engine1.jpg">
+<meta property="og:image" content="http://example.com/blog/images/engine2.jpg">
 <meta property="article:published_time" content="2024-08-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-08-17T08:49:16.509Z">
+<meta property="article:modified_time" content="2024-08-31T08:34:00.413Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/blog/images/WEBRESOURCEabb8d38db6ce58876a64c2e9a58e1c96%E6%88%AA%E5%9B%BE.png">
+<meta name="twitter:image" content="http://example.com/blog/images/engine1.jpg">
   
   
   
@@ -285,7 +285,7 @@
 <li>MySQL 5.5 后，默认存储引擎由 MyISAM 修改为 InnoDB。</li>
 <li>MySQL 5.7 支持的存储引擎有 InnoDB、MyISAM、Memory、Merge、Archive、CSV、BLACKHOLE 等。</li>
 </ul>
-<p><img src="/blog/images/WEBRESOURCEabb8d38db6ce58876a64c2e9a58e1c96%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<p><img src="/blog/images/engine1.jpg" srcset="/blog/img/loading.gif" lazyload></p>
 <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">查看系统所支持的引擎类型<br><span class="hljs-keyword">SHOW</span> ENGINES;<br><span class="hljs-keyword">SHOW</span> VARIABLES <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;default_storage_engine%&#x27;</span>;  // 查看默认存储引擎<br><br>临时修改默认存储引擎<br><span class="hljs-keyword">SET</span> default_storage_engine=&lt; 存储引擎名 &gt;<br>再次重启客户端时失效，默认存储引擎仍然是 InnoDB。<br><br>永久修改默认的存储引擎<br>在my.cnf 配置文件  [mysqld] 后面加入以下语句：<br><span class="hljs-keyword">default</span>-<span class="hljs-keyword">storage</span>-engine=存储引擎名称<br>然后保存就可以了。<br></code></pre></td></tr></table></figure>
 
 <h2 id="行级锁和表级锁"><a href="#行级锁和表级锁" class="headerlink" title="行级锁和表级锁"></a>行级锁和表级锁</h2><blockquote>
@@ -325,7 +325,7 @@
 <li>如果应用对事务的完整性有比较高的要求，在并发条件下要求数据的一致性，数据操作除了插入和查询以外，还包括很多的更新、删除操作，那么 InnoDB 存储引擎是比较合适的选择。</li>
 </ul>
 <h4 id="MEMORY"><a href="#MEMORY" class="headerlink" title="MEMORY"></a>MEMORY</h4><p>MEMORY 存储引擎将所有数据保存在 内存 中，所以该存储引擎的数据访问速度快，但是安全上没有保障</p>
-<p><img src="/blog/images/WEBRESOURCE01b02b785fca235bdee784c85e3f1932%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<p><img src="/blog/images/engine2.jpg" srcset="/blog/img/loading.gif" lazyload></p>
 <h2 id="MySQL修改数据表的存储引擎"><a href="#MySQL修改数据表的存储引擎" class="headerlink" title="MySQL修改数据表的存储引擎"></a>MySQL修改数据表的存储引擎</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span> ENGINE<span class="hljs-operator">=</span><span class="hljs-operator">&lt;</span>存储引擎名<span class="hljs-operator">&gt;</span>;<br><span class="hljs-keyword">SHOW</span> <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> student \G #查看 student 表当前的存储引擎<br><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> student ENGINE<span class="hljs-operator">=</span>MyISAM; <br>#将 student 表的存储引擎修改为 MyISAM 类型，在数据多的时候比较慢，影响读取性能，推荐一个比第一种速度快， 安全性高的跟新策略，如下：<br></code></pre></td></tr></table></figure>
 
 <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">START</span> <span class="hljs-keyword">TRANSACTION</span>; # 开始事务<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> my_tmp_table <span class="hljs-keyword">LIKE</span> my_table; # 创建表,先创建一个和要操作表一样的表<br><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> my_tmp_table ENGINE=InnoDB; # 然后更改存储引擎为目标引擎<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> my_tmp_table <span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> my_table; # 插入。<br><span class="hljs-keyword">RENAME</span> <span class="hljs-keyword">TABLE</span> my_table <span class="hljs-keyword">to</span> my_table_MyISAM_20201230backup; # 原表命名为备份表<br><span class="hljs-keyword">RENAME</span> <span class="hljs-keyword">TABLE</span> my_tmp_table <span class="hljs-keyword">to</span> my_table ; # 临时表上位<br><span class="hljs-keyword">COMMIT</span>; # 提交事物<br></code></pre></td></tr></table></figure>
@@ -428,8 +428,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/blog/2024/08/17/mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B0%83%E4%BC%98/" title="mysql性能调优">
-                        <span class="hidden-mobile">mysql性能调优</span>
+                      <a href="/blog/2024/08/17/mysql/%E7%B4%A2%E5%BC%95/" title="mysql索引">
+                        <span class="hidden-mobile">mysql索引</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

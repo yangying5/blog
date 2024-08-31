@@ -26,15 +26,15 @@
 <meta property="og:site_name" content="杨颖的博客">
 <meta property="og:description" content="mysql性能调优：索引">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCE481b5430d47a70c2b64890dd8a67ee97%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEa888b33f7543e42b7bddcfa7a1e2a785%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/WEBRESOURCEe4bbab99b3c7f990cdf3767bd3c6cbc2%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/blog/images/index1.jpg">
+<meta property="og:image" content="http://example.com/blog/images/index2.jpg">
+<meta property="og:image" content="http://example.com/blog/images/index3.jpg">
 <meta property="article:published_time" content="2024-08-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-08-17T09:08:45.634Z">
+<meta property="article:modified_time" content="2024-08-31T08:32:44.523Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/blog/images/WEBRESOURCE481b5430d47a70c2b64890dd8a67ee97%E6%88%AA%E5%9B%BE.png">
+<meta name="twitter:image" content="http://example.com/blog/images/index1.jpg">
   
   
   
@@ -321,7 +321,7 @@
 <li>MyISAM存储引擎使用B+Tree作为索引结构，叶子节点的data域存放的是数据记录的地址</li>
 <li>MyISAM的索引方式是“非聚集”&lt;索引和数据是分开存储的&gt;的，主索引（primary key）和辅助索引（Secondary key）在结构上没有任何区别，只是主索引key唯一，而辅助索引的key可以重复</li>
 </ul>
-<p><img src="/blog/images/WEBRESOURCE481b5430d47a70c2b64890dd8a67ee97%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<p><img src="/blog/images/index1.jpg" srcset="/blog/img/loading.gif" lazyload></p>
 <h4 id="InnoDB-存储引擎"><a href="#InnoDB-存储引擎" class="headerlink" title="InnoDB 存储引擎"></a>InnoDB 存储引擎</h4><ul>
 <li><p>nnoDB中，表数据文件本身就是按B+Tree组织的一个索引结构，这棵树的叶节点data域保存了完整的数据记录。因为InnoDB的数据文件本身要按主键聚集，所以InnoDB要求表必须有主键（MyISAM可以没有）。这个索引叫做聚集索引&lt;索引和数据聚集在一块&gt;</p>
 </li>
@@ -331,14 +331,14 @@
 <blockquote>
 <p>树的深度越深性能越慢；所以在一个节点尽量存多的数据。<br><strong>如何多存：</strong><br>因为根节点的存储空间是一定的，比如16k，64k，所以节点的数占用空间越小，节点数越多，就深度越浅。<br>所以索引取值的字段  越短越好<br><strong>为什么需要主键自增？</strong><br>因为在B+Tree里，当结构定下来后，比如要在20和30之间插入一条25，25后面的数据要重新排序，性能就低；<br>自增的话 不需要在结构上插入，不需要重新排序，性能就高</p>
 </blockquote>
-<p><img src="/blog/images/WEBRESOURCEa888b33f7543e42b7bddcfa7a1e2a785%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<p><img src="/blog/images/index2.jpg" srcset="/blog/img/loading.gif" lazyload></p>
 <ul>
 <li><p>InnoDB的辅助索引data域存储的是相应记录主键的值而不是地址。</p>
 </li>
 <li><p>辅助索引搜索需要检索两遍索引：首先检索辅助索引获得主键，然后用主键到主索引中检索获得记录</p>
 </li>
 </ul>
-<p><img src="/blog/images/WEBRESOURCEe4bbab99b3c7f990cdf3767bd3c6cbc2%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<p><img src="/blog/images/index3.jpg" srcset="/blog/img/loading.gif" lazyload></p>
 <h2 id="逻辑区分"><a href="#逻辑区分" class="headerlink" title="逻辑区分"></a>逻辑区分</h2><ul>
 <li>普通索引 ：最基本的索引类型，它没有任何限制，唯一任务就是加快系统对数据的访问速度。 允许在定义索引的列中插入重复值和空值。创建普通索引关键字是 INDEX 或 KEY。</li>
 <li>唯一索引 ：与普通索引类似， 不仅仅可以提高访问速度，还可以避免数据出现重复。唯一索引列或者组合列的值必须唯一，允许有空值。如果是组合索引，则列值的组合必须唯一。创建唯一索引使用 UNIQUE INDEX 关键字。</li>
@@ -510,9 +510,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2024/08/17/mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B0%83%E4%BC%98/" title="mysql性能调优">
+                      <a href="/blog/2024/08/17/mysql/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" title="mysql存储引擎">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">mysql性能调优</span>
+                        <span class="hidden-mobile">mysql存储引擎</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
