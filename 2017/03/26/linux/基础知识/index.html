@@ -1,0 +1,692 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="linux入门知识汇总">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基础知识">
+<meta property="og:url" content="http://example.com/2017/03/26/linux/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="linux入门知识汇总">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/blog/images/mysql&linux/WEBRESOURCEdea7cd4b5044f1814039227aa57292f3%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql&linux/WEBRESOURCE9731d18bcb5321cfa264a5153b5dbc4a%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql&linux/WEBRESOURCEe65ac98f274d246b4cac2da80154c292%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql&linux/WEBRESOURCEd609518d33a119b1d3f1200067f3950d%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/blog/images/mysql&linux/WEBRESOURCEfd92c04351383b1e3171fb103f8757cc%E6%88%AA%E5%9B%BE.png">
+<meta property="article:published_time" content="2017-03-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-31T08:54:24.135Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/blog/images/mysql&linux/WEBRESOURCEdea7cd4b5044f1814039227aa57292f3%E6%88%AA%E5%9B%BE.png">
+  
+  
+  
+  <title>基础知识 - 杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="基础知识"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2017-03-26 00:00" pubdate>
+          2017年3月26日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">基础知识</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="linux的发行版本"><a href="#linux的发行版本" class="headerlink" title="linux的发行版本"></a>linux的发行版本</h3><p><img src="/blog/images/mysql&linux/WEBRESOURCEdea7cd4b5044f1814039227aa57292f3%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h3 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h3><ul>
+<li>Linux下的软件包可细分为两种，分别是<strong>源码包</strong>和<strong>二进制包</strong></li>
+<li>源码包就是一大堆源代码程序，一般包含多个文件，为了方便发布，通常会将源码包做打包压缩处理，Linux 中最常用的打包压缩格式为“tar.gz”，因此源码包又被称为 Tarball。因为可能会需要一些依赖环境，所以安装前就需要先安装这些依赖环境</li>
+<li>二进制包：是源码包经过成功编译之后产生的包。由于二进制包在发布之前就已经完成了编译的工作，因此用户安装软件的速度较快（同 Windows下安装软件速度相当），且安装过程报错几率大大减小。因为已经编译过，依赖环境已经编译进二进制文件中，所以会省去很多麻烦</li>
+<li>二进制包是 Linux 下默认的软件安装包，因此二进制包又被称为默认安装软件包。</li>
+</ul>
+<h4 id="目前主要有以下-2-大主流的二进制包管理系统："><a href="#目前主要有以下-2-大主流的二进制包管理系统：" class="headerlink" title="目前主要有以下 2 大主流的二进制包管理系统："></a>目前主要有以下 2 大主流的二进制包管理系统：</h4><p><strong>RPM 包管理系统</strong>： 功能强大，安装、升级、査询和卸载非常简单方便，因此很多 Linux 发行版都默认使用此机制作为软件安装的管理方式，例如 Fedora、CentOS、SuSE 等</p>
+<p><strong>DPKG 包管理系统</strong>： 由 Debian Linux 所开发的包管理机制，通过 DPKG 包，Debian Linux 就可以进行软件包管理，主要应用在 Debian 和 Ubuntu 中</p>
+<p><img src="/blog/images/mysql&linux/WEBRESOURCE9731d18bcb5321cfa264a5153b5dbc4a%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<p><strong>yum</strong>：全称“Yellow dog Updater, Modified”，是一个专门为了解决包的依赖关系而存在的软件包管理器。就好像 Windows 系统上可以通过 360 软件管家实现软件的一键安装、升级和卸载</p>
+<p><strong>apt</strong>：是 Advanced Packaging Tool，是 Linux 下的一款安装包管理工具，可以在终端中方便的 安装／卸载／更新软件包</p>
+<p><img src="/blog/images/mysql&linux/WEBRESOURCEe65ac98f274d246b4cac2da80154c292%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h3 id="Linux的设计思想：一切皆文件"><a href="#Linux的设计思想：一切皆文件" class="headerlink" title="Linux的设计思想：一切皆文件"></a>Linux的设计思想：一切皆文件</h3><p>Linux 中所有内容都是以文件的形式保存和管理的，即一切皆文件 。具体可分为以下几种类型：</p>
+<ol>
+<li>- 普通文件：类似 mp4、pdf、html 这样，可直接拿来使用的文件都属于普通文件</li>
+<li>d 目录文件：目录文件包含了此目录中各个文件的文件名以及指向这些文件的指针，打开目录等同于打开目录文件，只要你有权限，可以随意访问目录中的任何文件。</li>
+<li>c 字符设备文件：这些文件通常隐藏在 &#x2F;dev&#x2F; 目录下，当进行设备读取或外设交互时才会被使用。例如，磁盘光驱属于块设备文件，串口设备则属于字符设备文件。 Linux 系统中的所有设备，要么是块设备文件，要么是字符设备文件。 </li>
+<li>s 套接字文件（socket）：套接字文件一般隐藏在 &#x2F;var&#x2F;run&#x2F; 目录下，用于进程间的网络通信。 </li>
+<li>l 链接文件（symbolic link）：类似与 Windows 中的快捷方式，是指向另一文件的简介指针（也就是软链接）。 </li>
+<li>p 管道文件（pipe）：主要用于进程间通信。例如，使用 mkfifo 命令创建一个 FIFO 文件，与此同时，启用进程 A 从FIFO文件读数据，启用进程 B 从 FIFO文件中写数据，随写随读。</li>
+</ol>
+<h3 id="Linux文件目录结构"><a href="#Linux文件目录结构" class="headerlink" title="Linux文件目录结构"></a>Linux文件目录结构</h3><ul>
+<li>&#x2F;：根目录，一般根目录下只存放目录，不要存放文件，&#x2F;etc、&#x2F;bin、&#x2F;dev、&#x2F;lib、&#x2F;sbin应该和根目录放置在一个分区中  </li>
+<li>&#x2F;bin: &#x2F;usr&#x2F;bin:可执行二进制文件的目录，如常用的命令ls、tar、mv、cat等。 </li>
+<li>&#x2F;boot：放置linux系统启动时用到的一些文件，比如内核文件和启动引导文件。&#x2F;boot&#x2F;vmlinuz为linux的内核文件，以及&#x2F;boot&#x2F;gurb。建议单独分区，分区大小100M即可 </li>
+<li>&#x2F;dev：存放linux系统下的设备文件，访问该目录下某个文件，相当于访问某个设备，常用的是挂载光驱mount &#x2F;dev&#x2F;cdrom &#x2F;mnt。 </li>
+<li>&#x2F;etc：系统配置文件存放的目录，系统通过rpm默认安装方式的配置文件全都在这个目录。不建议在此目录下存放可执行文件，重要的配置文件有&#x2F;etc&#x2F;inittab、&#x2F;etc&#x2F;fstab、&#x2F;etc&#x2F;init.d、&#x2F;etc&#x2F;X11、&#x2F;etc&#x2F;sysconfig、&#x2F;etc&#x2F;xinetd.d修改配置文件之前记得备份。 注：&#x2F;etc&#x2F;X11存放与x windows有关的设置。 </li>
+<li>&#x2F;home：系统默认的用户家目录，新增用户账号时，用户的家目录都存放在此目录下，<del>表示当前用户的家目录，</del>test表示用户test的家目录。建议单独分区，并设置较大的磁盘空间，方便用户存放数据 </li>
+<li>&#x2F;lib:&#x2F;usr&#x2F;lib:&#x2F;usr&#x2F;local&#x2F;lib：系统调用的函数库的目录，程序在执行过程中，需要调用一些额外的参数时需要函数库的协助，比较重要的目录为&#x2F;lib&#x2F;modules。</li>
+<li>&#x2F;mnt:&#x2F;media:&#x2F;misc：光盘默认挂载点，通常光盘挂载于&#x2F;mnt&#x2F;cdrom下，也不一定，可以选择任意位置进行挂载 </li>
+<li>&#x2F;opt：给主机额外安装软件所摆放的目录,即第三方软件的安装位置。手工安装的包都可以放在这个位置。如：FC4使用的Fedora 社群开发软件，如果想要自行安装新的KDE 桌面软件，可以将该软件安装在该目录下。以前的 Linux 系统中，习惯放置在 &#x2F;usr&#x2F;local 目录下</li>
+<li>&#x2F;root：系统管理员root的家目录，系统第一个启动的分区为&#x2F;，所以最好将&#x2F;root和&#x2F;放置在一个分区下。</li>
+<li>&#x2F;sbin:&#x2F;usr&#x2F;sbin:&#x2F;usr&#x2F;local&#x2F;sbin：放置系统管理员使用的可执行命令即系统环境设置相关命令，如fdisk、shutdown、mount等。与&#x2F;bin不同的是，这几个目录是给系统管理员root使用的命令，一般用户只能”查看”而不能设置和使用。</li>
+<li>&#x2F;srv：服务启动之后需要访问的数据目录，如www服务需要访问的网页数据存放在&#x2F;srv&#x2F;www内</li>
+<li>&#x2F;tmp：一般用户或正在执行的程序临时存放文件的目录,任何人都可以访问,重要数据不可放置在此目录下</li>
+<li>&#x2F;proc：此目录的数据都在内存中，如系统核心，外部设备，网络状态，由于数据都存放于内存中，所以不占用磁盘空间，比较重要的目录有&#x2F;proc&#x2F;cpuinfo、&#x2F;proc&#x2F;interrupts、&#x2F;proc&#x2F;dma、&#x2F;proc&#x2F;ioports、&#x2F;proc&#x2F;net&#x2F;*等</li>
+<li>&#x2F;lost+fount：系统异常产生错误时，会将一些遗失的片段放置于此目录下，通常这个目录会自动出现在装置目录下。如加载硬盘于&#x2F;disk 中，此目录下就会自动产生目录&#x2F;disk&#x2F;lost+found </li>
+<li>&#x2F;usr：应用程序存放目录，全称为 Unix Software Resource，此目录用于存储系统软件资源。FHS 建议所有开发者，应把软件产品的数据合理的放置在 &#x2F;usr 目录下的各子目录中，而不是为他们的产品创建单独的目录。&#x2F;usr&#x2F;bin存放应用程序，&#x2F;usr&#x2F;share存放共享数据，&#x2F;usr&#x2F;lib存放不能直接运行的，却是许多程序运行所必需的一些函数库文件。&#x2F;usr&#x2F;local:存放软件升级包。&#x2F;usr&#x2F;share&#x2F;doc:系统说明文件存放目录。&#x2F;usr&#x2F;share&#x2F;man:?程序说明文件存放目录，使用 man ls时会查询&#x2F;usr&#x2F;share&#x2F;man&#x2F;man1&#x2F;ls.1.gz的内容建议单独分区，设置较大的磁盘空间</li>
+</ul>
+<p><img src="/blog/images/mysql&linux/WEBRESOURCEd609518d33a119b1d3f1200067f3950d%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>&#x2F;var：放置系统执行过程中经常变化的文件，如随时更改的日志文件&#x2F;var&#x2F;log，&#x2F;var&#x2F;log&#x2F;message：所有的登录文件存放目录，&#x2F;var&#x2F;spool&#x2F;mail：邮件存放的目录，&#x2F;var&#x2F;run:程序或服务启动后，其PID存放在该目录下。建议单独分区，设置较大的磁盘空间</li>
+</ul>
+<p><img src="/blog/images/mysql&linux/WEBRESOURCEfd92c04351383b1e3171fb103f8757cc%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/blog/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/linux/" class="print-no-link">#linux</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>基础知识</div>
+      <div>http://example.com/2017/03/26/linux/基础知识/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2017年3月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2018/04/26/linux/%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="文件管理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">文件管理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
