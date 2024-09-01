@@ -19,29 +19,32 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="通过范式和反范式的方式进行数据库设计">
+    <meta name="description" content="MongoDB介绍和架构">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据库设计方法论">
-<meta property="og:url" content="http://example.com/2018/10/02/mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:title" content="mongoDB介绍">
+<meta property="og:url" content="http://example.com/2023/09/16/mongo/mongo/index.html">
 <meta property="og:site_name" content="杨颖的博客">
-<meta property="og:description" content="通过范式和反范式的方式进行数据库设计">
+<meta property="og:description" content="MongoDB介绍和架构">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/blog/images/mysql&linux/WEBRESOURCEc8ed773eefcbc91783928825fb5c0df0%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/mysql&linux/WEBRESOURCEa9a08b63b4500123dbdb098c36340347%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/mysql&linux/WEBRESOURCE548f2769b62bbbdb03a0d46ba5004a20%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/blog/images/mysql&linux/1725093391910.jpg">
-<meta property="og:image" content="http://example.com/blog/images/mysql&linux/1725093505827.jpg">
-<meta property="article:published_time" content="2018-10-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-09-01T10:06:44.080Z">
+<meta property="og:image" content="http://example.com/blog/images/mongo/DBranking.png">
+<meta property="og:image" content="http://example.com/blog/images/mongo/duibi.png">
+<meta property="og:image" content="http://example.com/blog/images/mongo/changjing.png">
+<meta property="og:image" content="http://example.com/blog/images/mongo/shiyongjianyi.png">
+<meta property="og:image" content="http://example.com/blog/images/mongo/%E9%83%A8%E7%BD%B2%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="http://example.com/blog/images/mongo/%E5%89%AF%E6%9C%AC%E9%9B%86.png">
+<meta property="og:image" content="http://example.com/blog/images/mongo/failover.png">
+<meta property="og:image" content="http://example.com/blog/images/mongo/DR.png">
+<meta property="article:published_time" content="2023-09-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-01T10:02:53.871Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="mongoDB">
 <meta property="article:tag" content="数据库">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/blog/images/mysql&linux/WEBRESOURCEc8ed773eefcbc91783928825fb5c0df0%E6%88%AA%E5%9B%BE.png">
+<meta name="twitter:image" content="http://example.com/blog/images/mongo/DBranking.png">
   
   
   
-  <title>数据库设计方法论 - 杨颖的博客</title>
+  <title>mongoDB介绍 - 杨颖的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -207,7 +210,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="数据库设计方法论"></span>
+            <span id="subtitle" data-typed-text="mongoDB介绍"></span>
           
         </div>
 
@@ -218,8 +221,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2018-10-02 00:00" pubdate>
-          2018年10月2日 凌晨
+        <time datetime="2023-09-16 00:00" pubdate>
+          2023年9月16日 凌晨
         </time>
       </span>
     
@@ -230,7 +233,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.4k 字
+          2.4k 字
         
       </span>
     
@@ -241,7 +244,7 @@
         
         
         
-          12 分钟
+          21 分钟
         
       </span>
     
@@ -278,57 +281,150 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">数据库设计方法论</h1>
+            <h1 id="seo-header">mongoDB介绍</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="数据库设计的基本步骤"><a href="#数据库设计的基本步骤" class="headerlink" title="数据库设计的基本步骤"></a>数据库设计的基本步骤</h1><blockquote>
-<p>需求分析：是数据库设计的第一步，是最困难、最耗费时间的一步，也是整个设计过程的基础。<br>概要设计：是数据库设计的关键，通过综合、归纳与抽象用户需求，形成一个具体 DBMS 的概念模型，也就是绘制数据库的 E-R 图。<br>逻辑结构设计：将 E-R 图转换为多张表，进行逻辑设计，确认各表的主外键，并应用数据库设计的三大范式进行审核，对其优化。<br>物理设计阶段：确定 E-R 图后，根据项目的技术实现，团队开发能力及项目的成本预算，选择具体的数据库（如 MySQL 或 Oracle 等）进行物理实现。<br>数据库实施：运用 DBMS 提供的数据语言（例如 SQL）、工具及宿主语言（例如 Java），根据逻辑设计和物理设计的结果建立数据库，编制与调试应用程序，组织数据入库，并进行试运行。<br>数据库运行和维护：数据库应用系统经过试运行后即可投入正式运行。在运行过程中必须不断地对其进行评价、调整与修改。<br>总之设计一个完善的数据库应用系统是不可能一蹴而就的，它是上述 6 个阶段的不断反复</p>
-</blockquote>
-<h2 id="概要设计"><a href="#概要设计" class="headerlink" title="概要设计"></a>概要设计</h2><h3 id="E-R图介绍"><a href="#E-R图介绍" class="headerlink" title="E-R图介绍"></a>E-R图介绍</h3><blockquote>
-<p>为什么要叫关系型数据库，是因为关系型数据库就是在研究实体与实体的关系，属性与属性的关系<br>E-R图是设计数据库的工具之一，用于建立数据库的概念模型。<br>实体、属性和关系是构成 E-R图的基本要素。</p>
-</blockquote>
-<h4 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h4><ul>
-<li>指现实世界中客观存在并可以相互区分的对象或事物。</li>
-<li>实体往往指某类事物的集合。可以是具体的人和事物，也可以是抽象的概念、联系。</li>
-<li>实体一般是名词，对应表中的一行数据。例如，用户张三是一个实体，他对应于客人表中“张三”所在的一行数据，包括客人姓名、身份证号等信息。</li>
-<li>严格的说，实体用来指表中的一行特定数据。但在开发时，我们也常常把表称为一个实体。</li>
+                <p><img src="/blog/images/mongo/DBranking.png" srcset="/blog/img/loading.gif" lazyload alt="DB排名"></p>
+<ul>
+<li>可以看出，当下mongoDB已经有被广泛使用的趋势</li>
 </ul>
-<h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4><ul>
-<li>可以理解为实体的特征。</li>
+<h1 id="mongoDB介绍"><a href="#mongoDB介绍" class="headerlink" title="mongoDB介绍"></a>mongoDB介绍</h1><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>MongoDB是一个开源的文档数据库，旨在简化开发和扩展；更敏捷、灵活<ul>
+<li>数据模型应对业务变化：因为表不需要创建 &amp; 数据模型比较灵活，可以根据业务变化来做快速应对</li>
+<li>快速迭代以适应新的需求：schemaless 的文档设计，让我们的数据存储更灵活，省去了昂贵的发布成本，只需要发布索引</li>
+<li>表不存在会自动创建，</li>
 </ul>
-<h4 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h4><ul>
-<li>两个或多个实体之间的关联关系。</li>
-<li>关系可分为以下 4 种类型，例如对于实体 X 和 Y 之间的关系就必须为以下任意一种：<ul>
-<li>一对一:X 中的一个实体最多与 Y 中的一个实体关联，并且 Y 中的一个实体最多与 X 中的一个实体关联。 </li>
-<li>一对多:X 中的一个实体可以与 Y 中任意数量的实体关联，Y 中的一个实体最多与 X 中的一个实体关联。 </li>
-<li>多对一:X 中的一个实体最多与 Y 中的一个实体关联，Y 中的一个实体可以与 X 中的任意数量的实体关联。 </li>
-<li>多对多:X 中的一个实体可以与 Y 中的任意数量的实体关联，反之亦然。</li>
+</li>
+<li>高性能，高可用和自动伸缩<ul>
+<li>CAP理论，分别代表 Consistency（强一致性），Availability（可用性），Partition Tolerance（分区容错)</li>
+<li>MongoDB主要体现在cap的ap，即Availability（可用性），Partition Tolerance（分区容错)；因为MongoDB的一致性是最终一致性，而不是强一致性</li>
+<li>高性能：<ul>
+<li>支持嵌入数据模型减少对数据库IO；嵌套文档的设计可以将离散IO变成顺序IO</li>
+<li>支持索引快速查询</li>
+</ul>
+</li>
+<li>高可用：<ul>
+<li>自动故障切换</li>
+<li>数据复制集</li>
+</ul>
+</li>
+<li>自动伸缩：<ul>
+<li>水平扩展：动态添加分片和副本集</li>
 </ul>
 </li>
 </ul>
-<h3 id="绘制ER图"><a href="#绘制ER图" class="headerlink" title="绘制ER图"></a>绘制ER图</h3><p>E-R 图以图形的方式来表示数据库的整个逻辑结构，如下：<br>实体：用矩形表示<br>属性：用椭圆形表示<br>关系：用菱形表示<br>使用直线连接属性和实体，以及连接实体和关系</p>
-<p><img src="/blog/images/mysql&linux/WEBRESOURCEc8ed773eefcbc91783928825fb5c0df0%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
-<h2 id="逻辑结构设计"><a href="#逻辑结构设计" class="headerlink" title="逻辑结构设计"></a>逻辑结构设计</h2><h3 id="范式"><a href="#范式" class="headerlink" title="范式"></a>范式</h3><blockquote>
-<p>数据库范式(Normal form，简称NF) ：理解就是按照面向对象的思想 拆分到不能拆分为止符合某一种级别的关系模式的集合，表示一个关系内部各属性之间的联系的合理化程度 。 数据库模型设计的一系列规范 ，分成6个等级，一级比一级要求得严格。满足这些规范的数据库是简洁的、结构明晰的，同时，不会发生插入(insert)、删除(delete)和更新(update)操作异常。避免不需要的数据冗余<br>逻辑主键：哪个字段 或者哪几个字段 加在一起，这条数据不会重复，就是逻辑主键</p>
-</blockquote>
-<h4 id="1NF"><a href="#1NF" class="headerlink" title="1NF"></a>1NF</h4><p>强调列的原子性，拆到不能再拆</p>
-<p><img src="/blog/images/mysql&linux/WEBRESOURCEa9a08b63b4500123dbdb098c36340347%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
-<p><img src="/blog/images/mysql&linux/WEBRESOURCE548f2769b62bbbdb03a0d46ba5004a20%E6%88%AA%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload></p>
-<h4 id="2NF"><a href="#2NF" class="headerlink" title="2NF"></a>2NF</h4><p>在满足1NF的基础上，非主属性必须完全依赖于主属性，部分依赖&lt;比如学号和科目为主属性。姓名依赖于学号，但是不依赖于科目。即非主属性只依赖于主属性的一部分&gt;则不符合2NF</p>
-<p><img src="/blog/images/mysql&linux/1725093391910.jpg" srcset="/blog/img/loading.gif" lazyload></p>
-<h4 id="3NF"><a href="#3NF" class="headerlink" title="3NF"></a>3NF</h4><p>消除非主属性传递依赖主属性</p>
-<p><img src="/blog/images/mysql&linux/1725093505827.jpg" srcset="/blog/img/loading.gif" lazyload></p>
-<p>巴斯-科德范式（Boyce-Codd Normal Form ，BCNF）在3NF基础上，任何非主属性不能对主键子集依赖（在3NF基础上消除对主码子集的依赖）</p>
-<h3 id="反范式"><a href="#反范式" class="headerlink" title="反范式"></a>反范式</h3><p>• 范式越高意味着表的划分更细，一个数据库中需要的表也就越多，用户不得不将原本相关联的数据分摊到多个表中。同时把多个表联接在一起的花费是巨大的， 这严重地降低了系统运行性能。<br>• 反范式化的数据库因为所有的数据都在一张表中，可以很好地避免关联。<br>• 平时工作中，我们通常是将范式和反范式混合使用，相互结合。</p>
-<h3 id="数据库范式化和反范式化："><a href="#数据库范式化和反范式化：" class="headerlink" title="数据库范式化和反范式化："></a>数据库范式化和反范式化：</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
-<li>可以减少表的关联</li>
-<li>可以更好的进行索引优化</li>
+</li>
+<li>支持多个存储引擎<ul>
+<li>WiredTiger Storage Engine(3.2后默认)：存储在磁盘</li>
+<li>In-Memory Storage Engine：存储在内存</li>
+<li>MMAPv1 Storage ENgine (4.0后废弃)</li>
 </ul>
-<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
-<li>数据表存在数据冗余及数据维护异常，空间换时间</li>
-<li>对数据的修改需要更多的成本</li>
+</li>
+</ul>
+<h2 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h2><ul>
+<li>底层存储BSON（Binary Serialized Document Notation），MongoDB 使用 BSON 作为数据存储和消息传输 的编码格式。<ul>
+<li>数据修改效率高：数据具有类型 无需按字符串处理</li>
+<li>基于原始的 JSON 数据类型之上，BSON 提供了自己的扩展。 </li>
+<li>遍历扫描速度快：元素头部存储元素长度可快速seek</li>
+<li>嵌套文档的设计可以将离散IO变成顺序IO</li>
+<li>原生优秀的高可用支持，一旦发生故障，不依赖第三方工具，集群内部基于RAFT协议可以高效快速的选举出新的主库节点。</li>
+<li><code>新版本支持事务</code>，满足业务对数据一致性的高要求；4.0版本后支持事务，4.2版本支持效果更强，会支持多文档事物，也就是基于多行数据的事务</li>
+<li>支持多种类型的索引，提高我们的查询性能, 支持的索引类型包括唯一索引，稀疏索引，TTL索引等等</li>
+<li>默认的wiredtiger引擎有基于文档级别(row)的并发控制系统，可以满足高并发的读写需求</li>
+</ul>
+</li>
+</ul>
+<h2 id="事务-version4-0"><a href="#事务-version4-0" class="headerlink" title="事务 version4.0"></a>事务 version4.0</h2><ul>
+<li>单文档操作：原子性</li>
+<li>多文档事物<ul>
+<li>多文档事务仅对Replace Set集群可用，Sharded CLusters目前不支持</li>
+<li>多文档事务仅适用于使用WiredTiger存储引擎的部署，in-memory存储引擎不支持</li>
+<li>在多文档事务中，不允许创建或删除集合或索引等影响数据库的操作</li>
+<li>回话最多只能有一个打开的事务</li>
+<li>Read Preference：primary</li>
+</ul>
+</li>
+</ul>
+<h2 id="概念对比传统型"><a href="#概念对比传统型" class="headerlink" title="概念对比传统型"></a>概念对比传统型</h2><p><img src="/blog/images/mongo/duibi.png" srcset="/blog/img/loading.gif" lazyload alt="MYSQL和MONGODB对比"></p>
+<ul>
+<li>redo日志和binlog日志 以及对应的journal日志和oplog日志是偏运维的，主要要数据恢复用的</li>
+</ul>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ul>
+<li>日志，配置数据，报文数据，缓存数据，画像标签数据等一系列需要存储非结构化数据的应用</li>
+<li><img src="/blog/images/mongo/changjing.png" srcset="/blog/img/loading.gif" lazyload alt="场景.png"></li>
+<li>数据量几十几百亿，mongo可以轻松支持，mysql需要分库分表</li>
+<li>跨地区集群：mongo有一个全球部署的模式</li>
+<li>mongo有原生的分片架构</li>
+</ul>
+<h2 id="数据库定位"><a href="#数据库定位" class="headerlink" title="数据库定位"></a>数据库定位</h2><p>原则上 Oracle 和 MySQL 能做的事情，MongoDB 都能做（包括 ACID 事务）<br>优点：横向扩展能力，数据量或并发量增加时候架构可以自动扩展；如果使用mysql，横向扩展并不是透明的，往往需要一些应用进行一些配合<br>优点：灵活模型，适合迭代开发，数据模型多变场景 ；应对需求一直变更的场景，对应的数据库修改模型 修改字段增加字段来说，mysql修改很麻烦，但是mongo不需要预先定义好模型，会随着程序的修改而修改，这样非常适合敏捷开发<br>优点：JSON 数据结构，适合微服务&#x2F;REST API</p>
+<h2 id="使用建议"><a href="#使用建议" class="headerlink" title="使用建议"></a>使用建议</h2><ul>
+<li>Objectid(_id) 是mongodb默认的主键,它的生成和服务器识别码，mongodb 进程pid，时间戳都关联，只能保证主库节点稳定运行期间的单调性，<code>不建议作为业务主键使用</code>，如果把他覆盖掉，后面查问题比较麻烦； <code>如果需要业务主键，在业务主键上发布一个唯一索引</code>；索引是mongo唯一需要发布的东西</li>
+<li><code>建议每条document都加入时间类型的字段</code>，并在上面创建索引，方便未来的数据检索，<code>对于需要定期清理的需求，也可以在这个时间字段上添加ttl索引</code>；注意：到期后mongo会起一个后台进程慢慢删除过期数据，不是到期就删除，而是根据当前数据库使用情况 压力 缓慢的把老数据清理掉</li>
+<li>业务表名最好是见名知意，不要以纯数字作为表名，表名中也不要带特殊字符</li>
+<li>对于需要join查询的多表数据，建议采用嵌套模式进行存储设计；嵌套模式：从离散IO到顺序IO<br><img src="/blog/images/mongo/shiyongjianyi.png" srcset="/blog/img/loading.gif" lazyload alt="嵌套模式"></li>
+</ul>
+<h1 id="高可用架构"><a href="#高可用架构" class="headerlink" title="高可用架构"></a>高可用架构</h1><h2 id="部署模式"><a href="#部署模式" class="headerlink" title="部署模式"></a>部署模式</h2><p><img src="/blog/images/mongo/%E9%83%A8%E7%BD%B2%E6%A8%A1%E5%BC%8F.png" srcset="/blog/img/loading.gif" lazyload alt="部署模式"></p>
+<ul>
+<li>单机: 基本不用</li>
+<li>复制集群<ul>
+<li>写入主节点的时候会有一个oplog，从节点就从主节点的oplog同步数据</li>
+<li>读操作可以在主节点也可以在副本节点，这样可以实现读写分离</li>
+</ul>
+</li>
+<li>分片集群<ul>
+<li>三个角色：<ul>
+<li>router节点[路由节点]：主要对外提供服务，也就是应用程序只会和router节点做操作和连接，也就是应用程序不会直接和shard节点做交互</li>
+<li>config Services：配置服务节点，主要存储元数据，比如集群的分布和数据在shard的分布情况</li>
+<li>shard: 分片节点：真正存储数据的；</li>
+<li>config Services 和 shard 的内部都是replace set[复制集: 是MongoDB中的一种数据复制机制，它由一组MongoDB服务器组成，其中包括一个主服务器和多个从服务器]，也就提高了高可用性</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="副本集"><a href="#副本集" class="headerlink" title="副本集"></a>副本集</h2><p><img src="/blog/images/mongo/%E5%89%AF%E6%9C%AC%E9%9B%86.png" srcset="/blog/img/loading.gif" lazyload alt="副本集两种方式"></p>
+<ul>
+<li><p>方式1：</p>
+<ul>
+<li>这是一个集群</li>
+<li>client Application Driver 请求app应用，通过配置连到集群里</li>
+<li>通过读写分离 or 读写不分离的方式读写数据</li>
+<li>如果不设置读写分离的话，默认会把读写请求到打到Primary节点上；如果读写分离，写在Primary节点，读在secondary节点</li>
+<li>primary节点会异步的把数据都复制到secondary节点上；</li>
+</ul>
+</li>
+<li><p>方式2</p>
+<ul>
+<li>Arbiter只有投票的功能，并不参与数据存储；但是这样的话数据存储就变成了主备从库，不是特别好的数据设计，通常采用第一种：三数据副本的模式</li>
+</ul>
+</li>
+<li><p>读写分离</p>
+<ul>
+<li>可以考虑读写分离，通过在客户端配置，读从secondary节点，写通过primary节点，这样也可以进行一个压力分摊；这完全是由客户端自己定义的；生成连接串后，会返回给客户端整个集群的所有节点，客户端连接第一个节点，后执行isMaster命令，会告知是否主节点等操作</li>
+<li>全备份和增量备份，是mongo的两种备份方式。<ul>
+<li>全备份在晚上低峰期会起一个进程操作，增量备份每隔一小时起一个进程操作。</li>
+<li>那个DR设计里有一个secondary的优先级最低，&#x3D;0，他永远不会被选做主库，另外设置他为hidden状态，他做的就是全量备份，也就是所有的请求都不会落到这个节点上，然后用它做备份和维护</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>故障转移：副本集切换<br><img src="/blog/images/mongo/failover.png" srcset="/blog/img/loading.gif" lazyload alt="故障转移"></p>
+<ul>
+<li>一旦主节点挂掉，mongodb的集群内部发现失联了，就会去判活，其他节点会基于raft协议发起投票，挑选出一个新的主节点，整个切换过程不需要基于第三方工具，是集群内部实现的，所以一旦发生大范围故障，整个机房的宕机，mongo会在10-20s就可以切换完毕</li>
+<li>如果三个节点，挂了两个节点，剩下的一个节点是没办法选择主节点的，因为<code>不满足大多数原则</code>，这样这个剩下的secondary节点会永远保持secondary状态，永远是不可写的，只有只读状态，也就是整个集群永远只有primary节点可以写，secondary永远不能写</li>
+</ul>
+</li>
+</ul>
+<h2 id="DR设计-灾难恢复设计"><a href="#DR设计-灾难恢复设计" class="headerlink" title="DR设计[灾难恢复设计]"></a>DR设计[灾难恢复设计]</h2><p><img src="/blog/images/mongo/DR.png" srcset="/blog/img/loading.gif" lazyload alt="灾备"></p>
+<ul>
+<li>DR设计是指灾难恢复设计，是一种在系统或应用程序中预先计划恢复数据、硬件、软件和网络的过程，以保证在发生灾难性事件后，可以快速恢复业务运营。这种设计包括备份和复原策略、风险评估、容错能力、恢复时间目标以及测试和维护计划等。DR设计通常可以保证业务连续性和稳定性，同时也是信息安全和风险管理的重要措施之一。</li>
+<li>因为mongo是基于raft协议投票的，所以最好选择三个机房，如果单机房挂掉，其他两个机房也可以实现投票选主<ul>
+<li>选三个机房，一个作为Arbiter角色参与投票，另外两个机房是存数据，如果一个机房挂掉，还剩下三个节点可以做投票选主操作</li>
+<li>priority可以设置优先级，选主会优选选择优先级高的节点</li>
+</ul>
+</li>
 </ul>
 
                 
@@ -348,7 +444,7 @@
     
       <span class="category-chain">
         
-  <a href="/blog/categories/mysql/" class="category-chain-item">mysql</a>
+  <a href="/blog/categories/mongoDB/" class="category-chain-item">mongoDB</a>
   
   
 
@@ -363,7 +459,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/blog/tags/mysql/" class="print-no-link">#mysql</a>
+        <a href="/blog/tags/mongoDB/" class="print-no-link">#mongoDB</a>
       
         <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="print-no-link">#数据库</a>
       
@@ -377,8 +473,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>数据库设计方法论</div>
-      <div>http://example.com/2018/10/02/mysql/数据库设计/</div>
+      <div>mongoDB介绍</div>
+      <div>http://example.com/2023/09/16/mongo/mongo/</div>
     </div>
     <div class="license-meta">
       
@@ -390,7 +486,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2018年10月2日</div>
+          <div>2023年9月16日</div>
         </div>
       
       
@@ -422,18 +518,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2018/11/16/mysql/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" title="mysql存储引擎">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">mysql存储引擎</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/blog/2018/09/18/mysql/%E9%94%81%E5%92%8C%E4%BA%8B%E7%89%A9/" title="锁和事务">
-                        <span class="hidden-mobile">锁和事务</span>
+                      <a href="/blog/2022/04/02/mysql/%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E5%92%8C%E8%A7%A6%E5%8F%91%E5%99%A8/" title="存储过程和触发器">
+                        <span class="hidden-mobile">存储过程和触发器</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
