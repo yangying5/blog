@@ -19,32 +19,19 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="MongoDB介绍和架构">
-<meta property="og:type" content="article">
-<meta property="og:title" content="mongoDB介绍">
-<meta property="og:url" content="http://example.com/2023/09/16/mongo/mongo/index.html">
+    <meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/04/04/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E6%89%8B%E6%9C%BAROOT%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html">
 <meta property="og:site_name" content="杨颖的博客">
-<meta property="og:description" content="MongoDB介绍和架构">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/blog/images/mongo/DBranking.png">
-<meta property="og:image" content="http://example.com/blog/images/mongo/duibi.png">
-<meta property="og:image" content="http://example.com/blog/images/mongo/changjing.png">
-<meta property="og:image" content="http://example.com/blog/images/mongo/shiyongjianyi.png">
-<meta property="og:image" content="http://example.com/blog/images/mongo/%E9%83%A8%E7%BD%B2%E6%A8%A1%E5%BC%8F.png">
-<meta property="og:image" content="http://example.com/blog/images/mongo/%E5%89%AF%E6%9C%AC%E9%9B%86.png">
-<meta property="og:image" content="http://example.com/blog/images/mongo/failover.png">
-<meta property="og:image" content="http://example.com/blog/images/mongo/DR.png">
-<meta property="article:published_time" content="2023-09-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-09-01T10:02:53.871Z">
+<meta property="article:published_time" content="2025-04-04T07:10:01.821Z">
+<meta property="article:modified_time" content="2025-04-04T07:10:01.821Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="mongoDB">
-<meta property="article:tag" content="数据库">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/blog/images/mongo/DBranking.png">
   
   
   
-  <title>mongoDB介绍 - 杨颖的博客</title>
+  <title>杨颖的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -210,7 +197,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="mongoDB介绍"></span>
+            <span id="subtitle" data-typed-text=""></span>
           
         </div>
 
@@ -221,8 +208,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-09-16 00:00" pubdate>
-          2023年9月16日 凌晨
+        <time datetime="2025-04-04 15:10" pubdate>
+          2025年4月4日 下午
         </time>
       </span>
     
@@ -233,7 +220,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.4k 字
+          0 字
         
       </span>
     
@@ -244,7 +231,7 @@
         
         
         
-          21 分钟
+          1 分钟
         
       </span>
     
@@ -281,152 +268,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">mongoDB介绍</h1>
+            <h1 id="seo-header"></h1>
             
             
               <div class="markdown-body">
                 
-                <p><img src="/blog/images/mongo/DBranking.png" srcset="/blog/img/loading.gif" lazyload alt="DB排名"></p>
-<ul>
-<li>可以看出，当下mongoDB已经有被广泛使用的趋势</li>
-</ul>
-<h1 id="mongoDB介绍"><a href="#mongoDB介绍" class="headerlink" title="mongoDB介绍"></a>mongoDB介绍</h1><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
-<li>MongoDB是一个开源的文档数据库，旨在简化开发和扩展；更敏捷、灵活<ul>
-<li>数据模型应对业务变化：因为表不需要创建 &amp; 数据模型比较灵活，可以根据业务变化来做快速应对</li>
-<li>快速迭代以适应新的需求：schemaless 的文档设计，让我们的数据存储更灵活，省去了昂贵的发布成本，只需要发布索引</li>
-<li>表不存在会自动创建，</li>
-</ul>
-</li>
-<li>高性能，高可用和自动伸缩<ul>
-<li>CAP理论，分别代表 Consistency（强一致性），Availability（可用性），Partition Tolerance（分区容错)</li>
-<li>MongoDB主要体现在cap的ap，即Availability（可用性），Partition Tolerance（分区容错)；因为MongoDB的一致性是最终一致性，而不是强一致性</li>
-<li>高性能：<ul>
-<li>支持嵌入数据模型减少对数据库IO；嵌套文档的设计可以将离散IO变成顺序IO</li>
-<li>支持索引快速查询</li>
-</ul>
-</li>
-<li>高可用：<ul>
-<li>自动故障切换</li>
-<li>数据复制集</li>
-</ul>
-</li>
-<li>自动伸缩：<ul>
-<li>水平扩展：动态添加分片和副本集</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>支持多个存储引擎<ul>
-<li>WiredTiger Storage Engine(3.2后默认)：存储在磁盘</li>
-<li>In-Memory Storage Engine：存储在内存</li>
-<li>MMAPv1 Storage ENgine (4.0后废弃)</li>
-</ul>
-</li>
-</ul>
-<h2 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h2><ul>
-<li>底层存储BSON（Binary Serialized Document Notation），MongoDB 使用 BSON 作为数据存储和消息传输 的编码格式。<ul>
-<li>数据修改效率高：数据具有类型 无需按字符串处理</li>
-<li>基于原始的 JSON 数据类型之上，BSON 提供了自己的扩展。 </li>
-<li>遍历扫描速度快：元素头部存储元素长度可快速seek</li>
-<li>嵌套文档的设计可以将离散IO变成顺序IO</li>
-<li>原生优秀的高可用支持，一旦发生故障，不依赖第三方工具，集群内部基于RAFT协议可以高效快速的选举出新的主库节点。</li>
-<li><code>新版本支持事务</code>，满足业务对数据一致性的高要求；4.0版本后支持事务，4.2版本支持效果更强，会支持多文档事物，也就是基于多行数据的事务</li>
-<li>支持多种类型的索引，提高我们的查询性能, 支持的索引类型包括唯一索引，稀疏索引，TTL索引等等</li>
-<li>默认的wiredtiger引擎有基于文档级别(row)的并发控制系统，可以满足高并发的读写需求</li>
-</ul>
-</li>
-</ul>
-<h2 id="事务-version4-0"><a href="#事务-version4-0" class="headerlink" title="事务 version4.0"></a>事务 version4.0</h2><ul>
-<li>单文档操作：原子性</li>
-<li>多文档事物<ul>
-<li>多文档事务仅对Replace Set集群可用，Sharded CLusters目前不支持</li>
-<li>多文档事务仅适用于使用WiredTiger存储引擎的部署，in-memory存储引擎不支持</li>
-<li>在多文档事务中，不允许创建或删除集合或索引等影响数据库的操作</li>
-<li>回话最多只能有一个打开的事务</li>
-<li>Read Preference：primary</li>
-</ul>
-</li>
-</ul>
-<h2 id="概念对比传统型"><a href="#概念对比传统型" class="headerlink" title="概念对比传统型"></a>概念对比传统型</h2><p><img src="/blog/images/mongo/duibi.png" srcset="/blog/img/loading.gif" lazyload alt="MYSQL和MONGODB对比"></p>
-<ul>
-<li>redo日志和binlog日志 以及对应的journal日志和oplog日志是偏运维的，主要要数据恢复用的</li>
-</ul>
-<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ul>
-<li>日志，配置数据，报文数据，缓存数据，画像标签数据等一系列需要存储非结构化数据的应用</li>
-<li><img src="/blog/images/mongo/changjing.png" srcset="/blog/img/loading.gif" lazyload alt="场景.png"></li>
-<li>数据量几十几百亿，mongo可以轻松支持，mysql需要分库分表</li>
-<li>跨地区集群：mongo有一个全球部署的模式</li>
-<li>mongo有原生的分片架构</li>
-</ul>
-<h2 id="数据库定位"><a href="#数据库定位" class="headerlink" title="数据库定位"></a>数据库定位</h2><p>原则上 Oracle 和 MySQL 能做的事情，MongoDB 都能做（包括 ACID 事务）<br>优点：横向扩展能力，数据量或并发量增加时候架构可以自动扩展；如果使用mysql，横向扩展并不是透明的，往往需要一些应用进行一些配合<br>优点：灵活模型，适合迭代开发，数据模型多变场景 ；应对需求一直变更的场景，对应的数据库修改模型 修改字段增加字段来说，mysql修改很麻烦，但是mongo不需要预先定义好模型，会随着程序的修改而修改，这样非常适合敏捷开发<br>优点：JSON 数据结构，适合微服务&#x2F;REST API</p>
-<h2 id="使用建议"><a href="#使用建议" class="headerlink" title="使用建议"></a>使用建议</h2><ul>
-<li>Objectid(_id) 是mongodb默认的主键,它的生成和服务器识别码，mongodb 进程pid，时间戳都关联，只能保证主库节点稳定运行期间的单调性，<code>不建议作为业务主键使用</code>，如果把他覆盖掉，后面查问题比较麻烦； <code>如果需要业务主键，在业务主键上发布一个唯一索引</code>；索引是mongo唯一需要发布的东西</li>
-<li><code>建议每条document都加入时间类型的字段</code>，并在上面创建索引，方便未来的数据检索，<code>对于需要定期清理的需求，也可以在这个时间字段上添加ttl索引</code>；注意：到期后mongo会起一个后台进程慢慢删除过期数据，不是到期就删除，而是根据当前数据库使用情况 压力 缓慢的把老数据清理掉</li>
-<li>业务表名最好是见名知意，不要以纯数字作为表名，表名中也不要带特殊字符</li>
-<li>对于需要join查询的多表数据，建议采用嵌套模式进行存储设计；嵌套模式：从离散IO到顺序IO<br><img src="/blog/images/mongo/shiyongjianyi.png" srcset="/blog/img/loading.gif" lazyload alt="嵌套模式"></li>
-</ul>
-<h1 id="高可用架构"><a href="#高可用架构" class="headerlink" title="高可用架构"></a>高可用架构</h1><h2 id="部署模式"><a href="#部署模式" class="headerlink" title="部署模式"></a>部署模式</h2><p><img src="/blog/images/mongo/%E9%83%A8%E7%BD%B2%E6%A8%A1%E5%BC%8F.png" srcset="/blog/img/loading.gif" lazyload alt="部署模式"></p>
-<ul>
-<li>单机: 基本不用</li>
-<li>复制集群<ul>
-<li>写入主节点的时候会有一个oplog，从节点就从主节点的oplog同步数据</li>
-<li>读操作可以在主节点也可以在副本节点，这样可以实现读写分离</li>
-</ul>
-</li>
-<li>分片集群<ul>
-<li>三个角色：<ul>
-<li>router节点[路由节点]：主要对外提供服务，也就是应用程序只会和router节点做操作和连接，也就是应用程序不会直接和shard节点做交互</li>
-<li>config Services：配置服务节点，主要存储元数据，比如集群的分布和数据在shard的分布情况</li>
-<li>shard: 分片节点：真正存储数据的；</li>
-<li>config Services 和 shard 的内部都是replace set[复制集: 是MongoDB中的一种数据复制机制，它由一组MongoDB服务器组成，其中包括一个主服务器和多个从服务器]，也就提高了高可用性</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="副本集"><a href="#副本集" class="headerlink" title="副本集"></a>副本集</h2><p><img src="/blog/images/mongo/%E5%89%AF%E6%9C%AC%E9%9B%86.png" srcset="/blog/img/loading.gif" lazyload alt="副本集两种方式"></p>
-<ul>
-<li><p>方式1：</p>
-<ul>
-<li>这是一个集群</li>
-<li>client Application Driver 请求app应用，通过配置连到集群里</li>
-<li>通过读写分离 or 读写不分离的方式读写数据</li>
-<li>如果不设置读写分离的话，默认会把读写请求到打到Primary节点上；如果读写分离，写在Primary节点，读在secondary节点</li>
-<li>primary节点会异步的把数据都复制到secondary节点上；</li>
-</ul>
-</li>
-<li><p>方式2</p>
-<ul>
-<li>Arbiter只有投票的功能，并不参与数据存储；但是这样的话数据存储就变成了主备从库，不是特别好的数据设计，通常采用第一种：三数据副本的模式</li>
-</ul>
-</li>
-<li><p>读写分离</p>
-<ul>
-<li>可以考虑读写分离，通过在客户端配置，读从secondary节点，写通过primary节点，这样也可以进行一个压力分摊；这完全是由客户端自己定义的；生成连接串后，会返回给客户端整个集群的所有节点，客户端连接第一个节点，后执行isMaster命令，会告知是否主节点等操作</li>
-<li>全备份和增量备份，是mongo的两种备份方式。<ul>
-<li>全备份在晚上低峰期会起一个进程操作，增量备份每隔一小时起一个进程操作。</li>
-<li>那个DR设计里有一个secondary的优先级最低，&#x3D;0，他永远不会被选做主库，另外设置他为hidden状态，他做的就是全量备份，也就是所有的请求都不会落到这个节点上，然后用它做备份和维护</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>故障转移：副本集切换<br><img src="/blog/images/mongo/failover.png" srcset="/blog/img/loading.gif" lazyload alt="故障转移"></p>
-<ul>
-<li>一旦主节点挂掉，mongodb的集群内部发现失联了，就会去判活，其他节点会基于raft协议发起投票，挑选出一个新的主节点，整个切换过程不需要基于第三方工具，是集群内部实现的，所以一旦发生大范围故障，整个机房的宕机，mongo会在10-20s就可以切换完毕</li>
-<li>如果三个节点，挂了两个节点，剩下的一个节点是没办法选择主节点的，因为<code>不满足大多数原则</code>，这样这个剩下的secondary节点会永远保持secondary状态，永远是不可写的，只有只读状态，也就是整个集群永远只有primary节点可以写，secondary永远不能写</li>
-</ul>
-</li>
-</ul>
-<h2 id="DR设计-灾难恢复设计"><a href="#DR设计-灾难恢复设计" class="headerlink" title="DR设计[灾难恢复设计]"></a>DR设计[灾难恢复设计]</h2><p><img src="/blog/images/mongo/DR.png" srcset="/blog/img/loading.gif" lazyload alt="灾备"></p>
-<ul>
-<li>DR设计是指灾难恢复设计，是一种在系统或应用程序中预先计划恢复数据、硬件、软件和网络的过程，以保证在发生灾难性事件后，可以快速恢复业务运营。这种设计包括备份和复原策略、风险评估、容错能力、恢复时间目标以及测试和维护计划等。DR设计通常可以保证业务连续性和稳定性，同时也是信息安全和风险管理的重要措施之一。</li>
-<li>因为mongo是基于raft协议投票的，所以最好选择三个机房，如果单机房挂掉，其他两个机房也可以实现投票选主<ul>
-<li>选三个机房，一个作为Arbiter角色参与投票，另外两个机房是存数据，如果一个机房挂掉，还剩下三个节点可以做投票选主操作</li>
-<li>priority可以设置优先级，选主会优选选择优先级高的节点</li>
-</ul>
-</li>
-</ul>
-
+                
                 
               </div>
             
@@ -434,36 +281,6 @@
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/blog/categories/mongoDB/" class="category-chain-item">mongoDB</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/blog/tags/mongoDB/" class="print-no-link">#mongoDB</a>
-      
-        <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="print-no-link">#数据库</a>
-      
-    </div>
   
 </div>
 
@@ -473,8 +290,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>mongoDB介绍</div>
-      <div>http://example.com/2023/09/16/mongo/mongo/</div>
+      <div></div>
+      <div>http://example.com/2025/04/04/逆向/安卓逆向/环境搭建/手机ROOT环境搭建/</div>
     </div>
     <div class="license-meta">
       
@@ -486,7 +303,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年9月16日</div>
+          <div>2025年4月4日</div>
         </div>
       
       
@@ -518,18 +335,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2025/04/04/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E7%94%B5%E8%84%91%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="电脑基础环境搭建">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">电脑基础环境搭建</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/blog/2022/04/02/mysql/%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E5%92%8C%E8%A7%A6%E5%8F%91%E5%99%A8/" title="存储过程和触发器">
-                        <span class="hidden-mobile">存储过程和触发器</span>
+                      <a href="/blog/2025/04/04/Github%20Pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" title="Github Pages和hexo搭建个人博客">
+                        <span class="hidden-mobile">Github Pages和hexo搭建个人博客</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

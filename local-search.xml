@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title></title>
+    <link href="/blog/2025/04/04/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E6%89%8B%E6%9C%BAROOT%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <url>/blog/2025/04/04/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E6%89%8B%E6%9C%BAROOT%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Github Pages和hexo搭建个人博客</title>
     <link href="/blog/2025/04/04/Github%20Pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"/>
     <url>/blog/2025/04/04/Github%20Pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
@@ -15,6 +28,35 @@
     <tags>
       
       <tag>blog</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>电脑基础环境搭建</title>
+    <link href="/blog/2025/04/04/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E7%94%B5%E8%84%91%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <url>/blog/2025/04/04/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E7%94%B5%E8%84%91%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
+    
+    <content type="html"><![CDATA[<h1 id="JDK环境"><a href="#JDK环境" class="headerlink" title="JDK环境"></a>JDK环境</h1><ul><li>参考：<a href="https://blog.csdn.net/cj962464/article/details/78816275">https://blog.csdn.net/cj962464/article/details/78816275</a></li></ul><h3 id="JDK下载"><a href="#JDK下载" class="headerlink" title="JDK下载"></a>JDK下载</h3><ul><li>方式1</li></ul><ol><li>下载平台：<a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></li><li>选择 “Accept License Agreement” </li><li>根据系统选择对应的安装文件，64位系统安装64位JDK</li></ol><ul><li>方式2</li></ul><ol><li>进入oracle官网：<a href="https://www.oracle.com/------------%E8%BF%99%E9%87%8C%E5%8F%AF%E4%BB%A5%E4%B8%8B%E8%BD%BDjava%E7%9A%84%E5%AE%89%E8%A3%85%E5%8C%85">https://www.oracle.com/------------这里可以下载java的安装包</a></li></ol><h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><ol><li>JAVA_HOME ：即Java安装目录，变量名：“JAVA_HOME”，变量值：Java安装路径</li><li>PATH： “%JAVA_HOME%\bin”</li><li>CLASSPATH：”.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar”</li></ol><h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><ol><li>写一个简单的java程序<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs HelloWorld.java">public class HelloWorld &#123;<br>public static void main(String[] args) &#123;<br>System.out.println(&quot;Hello World!&quot;);<br>&#125;<br>&#125;<br></code></pre></td></tr></table></figure></li><li>javac HelloWorld.java 命令编译该文件，命令执行完后，文件夹会多一个”HelloWorld.class”</li><li>java HelloWorld 执行编译后的class类文件</li><li>或者直接javac命令，看是否正常输出</li></ol><h1 id="SDK环境"><a href="#SDK环境" class="headerlink" title="SDK环境"></a>SDK环境</h1><h3 id="SDK下载"><a href="#SDK下载" class="headerlink" title="SDK下载"></a>SDK下载</h3><ul><li>SDK下载：<a href="http://tools.android-studio.org/index.php/sdk">http://tools.android-studio.org/index.php/sdk</a>  </li><li>安装步骤：<a href="https://blog.csdn.net/laofashi2015/article/details/83307733">https://blog.csdn.net/laofashi2015/article/details/83307733</a></li></ul><h3 id="配置环境变量-1"><a href="#配置环境变量-1" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><ul><li>选中计算机–&gt;点击右键–&gt;选择【属性】–&gt;【高级系统设置】–&gt;【环境变量】，新建&#x2F;修改变量</li><li>ANDROID_HOME：C:\Program Files (x86)\Java\sdk（sdk的安装目录）</li><li>Path：;%ANDROID_HOME%;%ANDROID_HOME%\platform-tools;%ANDROID_HOME%\tools;</li></ul><h3 id="platform-tools的版本问题"><a href="#platform-tools的版本问题" class="headerlink" title="platform-tools的版本问题"></a>platform-tools的版本问题</h3><p>platform-tools都到36版本了， 刷老版本全是报错，如何下载个老版本的platform-tools呢？： <a href="https://www.jianshu.com/p/6cc6ca71c330">https://www.jianshu.com/p/6cc6ca71c330</a><br>具体方法：实测成功：</p><ol><li>下载链接：<a href="https://dl.google.com/android/repository/platform-tools_r[%E7%89%88%E6%9C%AC]-[%E7%B3%BB%E7%BB%9F].zip">https://dl.google.com/android/repository/platform-tools_r[版本]-[系统].zip</a></li><li>版本：platform-tools的版本名称（33.0.1，33.0.0…）</li><li>系统：Windwos→windows，Mac→darwin，linux→linux</li><li>例如：<a href="https://dl.google.com/android/repository/platform-tools_r33.0.1-windows.zip">https://dl.google.com/android/repository/platform-tools_r33.0.1-windows.zip</a></li></ol><h1 id="ADB"><a href="#ADB" class="headerlink" title="ADB"></a>ADB</h1><ul><li>参考：<a href="https://blog.csdn.net/laofashi2015/article/details/83307733">https://blog.csdn.net/laofashi2015/article/details/83307733</a></li></ul><h3 id="adb下载"><a href="#adb下载" class="headerlink" title="adb下载"></a>adb下载</h3><ol><li>在SDK的目录下，打开SDK Manager.exe，下载tools中的platform-tools(下载慢，翻墙快)</li><li>下载好之后在SDK目录下生成platform-tools目录</li><li>在目录中照adb.exe, 找到之后该路径配置环境变量</li><li>运行cmd：输入adb，出现下图即环境搭建成功；</li><li>链接设备：手机通过USB线连接电脑，在cmd运行窗口输入命令：“adb devices”，显示已连接的设备信息；</li></ol><h3 id="如果此种方式adb无法使用，尝试单独安装adb，adb包"><a href="#如果此种方式adb无法使用，尝试单独安装adb，adb包" class="headerlink" title="如果此种方式adb无法使用，尝试单独安装adb，adb包"></a>如果此种方式adb无法使用，尝试单独安装adb，adb包</h3><ul><li>adb1.zip</li><li>adb2.zip</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+      <category>安卓逆向</category>
+      
+      <category>环境搭建</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>安卓逆向</tag>
       
     </tags>
     
