@@ -41,7 +41,7 @@
 <meta property="og:image" content="http://example.com/blog/images/android/xposed/20200704211337257.webp">
 <meta property="og:image" content="http://example.com/blog/images/android/xposed/1743761444218.jpg">
 <meta property="article:published_time" content="2025-04-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-04-04T10:12:39.193Z">
+<meta property="article:modified_time" content="2025-04-04T10:32:32.639Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="安卓逆向">
 <meta name="twitter:card" content="summary_large_image">
@@ -238,7 +238,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k 字
+          1.8k 字
         
       </span>
     
@@ -249,7 +249,7 @@
         
         
         
-          14 分钟
+          15 分钟
         
       </span>
     
@@ -291,9 +291,16 @@
             
               <div class="markdown-body">
                 
-                <h1 id="搭建代码地址"><a href="#搭建代码地址" class="headerlink" title="搭建代码地址"></a>搭建代码地址</h1><p><a target="_blank" rel="noopener" href="https://github.com/huaerxiela/XpTest">https://github.com/huaerxiela/XpTest</a></p>
-<p>1, AndroidManifest.xml 加入模块信息<br>2, build.gradle 引入xposed api支持<br>3, assets&#x2F;xposed_init 指定模块入口类 -&gt; IXposedHook????接口实现</p>
-<p>compileOnly ‘de.robv.android.xposed:api:82’<br>    表示只编译，但是这个包里的代码并不会打包到apk里面，因为xposed框架已经具备了。<br>    xposed是怎么执行成功的:<br>        系统启动的时候，挂在magisk<br>        magisk会提供接口，这个接口被lsposed利用<br>        lsposed就利用magisk提供的接口 在应用启动的时候，就会注入xposed的代码，框架就利用lxposed的逻辑，已经注入到你这个应用中了<br>        也就是注入后，应用进程启动，就会执行magisk的回调，magisk的回调里就有lsposed的代码，代码就会加载xposed的框架，有这个框架之后，就可以利用classloader的方式去加载模块，这样就完成hook了。所以这里只需要进行编译即可。<br>    主要意思就是xposed的逻辑已经在xposed的框架里了，这个框架已经被加载到应用进程里了，所以这里只需要编译就ok了</p>
+                <h1 id="搭建代码地址-直接复用"><a href="#搭建代码地址-直接复用" class="headerlink" title="搭建代码地址[直接复用]"></a>搭建代码地址[直接复用]</h1><ol>
+<li>本节搭建版本：<a target="_blank" rel="noopener" href="https://gitee.com/yangyin_g/xposed-tools">https://gitee.com/yangyin_g/xposed-tools</a></li>
+<li>yrx版本：<a target="_blank" rel="noopener" href="https://github.com/huaerxiela/XpTest">https://github.com/huaerxiela/XpTest</a></li>
+</ol>
+<h1 id="场景汇总-解决方案"><a href="#场景汇总-解决方案" class="headerlink" title="场景汇总&amp;解决方案"></a>场景汇总&amp;解决方案</h1><h2 id="xposed模块安装失败"><a href="#xposed模块安装失败" class="headerlink" title="xposed模块安装失败"></a>xposed模块安装失败</h2><ul>
+<li>生成的破解apk安装失败，报错INSTALL_FAILED_TEST_ONLY，安装时：adb install -t ***.apk</li>
+</ul>
+<h2 id="hook-加壳的app"><a href="#hook-加壳的app" class="headerlink" title="hook 加壳的app"></a>hook 加壳的app</h2><ul>
+<li>需要添加<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 目的为了获取ClassLoader</span><br><span class="hljs-comment">// com.stub.StubApp: 壳程序的application标签的android:name属性</span><br>XposedHelpers.findAndHookMethod(<span class="hljs-string">&quot;com.stub.StubApp&quot;</span>, lpparam.classLoader,<span class="hljs-string">&quot;attachBaseContext&quot;</span>,<br>    Context.class, <span class="hljs-keyword">new</span> <span class="hljs-title class_">XC_MethodHook</span>() &#123;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">afterHookedMethod</span><span class="hljs-params">(MethodHookParam param)</span> <span class="hljs-keyword">throws</span> Throwable &#123;<br>            <span class="hljs-type">Context</span> <span class="hljs-variable">context</span> <span class="hljs-operator">=</span> (Context) param.args[<span class="hljs-number">0</span>];<br>            Log.i(tag, <span class="hljs-string">&quot;content-&gt;&quot;</span> + context);<br>            <span class="hljs-type">ClassLoader</span> <span class="hljs-variable">classLoader</span> <span class="hljs-operator">=</span> context.getClassLoader();<br><span class="hljs-comment">//                            Log.i(tag, &quot;classloader-&gt;&quot; + classLoader);</span><br><span class="hljs-comment">//                            hookOne(classLoader);</span><br>            hookDongCheng(classLoader);<br>        &#125;<br>    &#125;<br>);<br></code></pre></td></tr></table></figure></li>
+</ul>
 <h1 id="搭建流程"><a href="#搭建流程" class="headerlink" title="搭建流程"></a>搭建流程</h1><ul>
 <li>参考：<a target="_blank" rel="noopener" href="https://www.codenong.com/cs107130461/">https://www.codenong.com/cs107130461/</a></li>
 </ul>
@@ -330,8 +337,23 @@
 </ul>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">compileOnly</span> <span class="hljs-string">&#x27;de.robv.android.xposed:api:82&#x27;</span><br>compileOnly <span class="hljs-string">&#x27;de.robv.android.xposed:api:82:sources&#x27;</span><br></code></pre></td></tr></table></figure>
 <ul>
-<li>它们对应的位置如图所示:<br><img src="/blog/images/android/xposed/1743761299415.jpg" srcset="/blog/img/loading.gif" lazyload></li>
-<li>然后点击右上角的 Sync Now 等待完成提示即可。</li>
+<li><p>扩展：compileOnly ‘de.robv.android.xposed:api:82’ </p>
+<ul>
+<li>表示只编译，但是这个包里的代码并不会打包到apk里面，因为xposed框架已经具备了。</li>
+<li>回顾xposed是怎么执行成功的:<ul>
+<li>系统启动的时候，挂载magisk </li>
+<li>magisk会提供接口，这个接口被lsposed利用 </li>
+<li>lsposed就利用magisk提供的接口 在应用启动的时候，就会注入xposed的代码，框架就利用lxposed的逻辑，已经注入到你这个应用中了 </li>
+<li>也就是注入后，应用进程启动，就会执行magisk的回调，magisk的回调里就有lsposed的代码，代码就会加载xposed的框架，有这个框架之后，就可以利用classloader的方式去加载模块，这样就完成hook了。所以这里只需要进行编译即可。</li>
+<li>主要意思就是xposed的逻辑已经在xposed的框架里了，这个框架已经被加载到应用进程里了，所以这里只需要编译就ok了</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>它们对应的位置如图所示:<br><img src="/blog/images/android/xposed/1743761299415.jpg" srcset="/blog/img/loading.gif" lazyload></p>
+</li>
+<li><p>然后点击右上角的 Sync Now 等待完成提示即可。</p>
+</li>
 </ul>
 <h3 id="3-4-编写-Hook-主程序"><a href="#3-4-编写-Hook-主程序" class="headerlink" title="3.4 编写 Hook 主程序"></a>3.4 编写 Hook 主程序</h3><ul>
 <li>展开 java 目录,然后鼠标右击 Xposed 模块对应的包名,新建一个 Java Class 文件,名称自定义(在这里我使用 Main 来命名)</li>
