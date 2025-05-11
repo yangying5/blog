@@ -1,0 +1,789 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="参考：  https:&#x2F;&#x2F;www.yuque.com&#x2F;docs&#x2F;share&#x2F;1559bab0-90de-422c-a3fb-eb32e68f44e0 https:&#x2F;&#x2F;www.yuque.com&#x2F;docs&#x2F;share&#x2F;c5c3ceab-570c-4e2a-823d-0c0a275cca33  文件常识-常用文件及作用 &#x2F;proc&#x2F;self&#x2F;maps：  检测 frida">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/2.%20%E8%A1%A5%E6%96%87%E4%BB%B6/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="参考：  https:&#x2F;&#x2F;www.yuque.com&#x2F;docs&#x2F;share&#x2F;1559bab0-90de-422c-a3fb-eb32e68f44e0 https:&#x2F;&#x2F;www.yuque.com&#x2F;docs&#x2F;share&#x2F;c5c3ceab-570c-4e2a-823d-0c0a275cca33  文件常识-常用文件及作用 &#x2F;proc&#x2F;self&#x2F;maps：  检测 frida">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F.png">
+<meta property="article:published_time" content="2025-05-05T09:36:17.189Z">
+<meta property="article:modified_time" content="2025-05-05T10:54:21.106Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F.png">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-05 17:36" pubdate>
+          2025年5月5日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.yuque.com/docs/share/1559bab0-90de-422c-a3fb-eb32e68f44e0">https://www.yuque.com/docs/share/1559bab0-90de-422c-a3fb-eb32e68f44e0</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.yuque.com/docs/share/c5c3ceab-570c-4e2a-823d-0c0a275cca33">https://www.yuque.com/docs/share/c5c3ceab-570c-4e2a-823d-0c0a275cca33</a></li>
+</ul>
+<h1 id="文件常识-常用文件及作用"><a href="#文件常识-常用文件及作用" class="headerlink" title="文件常识-常用文件及作用"></a>文件常识-常用文件及作用</h1><ul>
+<li><p>&#x2F;proc&#x2F;self&#x2F;maps：</p>
+<blockquote>
+<p>检测 frida&#x2F;xposed 等模块 </p>
+<p>也可以查看系统运行了哪些库  </p>
+<p>找到某个SO的地址等等</p>
+</blockquote>
+</li>
+<li><p>&#x2F;proc&#x2F;pid&#x2F;status：见下面</p>
+</li>
+<li><p>&#x2F;proc&#x2F;self&#x2F;task: 该目录包含的是进程中的每一个线程.每一个目录的名字是以线程ID命名的(tid).在每一个tid下面的目录结构与&#x2F;proc&#x2F;pid下面的目录结构相同.</p>
+<blockquote>
+<p>&#x2F;proc&#x2F;pid&#x2F;status 和 &#x2F;proc&#x2F;pid&#x2F;task&#x2F;pid&#x2F;status：普通状态下，TracerPid这项应该为0；调试状态下为调试进程的PID。</p>
+</blockquote>
+</li>
+<li><p>&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;random&#x2F;boot_id: </p>
+<blockquote>
+<p>Linux&#x2F;Android 文件系统的知识：boot_id 文件在开机时生成，在设备关机前不会改变内容</p>
+<p>对业务的经验：boot_id 常用于构建设备指纹或单纯的信息采集，需要补它</p>
+</blockquote>
+</li>
+<li><p>&#x2F;proc&#x2F;net</p>
+<ul>
+<li>&#x2F;proc&#x2F;net&#x2F;tcp：检测 Frida、IDA的默认端口</li>
+<li>&#x2F;proc&#x2F;net&#x2F;arp： 是网络相关的文件，读取本地Arp表获取当前局域网内其他设备信息</li>
+<li>&#x2F;proc&#x2F;net&#x2F;unix</li>
+<li>是Google 禁止普通进程访问该目录，这一规定对 Android 10 以及更高的版本均有效 </li>
+<li>这个目录主要用于检测环境，比如 IDA&#x2F;Frida Server 的端口检测。将真机的对应文件一股脑 拷贝过来，还可能把风险信息和检测点带过来</li>
+</ul>
+</li>
+<li><p>&#x2F;proc&#x2F;self&#x2F;mounts：是访问与Magisk检测有关</p>
+</li>
+<li><p>&#x2F;proc&#x2F;pid&#x2F;fd：是一个子目录,包含了当前进程打开的每一个文件.每一个条目都是一个文件描述符,是一个符号链接,指向的是实际打开的地址</p>
+</li>
+<li><p>&#x2F;proc&#x2F;version： 可以用来确认内核版本，这有助于检测系统是否原生&#x2F;被魔改</p>
+</li>
+<li><p>&#x2F;proc&#x2F;self&#x2F;auxv：auxv 是为了检测CPU是否支持特定指令集，通过flag和位掩码予以确认</p>
+</li>
+<li><p>&#x2F;proc&#x2F;sys&#x2F;fs&#x2F;binfmt_misc，功能是检测模拟器，检查目录内有无arm关键字相关文件名，基于QEMU的模拟器都有此特征</p>
+</li>
+<li><p>&#x2F;sys&#x2F;class&#x2F;thermal，检查CPU温度，真机下有thermal_zone文件，模拟器不具备这系列文件</p>
+</li>
+<li><p>system&#x2F;bin&#x2F;su | &#x2F;xbin&#x2F;su等： 这一类是检测是否设备是否Root</p>
+</li>
+<li><p>&#x2F;sys&#x2F;devices&#x2F;system&#x2F;cpu&#x2F;cpu0&#x2F;cpufreq&#x2F;cpuinfo_max_freq: cpu信息</p>
+</li>
+<li><p>&#x2F;sys&#x2F;class&#x2F;power_supply&#x2F;battery&#x2F;temp  |  &#x2F;sys&#x2F;class&#x2F;power_supply&#x2F;battery&#x2F;voltage_now：电池信息</p>
+</li>
+<li><p>&#x2F;data</p>
+<blockquote>
+<p>如果文件访问 &#x2F;data，判断是否有写权限，进而确认设备环境是否 Root 的话，我们需要手动处理让其访问失败</p>
+<p>因为虚拟文件系统会自动生成 data 目录，进而访问成功</p>
+</blockquote>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs aspectj"><span class="hljs-keyword">case</span> <span class="hljs-string">&quot;/data&quot;</span>:&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">return</span> FileResult.<span class="hljs-title">failed</span><span class="hljs-params">(UnixEmulator.EACCES)</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="补系统文件"><a href="#补系统文件" class="headerlink" title="补系统文件"></a>补系统文件</h1><ul>
+<li>思路：当发现需要某文件，确定[<strong>google</strong>]该文件的功能作用，确定是属于不用补的文件，还是环境检测，还是信息获取，还是其他。再进行下一步操作</li>
+<li>当某个文件访问发起时，有人会不清楚它是信息读取还是环境检测，那么可以从星球中找几个实例跑一下，看一下其中所发生的文件访问，然后对应着Google一番，就明白个七七八八了，总之多Google。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// google 发现是检测是否是阿里云OS的lemur虚拟机</span><br>    <span class="hljs-keyword">if</span>(pathname.<span class="hljs-title function_">equals</span>(<span class="hljs-string">&quot;/system/lib/libvmkid_lemur.so&quot;</span>))&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">FileResult</span>.<span class="hljs-title function_">failed</span>(<span class="hljs-number">13</span>);<br>    &#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="文件分类"><a href="#文件分类" class="headerlink" title="文件分类"></a>文件分类</h2><h3 id="不用补的文件"><a href="#不用补的文件" class="headerlink" title="不用补的文件"></a>不用补的文件</h3><ul>
+<li>pathName:&#x2F;dev&#x2F;<strong>properties</strong><ul>
+<li>一般用于<code>__system_property_get</code>库函数，从这里获取系统属性</li>
+</ul>
+</li>
+<li>fuck systemkey:ro.kernel.qemu</li>
+<li>fuck systemkey:libc.debug.malloc</li>
+<li>pathName:&#x2F;proc&#x2F;stat</li>
+<li><code>/proc/net 目录下文件</code>： <ul>
+<li>一是 Google 禁止普通进程访问该目录，这一规定对 Android 10 以及更高的版本均有效 </li>
+<li>二是这个目录主要用于检测环境，比如 IDA&#x2F;Frida Server 的端口检测。将真机的对应文件一股脑 拷贝过来，还可能把风险信息和检测点带过来</li>
+<li>&#x2F;proc&#x2F;net&#x2F;arp</li>
+<li>&#x2F;proc&#x2F;net&#x2F;tcp</li>
+<li>&#x2F;proc&#x2F;net&#x2F;unix</li>
+</ul>
+</li>
+<li>环境检测的文件</li>
+</ul>
+<h3 id="环境检测"><a href="#环境检测" class="headerlink" title="环境检测"></a>环境检测</h3><p>样本做环境检测相关的文件访问时，<code>主要检测这些文件是否存在，以及是否有权限</code></p>
+<ul>
+<li>Root检测（检测 su、Magisk、Riru，检测市面上的 Root 工具）</li>
+<li>模拟器检测（检测 Qemu，检测各家模拟器，比如夜神、雷电、Mumu 等模拟器的文件特征、驱动特征等）</li>
+<li>危险应用检测（各类多开助手、按键精灵、接码平台等）</li>
+<li>云手机检测 （以各种云手机产品为主）</li>
+<li>Hook框架（以 Xposed、Substrate、Frida 为主）</li>
+<li>脱壳机（以 Fart、DexHunter、Youpk 三者为主）</li>
+</ul>
+<p><code>我们选择什么都不补就行，因为不管是自定义还是默认的文件处理器，以及虚拟文件系统里，都不会有这样内容，这正合我们的意</code>。就像下面，什么都不补就行了</p>
+<h3 id="信息获取"><a href="#信息获取" class="headerlink" title="信息获取"></a>信息获取</h3><ul>
+<li>遇到下面这些文件时，建议正常补，并且了解每个文件的用途，在生产环境上部分需要随机化<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-regexp">/proc/</span>meminfo<br><span class="hljs-regexp">/proc/</span>version<br><span class="hljs-regexp">/proc/</span>cpuinfo<br><span class="hljs-regexp">/proc/</span>stat<br><span class="hljs-regexp">/proc/</span>asound<span class="hljs-regexp">/cardX/</span>id<br><span class="hljs-regexp">/proc/</span><span class="hljs-keyword">self</span><span class="hljs-operator">/</span>exe<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="补文件符号链接-fd"><a href="#补文件符号链接-fd" class="headerlink" title="补文件符号链接[fd]"></a>补文件符号链接[fd]</h2><ul>
+<li>参考星球：Unidbg文件处理基本使用</li>
+<li><code>我们说FD目录包含了当前进程中打开的每一个文件，那么其中必然有自身apk文件，因为进程需要通过apk来访问相关资源文件。那么我打算通过这个方式来获取APK全路径名（这可以用来检测自身SO是否运行在自己Apk中，或者做签名校验），这比通过JNI获取路径名的方式更隐蔽。</code></li>
+<li>处理其他符号链接可能难办，但处理FD目录并不麻烦，因为Unidbg中对它做了处理。<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mel"><span class="hljs-keyword">if</span> (pathname.<span class="hljs-keyword">startsWith</span>(<span class="hljs-string">&quot;/proc/&quot;</span> + emulator.getPid() + <span class="hljs-string">&quot;/fd/&quot;</span>) || pathname.<span class="hljs-keyword">startsWith</span>(<span class="hljs-string">&quot;/proc/self/fd/&quot;</span>)) &#123;<br>    <span class="hljs-keyword">int</span> fd = Integer.parseInt(pathname.<span class="hljs-keyword">substring</span>(pathname.lastIndexOf(<span class="hljs-string">&quot;/&quot;</span>) + <span class="hljs-number">1</span>));<br>    T <span class="hljs-keyword">file</span> = fdMap.get(fd);<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">file</span> != null) &#123;<br>        <span class="hljs-keyword">return</span> FileResult.success(<span class="hljs-keyword">file</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>简而言之，只要你在Unidbg中打开了某个文件，那么对应的，FD中就可以访问和处理到它。</li>
+</ul>
+<ol>
+<li><code>那么首先，我们通过SyscallHandler发起一个文件打开的操作，选择一个较早的时机即可。</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 新添加的代码</span><br>emulator.<span class="hljs-title function_">getSyscallHandler</span>().<span class="hljs-title function_">open</span>(emulator, <span class="hljs-string">&quot;/data/app/com.example.fddemo-ZNS4KZftr0zbBcMSmmYZHw==/base.apk&quot;</span>, <span class="hljs-number">0</span>);<br>vm = emulator.<span class="hljs-title function_">createDalvikVM</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;unidbg-android/src/test/resources/fddemo/app-debug.apk&quot;</span>));<br></code></pre></td></tr></table></figure></li>
+<li>然后在resolve中对它做补文件操作<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-keyword">if</span>(pathname.<span class="hljs-built_in">equals</span>(<span class="hljs-string">&quot;/data/app/com.example.fddemo-ZNS4KZftr0zbBcMSmmYZHw==/base.apk&quot;</span>))&#123;<br>    <span class="hljs-keyword">return</span> FileResult.success(<span class="hljs-keyword">new</span> SimpleFileIO(oflags, <span class="hljs-keyword">new</span> File(<span class="hljs-string">&quot;unidbg-android/src/test/resources/fddemo/app-debug.apk&quot;</span>), pathname));<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="补设备文件"><a href="#补设备文件" class="headerlink" title="补设备文件"></a>补设备文件</h2><ul>
+<li>所有硬件都有对应的文件，文件系统通过访问这些文件，去访问对应的设备。即从形式上看，设备文件和普通文件一样，但本质上，对设备文件的读写操作实际上与某个设备的输入输出操作关联在一起。</li>
+<li>Unidbg中，对应于设备文件的概念叫 <code>DriverFileIO</code>，其中也做了一些处理<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript">public <span class="hljs-keyword">static</span> <span class="hljs-title class_">DriverFileIO</span> <span class="hljs-title function_">create</span>(<span class="hljs-params">Emulator&lt;?&gt; emulator, int oflags, <span class="hljs-built_in">String</span> pathname</span>) &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;/dev/urandom&quot;</span>.<span class="hljs-title function_">equals</span>(pathname) || <span class="hljs-string">&quot;/dev/random&quot;</span>.<span class="hljs-title function_">equals</span>(pathname) || <span class="hljs-string">&quot;/dev/srandom&quot;</span>.<span class="hljs-title function_">equals</span>(pathname)) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RandomFileIO</span>(emulator, pathname);<br>    &#125;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;/dev/alarm&quot;</span>.<span class="hljs-title function_">equals</span>(pathname) || <span class="hljs-string">&quot;/dev/null&quot;</span>.<span class="hljs-title function_">equals</span>(pathname)) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DriverFileIO</span>(emulator, oflags, pathname);<br>    &#125;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;/dev/ashmem&quot;</span>.<span class="hljs-title function_">equals</span>(pathname)) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ashmem</span>(emulator, oflags, pathname);<br>    &#125;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;/dev/zero&quot;</span>.<span class="hljs-title function_">equals</span>(pathname)) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ZeroFileIO</span>(emulator, oflags, pathname);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>总体来说，我们几乎遇不到手动处理这类文件的需求。</li>
+</ul>
+<h2 id="补管道文件"><a href="#补管道文件" class="headerlink" title="补管道文件"></a>补管道文件</h2><ul>
+<li>典型的情况就是库函数 popen，使用匿名管道传输数据。Unidbg中如何处理它，是一个高频问题，详见星球《wind详细分析》这一篇综合实例，或者笔记</li>
+</ul>
+<h2 id="补Socket文件"><a href="#补Socket文件" class="headerlink" title="补Socket文件"></a>补Socket文件</h2><h3 id="通过ioctl来获取设备mac地址"><a href="#通过ioctl来获取设备mac地址" class="headerlink" title="通过ioctl来获取设备mac地址"></a>通过ioctl来获取设备mac地址</h3><ul>
+<li>常见问题是<code>通过ioctl来获取设备mac地址</code>，这个逻辑在Unidbg中尚未实现，建议patch，代码如下<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs javascript">public <span class="hljs-keyword">void</span> <span class="hljs-title function_">handleIoctl</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-title class_">Symbol</span> ioctlSymbol = <span class="hljs-variable language_">module</span>.<span class="hljs-title function_">findSymbolByName</span>(<span class="hljs-string">&quot;ioctl&quot;</span>);<br>    emulator.<span class="hljs-title function_">attach</span>().<span class="hljs-title function_">addBreakPoint</span>(ioctlSymbol.<span class="hljs-title function_">getAddress</span>(), <span class="hljs-keyword">new</span> <span class="hljs-title class_">BreakPointCallback</span>() &#123;<br>        @<span class="hljs-title class_">Override</span><br>        public boolean <span class="hljs-title function_">onHit</span>(<span class="hljs-params">Emulator&lt;?&gt; emulator, long address</span>) &#123;<br>              <span class="hljs-comment">// 顺利则返回0</span><br>              <span class="hljs-title class_">RegisterContext</span> registerContext = emulator.<span class="hljs-title function_">getContext</span>();<br>              int requestId = registerContext.<span class="hljs-title function_">getIntByReg</span>(<span class="hljs-title class_">ArmConst</span>.<span class="hljs-property">UC_ARM_REG_R1</span>);<br>              <span class="hljs-title class_">System</span>.<span class="hljs-property">out</span>.<span class="hljs-title function_">println</span>(<span class="hljs-string">&quot;requestID:&quot;</span>+<span class="hljs-title class_">Integer</span>.<span class="hljs-title function_">toHexString</span>(requestId));<br>              <span class="hljs-comment">// #define SIOCGIFHWADDR 0x8927 /* Get hardware address */</span><br>              <span class="hljs-keyword">if</span>(requestId==<span class="hljs-number">0x8927</span>)&#123;<br>                    emulator.<span class="hljs-title function_">getBackend</span>().<span class="hljs-title function_">reg_write</span>(<span class="hljs-title class_">ArmConst</span>.<span class="hljs-property">UC_ARM_REG_R0</span>, -<span class="hljs-number">1</span>);<br>                    emulator.<span class="hljs-title function_">getBackend</span>().<span class="hljs-title function_">reg_write</span>(<span class="hljs-title class_">ArmConst</span>.<span class="hljs-property">UC_ARM_REG_PC</span>, registerContext.<span class="hljs-title function_">getLRPointer</span>().<span class="hljs-property">peer</span>);<br>              &#125;<br>              <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>         &#125;<br>    &#125;);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="补proc伪文件系统"><a href="#补proc伪文件系统" class="headerlink" title="补proc伪文件系统"></a>补proc伪文件系统</h2><ul>
+<li><code>proc文件系统由内核提供</code>，它是一个伪文件系统，_它只存在内存当中，而不占用外存空间_。_它以文件系统的方式为访问系统内核数据的操作提供接口_。<code>系统中当前运行的每一个进程都有对应的一个目录在 proc 下，以进程的 PID 号为目录名，它们是读取进程信息的接口</code>。</li>
+<li>注意：假设 Unidbg 访问 &#x2F;proc&#x2F;1234&#x2F;maps或&#x2F;proc&#x2F;self&#x2F;maps<ul>
+<li>你不应该通过 adb 在同样位置去找它，因为 Unidbg 和真实环境的 pid 显然没有对应关系</li>
+<li>应该通过 ps | grep packageName找到目标 app 在真机上的 pid，然后去做对应的查看</li>
+</ul>
+</li>
+</ul>
+<h3 id="固定pid"><a href="#固定pid" class="headerlink" title="固定pid"></a>固定pid</h3><ul>
+<li>修改了src&#x2F;main&#x2F;java&#x2F;com&#x2F;github&#x2F;unidbg&#x2F;AbstractEmulator.java中的如图位置，使PID固定</li>
+<li>因为PID不停变动可能会影响后续分析，但这不是必须的操作。<code>如果Unidbg固定PID，很容易依此检测和对抗Unidbg</code></li>
+</ul>
+<h3 id="读取-proc-self-maps做什么"><a href="#读取-proc-self-maps做什么" class="headerlink" title="读取&#x2F;proc&#x2F;self&#x2F;maps做什么"></a>读取&#x2F;proc&#x2F;self&#x2F;maps做什么</h3><p>&#x2F;proc&#x2F;pid&#x2F;maps 包含了当前进程映射的内存区域以及他们的访问权限</p>
+<ol>
+<li>检测frida反调试</li>
+<li>也可以查看系统运行了哪些库，</li>
+<li>找到某个SO的地址等等</li>
+</ol>
+<p>注意：</p>
+<ol>
+<li><p>Unidbg 中对它做了专门的处理——如果在自定义 IOResolver 中没有得到处理，会返回Unidbg虚拟环境中已加载虚拟模块所构成的maps（它完全按照maps的格式生成，内容对应于Unidbg虚拟内存中的模块信息，我们叫它fakeMaps。）</p>
+</li>
+<li><p><code>这个fakeMaps可以解决和避免不少问题</code>。比如样本读取maps，检测其中是否有frida&#x2F;xposed&#x2F;substrate&#x2F;magisk&#x2F;riru 这些风险模块的信息。<code>因为 fakeMaps 很干净简洁，所以不会被检测出什么问题。相比较而言，从真机copy出maps，因为真机maps中存在frida等模块信息，反而带来了风险</code>。</p>
+</li>
+<li><p><code>事实上，fakemaps是有隐患的</code>。我们需要意识到 fakeMaps 和 真实maps 的关系——真实maps包含整个进程的模块信息，fakeMaps 仅包含当前所处理的SO及其依赖模块的信息，这是一种包含关系，后者包含了许多前者所不具有的信息。而在SO有一些逻辑里，需要获取进程中的信息（即下图在小框外的部分），那么就会出问题</p>
+</li>
+<li><p>有一套粗糙的流程，如果能走通那最好。 </p>
+<ol>
+<li>样本访问maps </li>
+<li>先不补maps，即用Unidbg自生成的fakemaps </li>
+<li>观察程序执行是否发生错误，比如明显的报错 </li>
+<li>如果没有报错，那就当无事发生，fakeMaps直接过。 </li>
+<li>如果出现问题，那么使用从真机获得的maps </li>
+<li>如果没有报错，那就当无事发生，maps直接过。 </li>
+<li>如果出现内存相关异常，具体分析</li>
+</ol>
+</li>
+<li><p>需要在我们的resolve中用代码方式补maps，才能用上我们从测试机里pull的maps。**<em>对maps的读取常常是重要的反Frida战场</em>**</p>
+</li>
+<li><p><strong><em>如果使用&#x2F;proc&#x2F;self&#x2F;maps补环境没有效果，就使用&#x2F;proc&#x2F;<pid>&#x2F;maps 文件</em></strong></p>
+</li>
+</ol>
+<h3 id="读取-proc-pid-cmdline做什么"><a href="#读取-proc-pid-cmdline做什么" class="headerlink" title="读取&#x2F;proc&#x2F;pid&#x2F;cmdline做什么"></a>读取&#x2F;proc&#x2F;pid&#x2F;cmdline做什么</h3><ul>
+<li>在Android系统中，<code>进程的cmdline返回应用的进程名</code>。那么此处的目的就很明显了，<code>验证环境是否是”自己“的环境，防止应用被重打包</code>。当样本发现进程名和自身不符时，即说明自己可能被重打包了，就会直接退出或者引向错误逻辑。</li>
+<li>我们最好做一下PID的固定，PID一直变动对我们补环境可能有影响，最好将其固定成测试机中真实运行的样本PID</li>
+<li>src&#x2F;main&#x2F;java&#x2F;com&#x2F;github&#x2F;unidbg&#x2F;AbstractEmulator.java 修改进程号</li>
+<li>结尾记得加上\0，这是 cmdline 的格式规范，不加的话在解析时存在出错的可能性<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs csharp">@Override<br>   <span class="hljs-function"><span class="hljs-keyword">public</span> FileResult <span class="hljs-title">resolve</span>(<span class="hljs-params">Emulator emulator, String pathname, <span class="hljs-built_in">int</span> oflags</span>)</span> &#123;<br>       <span class="hljs-keyword">if</span> ((<span class="hljs-string">&quot;/proc/&quot;</span>+emulator.getPid()+<span class="hljs-string">&quot;/cmdline&quot;</span>).<span class="hljs-keyword">equals</span>(pathname) || (<span class="hljs-string">&quot;/proc/self/cmdline&quot;</span>).<span class="hljs-keyword">equals</span>(pathname)) &#123;<br>           <span class="hljs-comment">//我显式的补了\0，因为cmdline的格式默认以\0分割，如果不加\0，当样本以“逐个字节往后读，直到遇到\0”的逻辑解析时，会导致错误，记不住的可以老老实实补SimpleFileIO</span><br>            <span class="hljs-keyword">return</span> FileResult.success(<span class="hljs-keyword">new</span> ByteArrayFileIO(oflags, pathname, <span class="hljs-string">&quot;com.sina.weibo\0&quot;</span>.getBytes(StandardCharsets.UTF_8)));<br>           <span class="hljs-keyword">return</span> FileResult.success(<span class="hljs-keyword">new</span> ByteArrayFileIO(oflags, pathname, <span class="hljs-string">&quot;ctrip.android.view ×××&quot;</span>.getBytes()));<br>       &#125;<br>       <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>   &#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="读取-proc-pid-status做什么"><a href="#读取-proc-pid-status做什么" class="headerlink" title="读取&#x2F;proc&#x2F;pid&#x2F;status做什么"></a>读取&#x2F;proc&#x2F;pid&#x2F;status做什么</h3><ul>
+<li>该文件包含该进程的众多信息：可执行文件名、当前状态、PID 和 PPID、实际及有效的 UID 和 GID、内存使用情况、以及其他。</li>
+<li>一般而言，<code>样本检测status是为了其中的TracerPid字段</code>，TracerPid为0说明样本没有被调试，不为0说明正在被调试，所以一般会检测TracePid，如果被调试则直接退出或者引向错误逻辑。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs javascript">@<span class="hljs-title class_">Override</span><br>    public <span class="hljs-title class_">FileResult</span> <span class="hljs-title function_">resolve</span>(<span class="hljs-params">Emulator emulator, <span class="hljs-built_in">String</span> pathname, int oflags</span>) &#123;<br>        <span class="hljs-keyword">if</span> ((<span class="hljs-string">&quot;/proc/&quot;</span>+emulator.<span class="hljs-title function_">getPid</span>()+<span class="hljs-string">&quot;/cmdline&quot;</span>).<span class="hljs-title function_">equals</span>(pathname) || (<span class="hljs-string">&quot;/proc/self/cmdline&quot;</span>).<span class="hljs-title function_">equals</span>(pathname)) &#123;<br><span class="hljs-comment">//            return FileResult.success(new ByteArrayFileIO(oflags, pathname, &quot;ctrip.android.view&quot;.getBytes()));</span><br>                <span class="hljs-keyword">return</span> <span class="hljs-title class_">FileResult</span>.<span class="hljs-title function_">success</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">SimpleFileIO</span>(oflags, <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;D:\\unidbg-teach\\unidbg-android\\src\\test\\java\\com\\lession1\\cmdline&quot;</span>), pathname));<br>            &#125;<br>            <span class="hljs-comment">// 复制过来的status的文本要注意给里面代表pid的值和unidbg的pid一致            </span><br>        <span class="hljs-keyword">if</span> ((<span class="hljs-string">&quot;/proc/&quot;</span> + emulator.<span class="hljs-title function_">getPid</span>() + <span class="hljs-string">&quot;/status&quot;</span>).<span class="hljs-title function_">equals</span>(pathname) || (<span class="hljs-string">&quot;/proc/self/status&quot;</span>).<span class="hljs-title function_">equals</span>(pathname)) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-title class_">FileResult</span>.<span class="hljs-title function_">success</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayFileIO</span>(oflags, pathname, (<span class="hljs-string">&quot;Name:   ip.android.view\n&quot;</span> +<br>                    <span class="hljs-string">&quot;State:  R (running)\n&quot;</span> +<br>                    <span class="hljs-string">&quot;Tgid:   &quot;</span>+emulator.<span class="hljs-title function_">getPid</span>()+<span class="hljs-string">&quot;\n&quot;</span> +<br>                    <span class="hljs-string">&quot;Pid:    &quot;</span>+emulator.<span class="hljs-title function_">getPid</span>()+<span class="hljs-string">&quot;\n&quot;</span> +<br>                    <span class="hljs-string">&quot;PPid:   17506\n&quot;</span> +<br>                    <span class="hljs-string">&quot;TracerPid:      0\n&quot;</span> +<br>                    <span class="hljs-string">&quot;Uid:    10148   10148   10148   10148\n&quot;</span> +<br>                    <span class="hljs-string">&quot;Gid:    10148   10148   10148   10148\n&quot;</span> +<br>                    <span class="hljs-string">&quot;FDSize: 512\n&quot;</span> +<br>                    <span class="hljs-string">&quot;Groups: 3002 3003 9997 20148 50148\n&quot;</span> +<br>                    <span class="hljs-string">&quot;VmPeak:  2224800 kB\n&quot;</span> +<br>                    <span class="hljs-string">&quot;VmSize:  2185240 kB\n&quot;</span> +<br>                    <span class="hljs-string">&quot;VmLck:         0 kB\n&quot;</span> +<br>                    <span class="hljs-string">&quot;VmPin:         0 kB\n&quot;</span> +<br>                    <span class="hljs-string">&quot;VmHWM:    354920 kB\n&quot;</span> +<br>                    <span class="hljs-string">&quot;VmRSS:    324572 kB\n&quot;</span> +<br>                    <span class="hljs-string">&quot;VmData:   379340 kB\n&quot;</span> +<br>                    <span class="hljs-string">&quot;VmStk:      8192 kB\n&quot;</span> +<br>                    <span class="hljs-string">&quot;VmExe:        20 kB\n&quot;</span> +<br>                    <span class="hljs-string">&quot;VmLib:    209888 kB\n&quot;</span> +<br>                    <span class="hljs-string">&quot;VmPTE:      2020 kB\n&quot;</span> +<br>                    <span class="hljs-string">&quot;VmSwap:     3012 kB\n&quot;</span> +<br>                    <span class="hljs-string">&quot;Threads:        127\n&quot;</span> +<br>                    <span class="hljs-string">&quot;SigQ:   2/6517\n&quot;</span> +<br>                    <span class="hljs-string">&quot;SigPnd: 0000000000000000\n&quot;</span> +<br>                    <span class="hljs-string">&quot;ShdPnd: 0000000000000000\n&quot;</span> +<br>                    <span class="hljs-string">&quot;SigBlk: 0000000000001204\n&quot;</span> +<br>                    <span class="hljs-string">&quot;SigIgn: 0000000000000000\n&quot;</span> +<br>                    <span class="hljs-string">&quot;SigCgt: 00000006400096fc\n&quot;</span> +<br>                    <span class="hljs-string">&quot;CapInh: 0000000000000000\n&quot;</span> +<br>                    <span class="hljs-string">&quot;CapPrm: 0000000000000000\n&quot;</span> +<br>                    <span class="hljs-string">&quot;CapEff: 0000000000000000\n&quot;</span> +<br>                    <span class="hljs-string">&quot;CapBnd: 0000000000000000\n&quot;</span> +<br>                    <span class="hljs-string">&quot;CapAmb: 0000000000000000\n&quot;</span> +<br>                    <span class="hljs-string">&quot;Seccomp:        2\n&quot;</span> +<br>                    <span class="hljs-string">&quot;Cpus_allowed:   0f\n&quot;</span> +<br>                    <span class="hljs-string">&quot;Cpus_allowed_list:      0-3\n&quot;</span> +<br>                    <span class="hljs-string">&quot;Mems_allowed:   1\n&quot;</span> +<br>                    <span class="hljs-string">&quot;Mems_allowed_list:      0\n&quot;</span> +<br>                    <span class="hljs-string">&quot;voluntary_ctxt_switches:        21102\n&quot;</span> +<br>                    <span class="hljs-string">&quot;nonvoluntary_ctxt_switches:     20849&quot;</span>).<span class="hljs-title function_">getBytes</span>()));<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h3><p><img src="/blog/../../../../../../../images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F.png" srcset="/blog/img/loading.gif" lazyload></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/05/逆向/安卓逆向/6. 模拟执行/Unidbg/补环境/2. 补文件/补系统文件/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/1.%20%E5%BA%93%E5%87%BD%E6%95%B0%E4%BB%8B%E7%BB%8D/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/2.%20%E8%A1%A5%E6%96%87%E4%BB%B6/%E8%A1%A5so%E6%96%87%E4%BB%B6/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,763 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="常用指令跳转指令：B&lt;Branch分支&gt;123456B 无条件跳转       BL 带链接的无条件跳转  BX 带状态切换的无条件跳转   根据目标地址最低位切换状态（arm&#x2F;thumb）BLX 带链接和状态切换的无条件跳转B loc_地址BEQ,BNE  不带x的，跳转之后就不回来了 B带上X，才表示，即将执行的指令，会发生一个指令集的变化，即arm变成thumb或者thumb变成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/04/20/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/2.%20%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80/5.%20ARM/ARM%E6%B1%87%E7%BC%96%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="常用指令跳转指令：B&lt;Branch分支&gt;123456B 无条件跳转       BL 带链接的无条件跳转  BX 带状态切换的无条件跳转   根据目标地址最低位切换状态（arm&#x2F;thumb）BLX 带链接和状态切换的无条件跳转B loc_地址BEQ,BNE  不带x的，跳转之后就不回来了 B带上X，才表示，即将执行的指令，会发生一个指令集的变化，即arm变成thumb或者thumb变成">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/arm/1745498615644.jpg">
+<meta property="og:image" content="http://example.com/images/android/%E6%A3%80%E6%B5%8B/%E5%B8%B8%E7%94%A8ARM%E6%8C%87%E4%BB%A4%E9%9B%86%E5%8F%8A%E6%B1%87%E7%BC%96.png">
+<meta property="article:published_time" content="2025-04-20T13:35:48.342Z">
+<meta property="article:modified_time" content="2025-04-24T12:45:55.665Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/arm/1745498615644.jpg">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-20 21:35" pubdate>
+          2025年4月20日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h1><h2 id="跳转指令：B"><a href="#跳转指令：B" class="headerlink" title="跳转指令：B&lt;Branch分支&gt;"></a>跳转指令：B&lt;Branch分支&gt;</h2><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-keyword">B</span> 无条件跳转       <br><span class="hljs-keyword">BL</span> 带链接的无条件跳转  <br><span class="hljs-keyword">BX</span> 带状态切换的无条件跳转   根据目标地址最低位切换状态（<span class="hljs-meta">arm</span>/<span class="hljs-meta">thumb</span>）<br><span class="hljs-keyword">BLX</span> 带链接和状态切换的无条件跳转<br><span class="hljs-keyword">B</span> loc_地址<br><span class="hljs-symbol">BEQ</span>,BNE<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>不带x的，跳转之后就不回来了</code></li>
+<li>B带上X，才表示，即将执行的指令，会发生一个指令集的变化，即arm变成thumb或者thumb变成arm<ul>
+<li>BLX：LR和T，pc会变 </li>
+<li>BL：LR和PC会变 </li>
+<li>BX：T和PC会变</li>
+</ul>
+</li>
+<li>BL label函数调用，我们回顾一下BL指令所作的两件事<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-number">1</span>. 将下一行指令的地址放到 <span class="hljs-built_in">LR</span><br><span class="hljs-number">2</span>. 跳转到 label<br><span class="hljs-symbol">eg</span>：<br><span class="hljs-symbol">.text:</span><span class="hljs-number">0000000000029</span>D90                 <span class="hljs-keyword">BL</span>              sub_29D9C<br><span class="hljs-symbol">.text:</span><span class="hljs-number">0000000000029</span>D94                 <span class="hljs-keyword">ADD</span>             <span class="hljs-built_in">X1</span>, <span class="hljs-built_in">X0</span>, <span class="hljs-number">#0x34</span> <span class="hljs-comment">; &#x27;4&#x27;</span><br>此时BL之后，<span class="hljs-built_in">LR</span>寄存器=下一行指令地址为<span class="hljs-number">0x29D94</span><span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="数据传送指令"><a href="#数据传送指令" class="headerlink" title="数据传送指令"></a>数据传送指令</h2><ul>
+<li>MOV：将<code>立即数或寄存器的数据</code>传送到目标寄存器 ←<blockquote>
+<p>MOV R0, #8        R0&#x3D;8</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="数据算术运算指令"><a href="#数据算术运算指令" class="headerlink" title="数据算术运算指令"></a>数据算术运算指令</h2><ul>
+<li>ADD,SUB,MUL,DIV </li>
+<li>有符号，无符号运算；带进位运算</li>
+</ul>
+<h2 id="数据逻辑运算指令"><a href="#数据逻辑运算指令" class="headerlink" title="数据逻辑运算指令"></a>数据逻辑运算指令</h2><ul>
+<li>与：AND     全1出1</li>
+<li>或：ORR    有1出1</li>
+<li>异或：EOR  相同为0，不同为1                               </li>
+<li>移位：<ul>
+<li>实质是乘，除，类似于小数点移位，但相反。小数点左移，数变小；右移变大。</li>
+<li>但逻辑移位，左移变大，右移变小，且按2的倍数进行，因为是2进制。</li>
+<li>LSL：逻辑左移</li>
+<li>LSR：逻辑右移<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">LSL</span> <span class="hljs-built_in">R0</span>,<span class="hljs-built_in">R1</span>，#<span class="hljs-number">2</span> <span class="hljs-built_in">R0</span>=<span class="hljs-built_in">R1</span>*<span class="hljs-number">4</span>   <br>LSR <span class="hljs-built_in">R0</span>,<span class="hljs-built_in">R1</span>，#<span class="hljs-number">2</span>   <span class="hljs-built_in">R0</span>=<span class="hljs-built_in">R1</span>*<span class="hljs-number">2</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="比较指令"><a href="#比较指令" class="headerlink" title="比较指令"></a>比较指令</h2><ul>
+<li>CMP：比较</li>
+<li>CMP R0 #0 		R0寄存器中的值与0比较</li>
+<li>标志位：如z位，这个都可以在动态调试时，寄存器窗口看到</li>
+</ul>
+<h2 id="存储器与寄存器交互数据指令"><a href="#存储器与寄存器交互数据指令" class="headerlink" title="存储器与寄存器交互数据指令"></a>存储器与寄存器交互数据指令</h2><ul>
+<li>存储器（主存，内存）</li>
+<li>寄存器中放的数据：可以是字符串，可以是数，也可以是一个地址，它可以放各种类型的数据 </li>
+<li>存储地址单元：地址（如0x00004000）与地址中存在的值</li>
+<li>堆，队列：数据结构，栈是竖的，后进先出，且只能从栈顶依次填入数据</li>
+</ul>
+<h3 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h3><ul>
+<li><code>从后往前读，从前往后写</code></li>
+<li>寄存器存小数据，栈存大数据</li>
+</ul>
+<h3 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h3><ul>
+<li><p>LDR</p>
+<ul>
+<li>从存储器中加载数据到寄存器 ← <code>Load</code></li>
+<li>LDR R8,[R9,#4] R8为待加载数据的寄存器，加载值为R9+0x4所指向的存储单元 R8&#x3D;*(R9+4)</li>
+<li><code>LDR一般用于进行压栈操作</code></li>
+</ul>
+</li>
+<li><p>STR</p>
+<ul>
+<li>将寄存器的数据存储到存储器 → <code>Store</code></li>
+<li>STR R8,[R9,#4] 将R8寄存器的数据存储到R9+0x4指向的存储单元  *(R9+4)&#x3D;R8</li>
+</ul>
+</li>
+<li><p>LDM：</p>
+<ul>
+<li>将存储器的数据加载到一个寄存器列表 →</li>
+<li>LDM R0,｛R1-R3｝将R0指向的存储单元的数据依次加载到R1,R2,R3寄存器</li>
+</ul>
+</li>
+<li><p>SWP：</p>
+<ul>
+<li>将寄存器与存储器之间的数据进行交换</li>
+<li>SWP R1, R1 [R0] 将R1寄存器与R0指向的存储单元的内容进行交换</li>
+</ul>
+</li>
+<li><p>STM：将一个寄存器列表的数据存储到指定的存储器  ←</p>
+</li>
+<li><p>PUSH:将寄存器值推入堆栈  <code>压栈</code>–》</p>
+</li>
+<li><p>POP：将堆栈值推出到寄存器   <code>出栈</code> 《–</p>
+</li>
+</ul>
+<h2 id="ARM64读取-存储指令"><a href="#ARM64读取-存储指令" class="headerlink" title="ARM64读取&amp;存储指令"></a>ARM64读取&amp;存储指令</h2><ul>
+<li>最基础的读取和存储指令是 LDR 和 STR，即 Load &#x2F; Store Register 的缩写。</li>
+</ul>
+<h3 id="读取或存储的大小"><a href="#读取或存储的大小" class="headerlink" title="读取或存储的大小"></a>读取或存储的大小</h3><ul>
+<li>读取或存储的长度由两方面决定</li>
+</ul>
+<ol>
+<li>是寄存器是 X 还是 W ，X 即 64 比特，W 即 32 比特<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs armasm">比如下面这条指令会从&lt;address&gt; 这个地址加载 <span class="hljs-number">32</span> 比特到 <span class="hljs-built_in">W0</span> 寄存器。<br><span class="hljs-keyword">LDR</span> <span class="hljs-built_in">W0</span>,[&lt;address&gt;]<br>下面这条指令会从&lt;address&gt; 加载 <span class="hljs-number">64</span> 比特到 <span class="hljs-built_in">X0</span> 寄存器<br><span class="hljs-keyword">LDR</span> <span class="hljs-built_in">X0</span>,[&lt;address&gt;]<br></code></pre></td></tr></table></figure></li>
+<li>是指令的后缀，LDR&#x2F;STR 可以添加后缀，限制加载数据的长度<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs armasm">比如下面的指令将 <span class="hljs-built_in">W0</span> 最低的一个字节存储到&lt;address&gt;，<span class="hljs-keyword">B</span> 即 byte 之意<br><span class="hljs-keyword">STRB</span> <span class="hljs-built_in">W0</span>, [&lt;address&gt;]<br>下面这条指令将 <span class="hljs-built_in">W0</span> 较低的半字存储到&lt;address&gt;，H 即 halfword 之意。<br><span class="hljs-keyword">STRH</span> <span class="hljs-built_in">W0</span>, [&lt;address&gt;]<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="地址"><a href="#地址" class="headerlink" title="地址"></a>地址</h3><ul>
+<li>加载和存储的地址被放在方括号内，比如下面这样<blockquote>
+<p>LDR W0,[X1]</p>
+</blockquote>
+</li>
+<li>这其中有好几种寻址模式<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs armasm">基础寄存器寻址 - 这是最简单的一种形式，即地址是一个寄存器。<br>地址偏移寻址 - 在基地址上加一个偏移，比如<span class="hljs-keyword">LDR</span> <span class="hljs-built_in">W0</span>,[<span class="hljs-built_in">X1</span>,<span class="hljs-number">#12</span>]，<span class="hljs-built_in">X1</span> 即基地址，<span class="hljs-number">12</span> 是偏移。在高级语言的数组处理中，诸如arr[index + <span class="hljs-number">12</span>]这样的表达式，意味着 arr 中第 index + <span class="hljs-number">12</span> 个元素，<span class="hljs-number">12</span> 代表的长度，尺寸依据元素大小决定，而我们的地址偏移模式中，偏移的单位总是为 <span class="hljs-number">1</span> 字节。换句话说，intarray[<span class="hljs-number">1</span>] 在汇编代码层面是[base,<span class="hljs-number">#4</span>],longarray[<span class="hljs-number">1</span>]是 [base,<span class="hljs-number">#8</span>]。需要注意，偏移也可以是寄存器。这种寻址模式很适合处理结构体。<br>前缀式寻址 - 比如<span class="hljs-keyword">LDR</span> <span class="hljs-built_in">W0</span>,[<span class="hljs-built_in">X1</span>,<span class="hljs-number">#12</span>]!，尾部感叹号就是它的标识。首先寄存器 <span class="hljs-built_in">X1</span> 更新为 <span class="hljs-built_in">X1</span> + <span class="hljs-number">12</span> 的值，然后再像正常的地址偏移模式那样处理。与之对应的是后缀式寻址模式，比如<span class="hljs-keyword">LDR</span> <span class="hljs-built_in">W0</span>,[<span class="hljs-built_in">X1</span>],<span class="hljs-number">#12</span>，多出来的第三个操作数就是标识。首先正常寻址，像地址偏移模式那样，在结束后更新寄存器的值，比如此处 <span class="hljs-built_in">X1</span> + <span class="hljs-number">12</span>。前缀式和后缀式在表达式中很常见，比如i++和++i就是经典应用。 <br><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="读取和加载一对寄存器LDP-和-STP"><a href="#读取和加载一对寄存器LDP-和-STP" class="headerlink" title="读取和加载一对寄存器LDP 和 STP"></a>读取和加载一对寄存器LDP 和 STP</h3><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs armasm">只能对一条指令做存储和读取太慢了，如果我们想把六个寄存器保存到栈里，就需要 <span class="hljs-number">6</span> 条指令，这太低效了。LDP 和 STP 缓解了这个问题，即一次性加载或存储两个指令，两个即一对，即 pair 之意，所以指令名叫 LDP 、STP，即 Load Pair 和 Store Pair 。<br>比如LDP <span class="hljs-built_in">W3</span>,<span class="hljs-built_in">W7</span>,[<span class="hljs-built_in">X0</span>]，从 <span class="hljs-built_in">X0</span> 地址加载四字节到 <span class="hljs-built_in">W3</span> 寄存器，再从 <span class="hljs-built_in">X0</span> + <span class="hljs-number">4</span> 加载四字节到 <span class="hljs-built_in">W7</span> 寄存器。<br>比如STP <span class="hljs-built_in">X0</span>,<span class="hljs-built_in">X1</span>,[<span class="hljs-built_in">SP</span>,#-<span class="hljs-number">16</span>]!，<span class="hljs-built_in">X0</span> 存储到 <span class="hljs-built_in">SP</span> - <span class="hljs-number">16</span>，<span class="hljs-built_in">X1</span> 存储到 <span class="hljs-built_in">SP</span> - <span class="hljs-number">8</span>，别忘了 X 系列寄存器占 <span class="hljs-number">8</span> 字节。读者会注意到，STP 在入栈和出栈上用的非常多，从栈的语义上，即将 <span class="hljs-built_in">X0</span>、<span class="hljs-built_in">X1</span> 入栈。<br>比如LDP <span class="hljs-built_in">X0</span>,<span class="hljs-built_in">X1</span>,[<span class="hljs-built_in">SP</span>],<span class="hljs-number">#16</span>，从 <span class="hljs-built_in">SP</span> 地址加载 <span class="hljs-number">8</span> 字节到 <span class="hljs-built_in">X0</span> 寄存器，从 <span class="hljs-built_in">SP</span> + <span class="hljs-number">8</span> 地址加载 <span class="hljs-number">8</span> 字节到 <span class="hljs-built_in">X1</span> 寄存器，然后 <span class="hljs-built_in">SP</span> 更新为 <span class="hljs-built_in">SP</span> + <span class="hljs-number">16</span>。从栈的语义上，即将 <span class="hljs-built_in">X0</span>，<span class="hljs-built_in">X1</span> 出栈。<br>关于栈还有一点，ARM64 上栈指针必须 <span class="hljs-number">128</span> 比特对齐，所以对它的操作以 <span class="hljs-number">16</span> 字节为单位。<br></code></pre></td></tr></table></figure>
+
+<h2 id="ADR和ADRP和ADRL"><a href="#ADR和ADRP和ADRL" class="headerlink" title="ADR和ADRP和ADRL"></a>ADR和ADRP和ADRL</h2><ul>
+<li>参考：<a target="_blank" rel="noopener" href="https://www.yuque.com/docs/share/5a79296a-5e06-43ab-b719-56f54b52d6e7">https://www.yuque.com/docs/share/5a79296a-5e06-43ab-b719-56f54b52d6e7</a></li>
+<li><img src="/blog/../../../../../images/android/%E5%9F%BA%E7%A1%80/arm/1745498615644.jpg" srcset="/blog/img/loading.gif" lazyload></li>
+</ul>
+<h3 id="ADR"><a href="#ADR" class="headerlink" title="ADR"></a>ADR</h3><ul>
+<li>ADR是小范围的地址读取指令，它将基于 PC 相对偏移的一个地址值读取到寄存器中。</li>
+<li>假设一条 ADR 指令的机器码是 CB 00 00 10，我们该如何解析它？首先按照小端序，将机器码反转成 10 00 00 CB，查看其二进制，可以使用 Windows 自带的计算器。</li>
+<li>和 ADR 的编码规则进行对应，分成五截： 0 00 10000 0000000000000000110 01011<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">immlo</span> <span class="hljs-operator">=</span> <span class="hljs-number">00</span><br><span class="hljs-attribute">immhi</span> <span class="hljs-operator">=</span> <span class="hljs-number">110</span><br><span class="hljs-attribute">Rd</span> <span class="hljs-operator">=</span> <span class="hljs-number">01011</span><br></code></pre></td></tr></table></figure></li>
+<li>其实这就是手动的反汇编过程，imm是 immediate 立即数的缩写，lo&#x2F;hi是 low&#x2F;high 的缩写，连起来解释就是立即数的较低和较高位，因此这个立即数的值是 0b11000也就是 0x18</li>
+<li>这意味着如果是下面的语境，当前地址或者说 PC 值是 0x35CFC<blockquote>
+<p>.text:0000000000035CFC CB 00 00 10   ADR XXX</p>
+</blockquote>
+</li>
+<li>那么计算地址就是 0x35CFC + 0x18 &#x3D; 0x35D14。将这个值放到哪个寄存器里？我们还没解析 Rd 呢。0b01011也就是 11，对应于 X11。就下面这样。<blockquote>
+<p>.text:0000000000035CFC CB 00 00 10   ADR X11，0x35D14</p>
+</blockquote>
+</li>
+<li>编码规定里，这个立即数是有符号类型，可正可负，因此使用 ADR指令可以很方便的获取当前地址上下的某个地址，而且读者可以数一下，在ADR编码规则里，有 21 比特用于表示这个立即数，去掉符号位还剩下 20 比特，算一下就是可以获取相对于 PC 上下 0xFFFFF 范围的任意地址，用 MB 表示就是 ±1MB</li>
+</ul>
+<h3 id="ADRP"><a href="#ADRP" class="headerlink" title="ADRP"></a>ADRP</h3><ul>
+<li>那么问题来了，如果我们要处理的地址，相对于 PC 地址距离较远呢？上下 1MB 可不是什么大范围，几十几百MB 大小的二进制文件也不少呀。</li>
+<li>这时候就用到i用到iADRP了，它的使用场景就在这里 —— 更大范围的地址读取指令</li>
+<li>是想一下，如何在单条指令里表示 0 - 0xFFFFFFFF 范围里的任意数，学名即 32 位任意立即数。</li>
+<li>但 ARM 架构上这事情就难办了。想要表示任意的 32 位立即数，这需要占 4 字节，但 ARM 是定长指令架构，而且定长 4 字节，再加上操作码和其他操作数，完全没法装进去</li>
+<li>既然一条指令不行，那么两条指令总行了吧？我想大家也能想到很多办法。</li>
+<li>可以一条指令只赋值较高的 16 位，另一条指令只赋值较低的 16 位。在 ARM 中设计了 MOVW 和 MOVT指令表示这个逻辑。比如下面两条指令完成了 0xac5a6002 的赋值<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">movw</span>    <span class="hljs-built_in">r0</span>, <span class="hljs-number">0x6002</span><br><span class="hljs-keyword">movt</span>    <span class="hljs-built_in">r0</span>, <span class="hljs-number">0xac5a</span><br></code></pre></td></tr></table></figure></li>
+<li>ADRP 其实有点像这样，首先它在编码上和 ADR 几乎没差别，立即数的实际表示范围是 ±0xFFFFF，但是它将这个数值乘上 0x1000，那么表示范围就成了 -0xFFFFF000 ~ 0xFFFFF000 范围内每隔 0x1000 距离的数。表示的范围变大了，但表示的能力稀疏了。<br>回到我们的样本，进行实践<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">.text:</span><span class="hljs-number">000000000000</span>B170 E0 <span class="hljs-number">03</span> <span class="hljs-number">00</span> <span class="hljs-built_in">D0</span>                 <span class="hljs-keyword">ADRP</span>            <span class="hljs-built_in">X0</span>, <span class="hljs-symbol">#aUwryubyl2xxvag</span><span class="hljs-comment">@PAGE ; &quot;UWRYubYl2XXvaG3S9r5ezWcxX/VsRigluNW58+n&quot;...</span><br><span class="hljs-symbol">.text:</span><span class="hljs-number">000000000000</span>B174 <span class="hljs-number">81</span> <span class="hljs-number">05</span> <span class="hljs-number">80</span> <span class="hljs-number">52</span>                 <span class="hljs-keyword">MOV</span>             <span class="hljs-built_in">W1</span>, <span class="hljs-number">#0x2C</span> <span class="hljs-comment">; &#x27;,&#x27;</span><br><span class="hljs-symbol">.text:</span><span class="hljs-number">000000000000</span>B178 <span class="hljs-number">00</span> <span class="hljs-number">88</span> <span class="hljs-number">07</span> <span class="hljs-number">91</span>                 <span class="hljs-keyword">ADD</span>             <span class="hljs-built_in">X0</span>, <span class="hljs-built_in">X0</span>, <span class="hljs-symbol">#aUwryubyl2xxvag</span><span class="hljs-comment">@PAGEOFF ; &quot;UWRYubYl2XXvaG3S9r5ezWcxX/VsRigluNW58+n&quot;...</span><br><span class="hljs-symbol">.text:</span><span class="hljs-number">000000000000</span>B17C <span class="hljs-built_in">D7</span> <span class="hljs-built_in">F3</span> FF <span class="hljs-number">97</span>                 <span class="hljs-keyword">BL</span>              sub_80D8<br></code></pre></td></tr></table></figure>
+E- 0 03 00 D0 小端序翻转： 1<code> 10 100000000000000000011111 00000</code><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">immlo</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span><br><span class="hljs-attribute">immhi</span> <span class="hljs-operator">=</span> <span class="hljs-number">11111</span><br><span class="hljs-attribute">Rd</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure></li>
+<li>立即数是 0b1111110即 0x7E，寄存器是 X0。0x7E * 0x1000 &#x3D; 0x7E000。PC 是 0xB170，向下对 0x1000 取整（“基于 PC 相对偏移”这条规则会和相应的和  0x1000  做对齐）是 0xB000，即ADRP X0,0x89000。读者可能会注意到，ArmConvert 中翻译为 adrp x0, #0x7e000，这是因为它默认 PC 是 0。</li>
+<li>我们想取的地址并不总能恰好和 0x1000 对齐，所以还需要配合一条 ADD或 SUB指令，加上或减去 0x1000 范围内的某个值。00 88 07 91用 ArmConvert  看到是 add x0, x0, #0x1e2，0x89000 + 0x1e2 &#x3D; 0x891E2</li>
+</ul>
+<h3 id="ADRL"><a href="#ADRL" class="headerlink" title="ADRL"></a>ADRL</h3><p>其实就是ADRP和ADD的结合。IDA 在一些场景里会将这两条指令优化成了ADRL</p>
+<h2 id="其他指令"><a href="#其他指令" class="headerlink" title="其他指令"></a>其他指令</h2><ul>
+<li>协处理器指令：SWT （切换用户模式）</li>
+<li>伪指令：DCB</li>
+</ul>
+<h1 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h1><blockquote>
+<p>png -&gt; pdf</p>
+</blockquote>
+<ul>
+<li>资料查询：<img src="/blog/../../../../../images/android/%E6%A3%80%E6%B5%8B/%E5%B8%B8%E7%94%A8ARM%E6%8C%87%E4%BB%A4%E9%9B%86%E5%8F%8A%E6%B1%87%E7%BC%96.png" srcset="/blog/img/loading.gif" lazyload></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/04/20/逆向/安卓逆向/2. 逆向基础/5. ARM/ARM汇编常用指令/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年4月20日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/04/20/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/2.%20%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80/5.%20ARM/ARM%E6%B1%87%E7%BC%96%E5%B8%B8%E7%94%A8%E7%9F%A5%E8%AF%86/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/04/20/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/2.%20%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80/4.%20JNI/JNI%E5%9F%BA%E7%A1%80/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

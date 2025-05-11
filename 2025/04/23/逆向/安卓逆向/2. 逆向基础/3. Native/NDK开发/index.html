@@ -1,0 +1,682 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="NDK介绍什么是NDK开发 Android NDK：Android NDK 是一套允许您使用 C 和 C++ 等语言，以原生代码实现部分应用的工具集 用来做Native开发或者叫so库开发 .so文件 官方网站：https:&#x2F;&#x2F;developer.android.com&#x2F;ndk  安装NDK NDK是和SDK对应的，是对SDK的一个扩展，比如编译so文件，编译arm文件，需要用到这个NDK  方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/04/23/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/2.%20%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80/3.%20Native/NDK%E5%BC%80%E5%8F%91/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="NDK介绍什么是NDK开发 Android NDK：Android NDK 是一套允许您使用 C 和 C++ 等语言，以原生代码实现部分应用的工具集 用来做Native开发或者叫so库开发 .so文件 官方网站：https:&#x2F;&#x2F;developer.android.com&#x2F;ndk  安装NDK NDK是和SDK对应的，是对SDK的一个扩展，比如编译so文件，编译arm文件，需要用到这个NDK  方式">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/native/1745412869094.jpg">
+<meta property="og:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/native/1745412884421.jpg">
+<meta property="og:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/native/1745496889178.jpg">
+<meta property="article:published_time" content="2025-04-23T12:46:59.216Z">
+<meta property="article:modified_time" content="2025-04-24T12:19:35.010Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/native/1745412869094.jpg">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-23 20:46" pubdate>
+          2025年4月23日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="NDK介绍"><a href="#NDK介绍" class="headerlink" title="NDK介绍"></a>NDK介绍</h1><h3 id="什么是NDK开发"><a href="#什么是NDK开发" class="headerlink" title="什么是NDK开发"></a>什么是NDK开发</h3><ol>
+<li>Android NDK：Android NDK 是一套允许您使用 C 和 C++ 等语言，<strong>以原生代码实现部分应用的工具集</strong></li>
+<li><code>用来做Native开发或者叫so库开发</code></li>
+<li>.so文件</li>
+<li>官方网站：<a target="_blank" rel="noopener" href="https://developer.android.com/ndk">https://developer.android.com/ndk</a></li>
+</ol>
+<h3 id="安装NDK"><a href="#安装NDK" class="headerlink" title="安装NDK"></a>安装NDK</h3><ul>
+<li>NDK是和SDK对应的，是对SDK的一个扩展，比如编译so文件，编译arm文件，需要用到这个NDK</li>
+</ul>
+<h4 id="方式1：通过SDK-manager-exe安装-这种方法应该需要翻墙"><a href="#方式1：通过SDK-manager-exe安装-这种方法应该需要翻墙" class="headerlink" title="方式1：通过SDK manager.exe安装(这种方法应该需要翻墙)"></a>方式1：通过SDK manager.exe安装(这种方法应该需要翻墙)</h4><p><img src="/blog/../../../../../images/android/%E5%9F%BA%E7%A1%80/native/1745412869094.jpg" srcset="/blog/img/loading.gif" lazyload></p>
+<h4 id="方式2：已安装Android-Studio的情况下，可以通过Studio来进行安装"><a href="#方式2：已安装Android-Studio的情况下，可以通过Studio来进行安装" class="headerlink" title="方式2：已安装Android Studio的情况下，可以通过Studio来进行安装"></a>方式2：已安装Android Studio的情况下，可以通过Studio来进行安装</h4><p><img src="/blog/../../../../../images/android/%E5%9F%BA%E7%A1%80/native/1745412884421.jpg" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>此方法安装好之后，ndk-build在sdk目录&#x2F;ndk-bundle\build目录下</li>
+<li>检测是否配置好环境： 终端输入：ndk-build</li>
+</ul>
+<h3 id="使用NDK"><a href="#使用NDK" class="headerlink" title="使用NDK"></a>使用NDK</h3><ol>
+<li>在ndk根路径下\toolchains\arm-linux-androideabi-4.9\prebuilt\windows-x86_64\bin这个路径里面，有操作elf文件的各种命令， 将此路径放入path环境变量，即可用</li>
+<li>cd进入c文件和mk文件的文件夹的父级目录，比如下面例子，进入jni目录下</li>
+<li>输入ndk-build， 即可编译成功 ，得到ELF可执行程序</li>
+</ol>
+<h1 id="NDK开发"><a href="#NDK开发" class="headerlink" title="NDK开发"></a>NDK开发</h1><h3 id="1-创建android项目"><a href="#1-创建android项目" class="headerlink" title="1. 创建android项目"></a>1. 创建android项目</h3><h3 id="2-java代码中引入native相关代码"><a href="#2-java代码中引入native相关代码" class="headerlink" title="2. java代码中引入native相关代码"></a>2. java代码中引入native相关代码</h3><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-type">void</span> <span class="hljs-title">onCreate</span><span class="hljs-params">(Bundle savedInstanceState)</span> </span>&#123;<br>    ...<br>    Toast.<span class="hljs-built_in">makeText</span>(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">getString</span>(), Toast.LENGTH_SHORT).<span class="hljs-built_in">show</span>();<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">public</span> native <span class="hljs-type">String</span> <span class="hljs-title">getString</span><span class="hljs-params">()</span></span>;<br></code></pre></td></tr></table></figure>
+<h3 id="3-生成-JNI-样式的标头文件-h文件"><a href="#3-生成-JNI-样式的标头文件-h文件" class="headerlink" title="3. 生成 JNI 样式的标头文件 &#x2F;.h文件"></a>3. 生成 JNI 样式的标头文件 &#x2F;.h文件</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">javah </span> -<span class="hljs-keyword">jni </span> native方法所在类的路径 <br>...yijindaxue\app\src\main\<span class="hljs-keyword">java&gt;javah </span> -<span class="hljs-keyword">jni </span> com.trip.yijindaxue.MainActivity<br></code></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/* DO NOT EDIT THIS FILE - it is machine generated */</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;jni.h&gt;</span>   <span class="hljs-comment">// 这个头文件，就表示可以使用所有的jni方法</span></span><br><span class="hljs-comment">/* Header for class com_trip_yijindaxue_MainActivity */</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> _Included_com_trip_yijindaxue_MainActivity</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> _Included_com_trip_yijindaxue_MainActivity</span><br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> __cplusplus</span><br><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> &#123;<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * Class:     com_trip_yijindaxue_MainActivity</span><br><span class="hljs-comment"> * Method:    getString</span><br><span class="hljs-comment"> * Signature: ()Ljava/lang/String;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function">JNIEXPORT jstring JNICALL <span class="hljs-title">Java_com_trip_yijindaxue_MainActivity_getString</span></span><br><span class="hljs-function">  <span class="hljs-params">(JNIEnv *, jobject)</span></span>;<br><br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> __cplusplus</span><br>&#125;<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br></code></pre></td></tr></table></figure>
+<h3 id="4-android根目录下创建JNI目录，并将第三步生成的文件移入此文件夹"><a href="#4-android根目录下创建JNI目录，并将第三步生成的文件移入此文件夹" class="headerlink" title="4. android根目录下创建JNI目录，并将第三步生成的文件移入此文件夹"></a>4. android根目录下创建JNI目录，并将第三步生成的文件移入此文件夹</h3><h3 id="5-创建和第三步生成的-h文件名字相同的-c文件"><a href="#5-创建和第三步生成的-h文件名字相同的-c文件" class="headerlink" title="5. 创建和第三步生成的.h文件名字相同的.c文件"></a>5. 创建和第三步生成的.h文件名字相同的.c文件</h3><p><img src="/blog/../../../../../images/android/%E5%9F%BA%E7%A1%80/native/1745496889178.jpg" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>注意<ul>
+<li>c文件的头文件选择第三步创建的.h文件的名字</li>
+<li>定义参数的名字</li>
+<li>编写逻辑时注意，要使用变量或者方法，需要使用jni方法，比如使用字符串类型，需要这么用，且不能使用中文<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-comment"># include &quot;JNI_study.h&quot;</span><br><br><span class="hljs-keyword">JNIEXPORT </span><span class="hljs-keyword">jstring </span><span class="hljs-keyword">JNICALL </span><span class="hljs-keyword">Java_com_trip_yijindaxue_MainActivity_getString</span><br><span class="hljs-keyword"></span>  (<span class="hljs-keyword">JNIEnv </span>*env, <span class="hljs-keyword">jobject </span>obj)&#123;<br>        <span class="hljs-keyword">jstring </span>str = (*env)-&gt; NewStringUTF(*env, <span class="hljs-string">&quot;hello world&quot;</span>)<span class="hljs-comment">;  // 不能传汉字</span><br>        return str;<br>  &#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h3 id="6-按照编译可执行程序的方法将c编译成so文件-参考下面"><a href="#6-按照编译可执行程序的方法将c编译成so文件-参考下面" class="headerlink" title="6. 按照编译可执行程序的方法将c编译成so文件[参考下面]"></a>6. 按照编译可执行程序的方法将c编译成so文件[参考下面]</h3><h3 id="7-在java代码中引用调用so文件"><a href="#7-在java代码中引用调用so文件" class="headerlink" title="7. 在java代码中引用调用so文件"></a>7. 在java代码中引用调用so文件</h3><ol>
+<li>在Java中申明一个Native方法， 如securityCheck方法<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs processing"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">native</span> <span class="hljs-built_in">String</span> <span class="hljs-title function_">securityCheck</span>(Context context, <span class="hljs-built_in">String</span> <span class="hljs-built_in">str</span>);<br></code></pre></td></tr></table></figure></li>
+<li>用System.loadLibrary()加载so库</li>
+</ol>
+<ul>
+<li>System.loadLibrary()加载so文件流程 <ul>
+<li>先读取so文件的.init_array段，<code>.init_array段里面做的是变量的初始化操作</code></li>
+<li>再执行JNI_OnLoad函数，JNI_ONLoad是.so文件的初始函数</li>
+<li>然后调用具体的native方法</li>
+</ul>
+</li>
+<li>举例：全称是 libnative-lib.so<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">static</span> &#123;<br>    System.loadLibrary(<span class="hljs-string">&quot;native-lib&quot;</span>);    <span class="hljs-comment">//掐头去尾</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="编译可执行程序"><a href="#编译可执行程序" class="headerlink" title="编译可执行程序"></a>编译可执行程序</h1><h3 id="1-编写C语言"><a href="#1-编写C语言" class="headerlink" title="1. 编写C语言"></a>1. 编写C语言</h3><ul>
+<li>txt文件编写c代码，后转化成c文件<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span>   # 头文件</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;  <br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;欢迎来到...&quot;</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-编写android-mk代码"><a href="#2-编写android-mk代码" class="headerlink" title="2. 编写android.mk代码"></a>2. 编写android.mk代码</h3><ul>
+<li>和c文件在同一个目录下</li>
+<li>android.mk文件：构建工具，用来告知ndk-build，最终被build System解析多次 </li>
+<li>也就是说android.mk文件允许我们将我们的源文件打包成一个models，这个models可以是静态或者动态库，只有动态库才能被copy到我们的应用程序apk包里，静态库可以被链接到动态库里 </li>
+<li>可以在android.mk里定义多个models，可以将同一份source加进多个models中<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs makefile">// 文件必须以此开始，my-dir是build System提供的，是获取JNI文件路径的，可以返回一个包含android.mk文件的路径<br>LOCAL_PATH := <span class="hljs-variable">$(<span class="hljs-built_in">call</span> my-<span class="hljs-built_in">dir</span>)</span> <br>// CLEAR_VARS由build System提供，清理以LOCAL开头的文件，但是不会清理LOCAL_PATH路径<br><span class="hljs-keyword">include</span> <span class="hljs-variable">$(CLEAR_VARS)</span>  <br>LOCAL_ARM_MODE := arm //指令集类型，集编译后的指令集 ARM指令<br>LOCAL_MODULE    := JNIstudy  	//模块名称，必须唯一，不能包含空格。如果是so，被编译后会自动改名为“lib模块名字.so”<br>LOCAL_SRC_FILES := JNIstudy.c <span class="hljs-comment">#源文件  .c或者.cpp</span><br><br>LOCAL_LDLIBS += -llog <span class="hljs-comment">#依赖库    </span><br><br>// <span class="hljs-comment">#指定编译文件的类型</span><br>//如果是编译so库即动态链接库，就写成：<span class="hljs-keyword">include</span> <span class="hljs-variable">$(BUILD_SHARED_LIBRARY)</span><br>// 如果是静态链接库，就写成：<span class="hljs-keyword">include</span> <span class="hljs-variable">$(BUILD_STATIC_LIBRARY)</span>  还是 <span class="hljs-keyword">include</span> <span class="hljs-variable">$(STATIC_LIBRARY)</span><br><span class="hljs-keyword">include</span> <span class="hljs-variable">$(BUILD_EXECUTABLE)</span> <br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-编写Application-mk文件代码"><a href="#3-编写Application-mk文件代码" class="headerlink" title="3. 编写Application.mk文件代码"></a>3. 编写Application.mk文件代码</h3><ul>
+<li>和c文件在同一个目录下<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go">APP_ABI := x86 armeabi-v7a    <span class="hljs-comment">// 写固定就行</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="4-编译-c文件"><a href="#4-编译-c文件" class="headerlink" title="4. 编译.c文件"></a>4. 编译.c文件</h3><ul>
+<li>需要使用ndk-build, 参考如何使用</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/04/23/逆向/安卓逆向/2. 逆向基础/3. Native/NDK开发/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年4月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/04/24/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Flare-emu/%E5%85%A5%E9%97%A8/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/04/22/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/2.%20%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80/6.%20C/2.%20C%E5%BA%93%E5%87%BD%E6%95%B0%E9%80%9F%E6%9F%A5/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

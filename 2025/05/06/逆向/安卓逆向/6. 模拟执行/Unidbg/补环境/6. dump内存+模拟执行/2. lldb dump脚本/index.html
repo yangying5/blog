@@ -1,0 +1,633 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="参考：  https:&#x2F;&#x2F;blog.seeflower.dev&#x2F;archives&#x2F;166&#x2F;#  https:&#x2F;&#x2F;gist.github.com&#x2F;SeeFlowerX&#x2F;24c4507f9ed9ba09a5d1a3dd86aeef26  附件  png &gt; py    1234567891011121314151617181920212223242526272829303132333435363">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/05/06/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/6.%20dump%E5%86%85%E5%AD%98+%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/2.%20lldb%20dump%E8%84%9A%E6%9C%AC/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="参考：  https:&#x2F;&#x2F;blog.seeflower.dev&#x2F;archives&#x2F;166&#x2F;#  https:&#x2F;&#x2F;gist.github.com&#x2F;SeeFlowerX&#x2F;24c4507f9ed9ba09a5d1a3dd86aeef26  附件  png &gt; py    1234567891011121314151617181920212223242526272829303132333435363">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/lldb_dumper.png">
+<meta property="og:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/lldb.png">
+<meta property="article:published_time" content="2025-05-06T10:02:45.508Z">
+<meta property="article:modified_time" content="2025-05-06T10:11:48.986Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/lldb_dumper.png">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-06 18:02" pubdate>
+          2025年5月6日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>参考：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://blog.seeflower.dev/archives/166/#">https://blog.seeflower.dev/archives/166/#</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gist.github.com/SeeFlowerX/24c4507f9ed9ba09a5d1a3dd86aeef26">https://gist.github.com/SeeFlowerX/24c4507f9ed9ba09a5d1a3dd86aeef26</a></p>
+</li>
+<li><p>附件</p>
+<blockquote>
+<p>png &gt; py<br><img src="/blog/../../../../../../../images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/lldb_dumper.png" srcset="/blog/img/loading.gif" lazyload><br><img src="/blog/../../../../../../../images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/lldb.png" srcset="/blog/img/loading.gif" lazyload></p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">import</span> sys<br><span class="hljs-keyword">import</span> json<br><span class="hljs-keyword">import</span> zlib<br><span class="hljs-keyword">import</span> shutil<br><span class="hljs-keyword">import</span> hashlib<br><span class="hljs-keyword">import</span> logging<br><span class="hljs-keyword">import</span> zipfile<br><br><span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> <span class="hljs-title class_">Path</span><br><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime<br><br><span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-variable constant_">TYPE_CHECKING</span>, <span class="hljs-title class_">Dict</span>, <span class="hljs-title class_">List</span><br><span class="hljs-keyword">if</span> <span class="hljs-attr">TYPE_CHECKING</span>:<br>    <span class="hljs-keyword">from</span> lldb <span class="hljs-keyword">import</span> *<br><br><span class="hljs-keyword">import</span> lldb<br><br><br>def <span class="hljs-title function_">__lldb_init_module</span>(<span class="hljs-attr">debugger</span>: <span class="hljs-string">&#x27;SBDebugger&#x27;</span>, <span class="hljs-attr">internal_dict</span>: dict):<br>    <span class="hljs-keyword">debugger</span>.<span class="hljs-title class_">HandleCommand</span>(<span class="hljs-string">&#x27;command script add -f lldb_dumper.helloworld hello&#x27;</span>)<br>    <span class="hljs-keyword">debugger</span>.<span class="hljs-title class_">HandleCommand</span>(<span class="hljs-string">&#x27;command script add -f lldb_dumper.dump_context dumpctx&#x27;</span>)<br><br><br><span class="hljs-variable constant_">GLOBAL_LOGGERS</span> = &#123;&#125;<br>logger = <span class="hljs-title class_">None</span> # <span class="hljs-attr">type</span>: logging.<span class="hljs-property">Logger</span><br><br><br>def <span class="hljs-title function_">setup_logger</span>(<span class="hljs-attr">log_tag</span>: str, <span class="hljs-attr">log_path</span>: <span class="hljs-title class_">Path</span>, <span class="hljs-attr">first_call</span>: bool = <span class="hljs-title class_">False</span>) -&gt; logging.<span class="hljs-property">Logger</span>:<br>    <span class="hljs-string">&#x27;&#x27;</span><span class="hljs-string">&#x27;</span><br><span class="hljs-string">    输出的信息太多 Terminal可能不全 记录到日志文件</span><br><span class="hljs-string">    &#x27;</span><span class="hljs-string">&#x27;&#x27;</span><br>    logger = <span class="hljs-variable constant_">GLOBAL_LOGGERS</span>.<span class="hljs-title function_">get</span>(log_tag)<br>    <span class="hljs-keyword">if</span> <span class="hljs-attr">logger</span>:<br>        <span class="hljs-keyword">return</span> logger<br><br>    logger = logging.<span class="hljs-title function_">getLogger</span>(log_tag)<br>    <span class="hljs-variable constant_">GLOBAL_LOGGERS</span>[log_tag] = logger<br><br>    # 避免重新载入脚本时重复输出<br>    <span class="hljs-keyword">if</span> first_call and logger.<span class="hljs-title function_">hasHandlers</span>():<br>        logger.<span class="hljs-property">handlers</span>.<span class="hljs-title function_">clear</span>()<br><br>    # 设置所有 handler 的日志等级<br>    logger.<span class="hljs-title function_">setLevel</span>(logging.<span class="hljs-property">DEBUG</span>)<br><br>    # 添加终端 handler 只打印原始信息<br>    formatter = logging.<span class="hljs-title class_">Formatter</span>(<span class="hljs-string">&#x27;%(message)s&#x27;</span>)<br>    ch = logging.<span class="hljs-title class_">StreamHandler</span>()<br>    ch.<span class="hljs-title function_">setLevel</span>(logging.<span class="hljs-property">DEBUG</span>)<br>    ch.<span class="hljs-title function_">setFormatter</span>(formatter)<br>    logger.<span class="hljs-title function_">addHandler</span>(ch)<br><br>    # 添加文件 handler 记录详细时间和内容<br>    formatter = logging.<span class="hljs-title class_">Formatter</span>(<span class="hljs-string">&#x27;%(asctime)s.%(msecs)03d %(levelname)s: %(message)s&#x27;</span>, datefmt=<span class="hljs-string">&#x27;%H:%M:%S&#x27;</span>)<br>    fh = logging.<span class="hljs-title class_">FileHandler</span>(log_path.<span class="hljs-title function_">as_posix</span>(), encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>, delay=<span class="hljs-title class_">True</span>)<br>    fh.<span class="hljs-title function_">setLevel</span>(logging.<span class="hljs-property">DEBUG</span>)<br>    fh.<span class="hljs-title function_">setFormatter</span>(formatter)<br>    logger.<span class="hljs-title function_">addHandler</span>(fh)<br><br>    <span class="hljs-keyword">return</span> logger<br><br>def <span class="hljs-title function_">dump_arch_info</span>(<span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;SBTarget&#x27;</span>):<br>    triple = target.<span class="hljs-title class_">GetTriple</span>()<br>    logger.<span class="hljs-title function_">debug</span>(f<span class="hljs-string">&#x27;[dump_arch_info] triple =&gt; &#123;triple&#125;&#x27;</span>)<br>    # <span class="hljs-string">&#x27;aarch64&#x27;</span>, <span class="hljs-string">&#x27;unknown&#x27;</span>, <span class="hljs-string">&#x27;linux&#x27;</span>, <span class="hljs-string">&#x27;android&#x27;</span><br>    arch, vendor, sys, abi = triple.<span class="hljs-title function_">split</span>(<span class="hljs-string">&#x27;-&#x27;</span>)<br>    <span class="hljs-keyword">if</span> arch == <span class="hljs-string">&#x27;aarch64&#x27;</span> or arch == <span class="hljs-string">&#x27;arm64&#x27;</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;arm64le&#x27;</span><br>    elif arch == <span class="hljs-string">&#x27;aarch64_be&#x27;</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;arm64be&#x27;</span><br>    elif arch == <span class="hljs-string">&#x27;armeb&#x27;</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;armbe&#x27;</span><br>    elif arch == <span class="hljs-string">&#x27;arm&#x27;</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;armle&#x27;</span><br>    <span class="hljs-attr">else</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span><br><br>def <span class="hljs-title function_">dump_regs</span>(<span class="hljs-attr">frame</span>: <span class="hljs-string">&#x27;SBFrame&#x27;</span>):<br>    regs = &#123;&#125; # <span class="hljs-attr">type</span>: <span class="hljs-title class_">Dict</span>[str, int]<br>    # 实际类型是 <span class="hljs-title class_">SBValueList</span> 但是这样 type hint 没有效果<br>    registers = <span class="hljs-title class_">None</span> # <span class="hljs-attr">type</span>: <span class="hljs-title class_">List</span>[<span class="hljs-title class_">SBValue</span>]<br>    <span class="hljs-keyword">for</span> registers <span class="hljs-keyword">in</span> frame.<span class="hljs-title class_">GetRegisters</span>():<br>        # - <span class="hljs-title class_">General</span> <span class="hljs-title class_">Purpose</span> <span class="hljs-title class_">Registers</span><br>        # - <span class="hljs-title class_">Floating</span> <span class="hljs-title class_">Point</span> <span class="hljs-title class_">Registers</span><br>        logger.<span class="hljs-title function_">debug</span>(f<span class="hljs-string">&#x27;registers name =&gt; &#123;registers.GetName()&#125;&#x27;</span>)<br>        <span class="hljs-keyword">for</span> register <span class="hljs-keyword">in</span> <span class="hljs-attr">registers</span>:<br>            register_name = register.<span class="hljs-title class_">GetName</span>()<br>            # 直接获取 <span class="hljs-title class_">SBValue</span> 拿到的值通常得到的是贴近人类可读的字符串<br>            # 但是对于浮点寄存器来说 我们应该拿到最为精确的值<br>            # 可以指定为 lldb.<span class="hljs-property">eFormatUnsigned</span> 这样就直接是最完整的数值了 <br>            # 但是类型依然是字符串 在使用时还需要一次转换<br>            # 因此这里干脆指定为 lldb.<span class="hljs-property">eFormatHex</span> 更加符合逆向人员的阅读习惯<br>            # <span class="hljs-attr">https</span>:<span class="hljs-comment">//lldb.llvm.org/python_api_enums.html#format</span><br>            register.<span class="hljs-title class_">SetFormat</span>(lldb.<span class="hljs-property">eFormatHex</span>)<br>            register_value = register.<span class="hljs-title class_">GetValue</span>()<br>            regs[register_name] = register_value<br>    logger.<span class="hljs-title function_">info</span>(f<span class="hljs-string">&#x27;regs =&gt; &#123;json.dumps(regs, ensure_ascii=False, indent=4)&#125;&#x27;</span>)<br>    <span class="hljs-keyword">return</span> regs<br><br>def <span class="hljs-title function_">get_section_info</span>(<span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;SBTarget&#x27;</span>, <span class="hljs-attr">section</span>: <span class="hljs-string">&#x27;SBSection&#x27;</span>):<br>    name = section.<span class="hljs-property">name</span> <span class="hljs-keyword">if</span> section.<span class="hljs-property">name</span> is not <span class="hljs-title class_">None</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;&#x27;</span><br>    <span class="hljs-keyword">if</span> section.<span class="hljs-title class_">GetParent</span>().<span class="hljs-property">name</span> is not <span class="hljs-title class_">None</span>:<br>        name = section.<span class="hljs-title class_">GetParent</span>().<span class="hljs-property">name</span> + <span class="hljs-string">&#x27;.&#x27;</span> + section.<span class="hljs-property">name</span><br><br>    module_name = section.<span class="hljs-property">addr</span>.<span class="hljs-property">module</span>.<span class="hljs-property">file</span>.<span class="hljs-title class_">GetFilename</span>()<br>    module_name = module_name <span class="hljs-keyword">if</span> module_name is not <span class="hljs-title class_">None</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;&#x27;</span><br>    long_name = module_name + <span class="hljs-string">&#x27;.&#x27;</span> + name<br><br>    load_addr = section.<span class="hljs-property">addr</span>.<span class="hljs-title class_">GetLoadAddress</span>(target)<br><br>    <span class="hljs-keyword">return</span> load_addr, (load_addr + section.<span class="hljs-property">size</span>), section.<span class="hljs-property">size</span>, long_name<br><br>def <span class="hljs-title function_">dump_memory_info</span>(<span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;SBTarget&#x27;</span>):<br>    logger.<span class="hljs-title function_">debug</span>(<span class="hljs-string">&#x27;start dump_memory_info&#x27;</span>)<br>    sections = []<br>    # 先查找全部分段信息<br>    <span class="hljs-keyword">for</span> <span class="hljs-variable language_">module</span> <span class="hljs-keyword">in</span> target.<span class="hljs-title function_">module_iter</span>():<br>        <span class="hljs-attr">module</span>: <span class="hljs-title class_">SBModule</span><br>        <span class="hljs-keyword">for</span> section <span class="hljs-keyword">in</span> <span class="hljs-variable language_">module</span>.<span class="hljs-title function_">section_iter</span>():<br>            <span class="hljs-attr">section</span>: <span class="hljs-title class_">SBSection</span><br>            module_name = <span class="hljs-variable language_">module</span>.<span class="hljs-property">file</span>.<span class="hljs-title class_">GetFilename</span>()<br>            start, end, size, name = <span class="hljs-title function_">get_section_info</span>(target, section)<br>            section_info = &#123;<br>                <span class="hljs-string">&#x27;module&#x27;</span>: module_name,<br>                <span class="hljs-string">&#x27;start&#x27;</span>: start,<br>                <span class="hljs-string">&#x27;end&#x27;</span>: end,<br>                <span class="hljs-string">&#x27;size&#x27;</span>: size,<br>                <span class="hljs-string">&#x27;name&#x27;</span>: name,<br>            &#125;<br>            # size 好像有负数的情况 不知道是什么情况<br>            logger.<span class="hljs-title function_">info</span>(f<span class="hljs-string">&#x27;Appending: &#123;name&#125;&#x27;</span>)<br>            sections.<span class="hljs-title function_">append</span>(section_info)<br>    <span class="hljs-keyword">return</span> sections<br><br>def <span class="hljs-title function_">dump_memory</span>(<span class="hljs-attr">process</span>: <span class="hljs-string">&#x27;SBProcess&#x27;</span>, <span class="hljs-attr">dump_path</span>: <span class="hljs-title class_">Path</span>, <span class="hljs-attr">black_list</span>: <span class="hljs-title class_">Dict</span>[str, <span class="hljs-title class_">List</span>[str]], <span class="hljs-attr">max_seg_size</span>: int):<br>    logger.<span class="hljs-title function_">debug</span>(<span class="hljs-string">&#x27;start dump memory&#x27;</span>)<br>    memory_list = []<br>    mem_info = lldb.<span class="hljs-title class_">SBMemoryRegionInfo</span>()<br>    start_addr = -<span class="hljs-number">1</span><br>    next_region_addr = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">while</span> next_region_addr &gt; <span class="hljs-attr">start_addr</span>:<br>        # 从内存起始位置开始获取内存信息<br>        err = process.<span class="hljs-title class_">GetMemoryRegionInfo</span>(next_region_addr, mem_info) # <span class="hljs-attr">type</span>: <span class="hljs-title class_">SBError</span><br>        <span class="hljs-keyword">if</span> not err.<span class="hljs-property">success</span>:<br>            logger.<span class="hljs-title function_">warning</span>(f<span class="hljs-string">&#x27;GetMemoryRegionInfo failed, &#123;err&#125;, break&#x27;</span>)<br>            <span class="hljs-keyword">break</span><br>        # 获取当前位置的结尾地址<br>        next_region_addr = mem_info.<span class="hljs-title class_">GetRegionEnd</span>()<br>        # 如果超出上限 结束遍历<br>        <span class="hljs-keyword">if</span> next_region_addr &gt;= sys.<span class="hljs-property">maxsize</span>:<br>            logger.<span class="hljs-title function_">info</span>(f<span class="hljs-string">&#x27;next_region_addr:0x&#123;next_region_addr:x&#125; &gt;= sys.maxsize, break&#x27;</span>)<br>            <span class="hljs-keyword">break</span><br>        # 获取当前这块内存的起始地址和结尾地址<br>        start = mem_info.<span class="hljs-title class_">GetRegionBase</span>()<br>        end = mem_info.<span class="hljs-title class_">GetRegionEnd</span>()<br>        # 很多内存块没有名字 预设一个<br>        region_name = <span class="hljs-string">&#x27;UNKNOWN&#x27;</span><br>        # 记录分配了的内存<br>        <span class="hljs-keyword">if</span> mem_info.<span class="hljs-title class_">IsMapped</span>():<br>            name = mem_info.<span class="hljs-title class_">GetName</span>()<br>            <span class="hljs-keyword">if</span> name is <span class="hljs-title class_">None</span>:<br>                name = <span class="hljs-string">&#x27;&#x27;</span><br>            mem_info_obj = &#123;<br>                <span class="hljs-string">&#x27;start&#x27;</span>: start,<br>                <span class="hljs-string">&#x27;end&#x27;</span>: end,<br>                <span class="hljs-string">&#x27;name&#x27;</span>: name,<br>                <span class="hljs-string">&#x27;permissions&#x27;</span>: &#123;<br>                    <span class="hljs-string">&#x27;r&#x27;</span>: mem_info.<span class="hljs-title class_">IsReadable</span>(),<br>                    <span class="hljs-string">&#x27;w&#x27;</span>: mem_info.<span class="hljs-title class_">IsWritable</span>(),<br>                    <span class="hljs-string">&#x27;x&#x27;</span>: mem_info.<span class="hljs-title class_">IsExecutable</span>(),<br>                &#125;,<br>                <span class="hljs-string">&#x27;content_file&#x27;</span>: <span class="hljs-string">&#x27;&#x27;</span>,<br>            &#125;<br>            memory_list.<span class="hljs-title function_">append</span>(mem_info_obj)<br>    # 开始正式dump<br>    <span class="hljs-keyword">for</span> seg_info <span class="hljs-keyword">in</span> <span class="hljs-attr">memory_list</span>:<br>        <span class="hljs-attr">try</span>:<br>            start_addr = seg_info[<span class="hljs-string">&#x27;start&#x27;</span>] # <span class="hljs-attr">type</span>: int<br>            end_addr = seg_info[<span class="hljs-string">&#x27;end&#x27;</span>] # <span class="hljs-attr">type</span>: int<br>            region_name = seg_info[<span class="hljs-string">&#x27;name&#x27;</span>] # <span class="hljs-attr">type</span>: str<br>            permissions = seg_info[<span class="hljs-string">&#x27;permissions&#x27;</span>] # <span class="hljs-attr">type</span>: <span class="hljs-title class_">Dict</span>[str, bool]<br><br>            # 跳过不可读 之后考虑下是不是能修改权限再读<br>            <span class="hljs-keyword">if</span> seg_info[<span class="hljs-string">&#x27;permissions&#x27;</span>][<span class="hljs-string">&#x27;r&#x27;</span>] is <span class="hljs-title class_">False</span>:<br>                logger.<span class="hljs-title function_">warning</span>(f<span class="hljs-string">&#x27;Skip dump &#123;region_name&#125; permissions =&gt; &#123;permissions&#125;&#x27;</span>)<br>                <span class="hljs-keyword">continue</span><br><br>            # 超过预设大小的 跳过dump<br>            predicted_size = end_addr - start_addr<br>            <span class="hljs-keyword">if</span> predicted_size &gt; <span class="hljs-attr">max_seg_size</span>:<br>                logger.<span class="hljs-title function_">warning</span>(f<span class="hljs-string">&#x27;Skip dump &#123;region_name&#125; size:0x&#123;predicted_size:x&#125;&#x27;</span>)<br>                <span class="hljs-keyword">continue</span><br><br>            skip_dump = <span class="hljs-title class_">False</span><br><br>            <span class="hljs-keyword">for</span> rule <span class="hljs-keyword">in</span> black_list[<span class="hljs-string">&#x27;startswith&#x27;</span>]:<br>                <span class="hljs-keyword">if</span> region_name.<span class="hljs-title function_">startswith</span>(rule):<br>                    skip_dump = <span class="hljs-title class_">True</span><br>                    logger.<span class="hljs-title function_">warning</span>(f<span class="hljs-string">&#x27;Skip dump &#123;region_name&#125; hit startswith rule:&#123;rule&#125;&#x27;</span>)<br>            <span class="hljs-keyword">if</span> <span class="hljs-attr">skip_dump</span>: <span class="hljs-keyword">continue</span><br><br>            <span class="hljs-keyword">for</span> rule <span class="hljs-keyword">in</span> black_list[<span class="hljs-string">&#x27;endswith&#x27;</span>]:<br>                <span class="hljs-keyword">if</span> region_name.<span class="hljs-title function_">endswith</span>(rule):<br>                    skip_dump = <span class="hljs-title class_">True</span><br>                    logger.<span class="hljs-title function_">warning</span>(f<span class="hljs-string">&#x27;Skip dump &#123;region_name&#125; hit endswith rule:&#123;rule&#125;&#x27;</span>)<br>            <span class="hljs-keyword">if</span> <span class="hljs-attr">skip_dump</span>: <span class="hljs-keyword">continue</span><br><br>            <span class="hljs-keyword">for</span> rule <span class="hljs-keyword">in</span> black_list[<span class="hljs-string">&#x27;includes&#x27;</span>]:<br>                <span class="hljs-keyword">if</span> rule <span class="hljs-keyword">in</span> <span class="hljs-attr">region_name</span>:<br>                    skip_dump = <span class="hljs-title class_">True</span><br>                    logger.<span class="hljs-title function_">warning</span>(f<span class="hljs-string">&#x27;Skip dump &#123;region_name&#125; hit includes rule:&#123;rule&#125;&#x27;</span>)<br>            <span class="hljs-keyword">if</span> <span class="hljs-attr">skip_dump</span>: <span class="hljs-keyword">continue</span><br><br>            # 开始读取内存<br>            ts = datetime.<span class="hljs-title function_">now</span>()<br>            err = lldb.<span class="hljs-title class_">SBError</span>()<br>            seg_content = process.<span class="hljs-title class_">ReadMemory</span>(start_addr, predicted_size, err)<br>            tm = (datetime.<span class="hljs-title function_">now</span>() - ts).<span class="hljs-title function_">total_seconds</span>()<br>            # 读取成功的才写入本地文件 并计算md5<br>            # 内存里面可能很多地方是<span class="hljs-number">0</span> 所以压缩写入文件 减少占用<br>            <span class="hljs-keyword">if</span> seg_content is <span class="hljs-title class_">None</span>:<br>                logger.<span class="hljs-title function_">debug</span>(f<span class="hljs-string">&#x27;Segment empty: @0x&#123;start_addr:016x&#125; &#123;region_name&#125; =&gt; &#123;err&#125;&#x27;</span>)<br>            <span class="hljs-attr">else</span>:<br>                logger.<span class="hljs-title function_">info</span>(f<span class="hljs-string">&#x27;Dumping @0x&#123;start_addr:016x&#125; &#123;tm:.2f&#125;s size:0x&#123;len(seg_content):x&#125;: &#123;region_name&#125; &#123;permissions&#125;&#x27;</span>)<br>                compressed_seg_content = zlib.<span class="hljs-title function_">compress</span>(seg_content)<br>                md5_sum = hashlib.<span class="hljs-title function_">md5</span>(compressed_seg_content).<span class="hljs-title function_">hexdigest</span>() + <span class="hljs-string">&#x27;.bin&#x27;</span><br>                seg_info[<span class="hljs-string">&#x27;content_file&#x27;</span>] = <span class="hljs-title function_">md5_sum</span><br>                (dump_path / md5_sum).<span class="hljs-title function_">write_bytes</span>(compressed_seg_content)<br>        except <span class="hljs-title class_">Exception</span> <span class="hljs-keyword">as</span> <span class="hljs-attr">e</span>:<br>            # 这里好像不会出现异常 因为前面有 <span class="hljs-title class_">SBError</span> 处理了 不过还是保留<br>            logger.<span class="hljs-title function_">error</span>(f<span class="hljs-string">&#x27;Exception reading segment &#123;region_name&#125;&#x27;</span>, exc_info=e)<br><br>    <span class="hljs-keyword">return</span> memory_list<br><br>def <span class="hljs-title function_">archive</span>(<span class="hljs-attr">dump_path</span>: <span class="hljs-title class_">Path</span>):<br>    <span class="hljs-string">&#x27;&#x27;</span><span class="hljs-string">&#x27;</span><br><span class="hljs-string">    打包dump文件夹 便于提取 毕竟小文件太多不方便</span><br><span class="hljs-string">    &#x27;</span><span class="hljs-string">&#x27;&#x27;</span><br>    zip_path = dump_path.<span class="hljs-property">parent</span> / f<span class="hljs-string">&#x27;&#123;dump_path.stem&#125;.zip&#x27;</span><br>    zipobj = zipfile.<span class="hljs-title class_">ZipFile</span>(zip_path.<span class="hljs-title function_">as_posix</span>(), <span class="hljs-string">&#x27;w&#x27;</span>, zipfile.<span class="hljs-property">ZIP_STORED</span>)<br>    <span class="hljs-keyword">for</span> path, dirnames, filenames <span class="hljs-keyword">in</span> os.<span class="hljs-title function_">walk</span>(dump_path.<span class="hljs-title function_">as_posix</span>()):<br>        # 去掉目标跟路径 替换的是 dump_path.<span class="hljs-property">parent</span> 这样多一层文件夹 解压不会乱<br>        fpath = <span class="hljs-title class_">Path</span>(path).<span class="hljs-title function_">as_posix</span>().<span class="hljs-title function_">replace</span>(dump_path.<span class="hljs-property">parent</span>.<span class="hljs-title function_">as_posix</span>(), <span class="hljs-string">&#x27;&#x27;</span>)<br>        <span class="hljs-keyword">for</span> filename <span class="hljs-keyword">in</span> <span class="hljs-attr">filenames</span>:<br>            zipobj.<span class="hljs-title function_">write</span>(os.<span class="hljs-property">path</span>.<span class="hljs-title function_">join</span>(path, filename), os.<span class="hljs-property">path</span>.<span class="hljs-title function_">join</span>(fpath, filename))<br>    # 删除临时dump文件夹<br>    shutil.<span class="hljs-title function_">rmtree</span>(dump_path.<span class="hljs-title function_">as_posix</span>())<br><br>def <span class="hljs-title function_">dump_context</span>(<span class="hljs-attr">debugger</span>: <span class="hljs-string">&#x27;SBDebugger&#x27;</span>, <span class="hljs-attr">command</span>: str, <span class="hljs-attr">exe_ctx</span>: <span class="hljs-string">&#x27;SBExecutionContext&#x27;</span>, <span class="hljs-attr">result</span>: <span class="hljs-string">&#x27;SBCommandReturnObject&#x27;</span>, <span class="hljs-attr">internal_dict</span>: dict):<br><br>    # 设置日志<br>    <span class="hljs-variable language_">global</span> logger<br>    log_tag = <span class="hljs-string">&#x27;LLDBDumper&#x27;</span><br>    log_time = datetime.<span class="hljs-title function_">now</span>().<span class="hljs-title function_">strftime</span>(<span class="hljs-string">&#x27;%Y%m%d_%H%M%S&#x27;</span>)<br>    log_path = <span class="hljs-title class_">Path</span>(__file__).<span class="hljs-property">parent</span> / f<span class="hljs-string">&#x27;&#123;log_tag&#125;_&#123;log_time&#125;.log&#x27;</span><br>    logger = <span class="hljs-title function_">setup_logger</span>(log_tag, log_path, first_call=<span class="hljs-title class_">True</span>)<br><br>    logger.<span class="hljs-title function_">info</span>(f<span class="hljs-string">&#x27;-----------&gt;start dumping&lt;-----------&#x27;</span>)<br><br>    target = exe_ctx.<span class="hljs-title class_">GetTarget</span>() # <span class="hljs-attr">type</span>: <span class="hljs-title class_">SBTarget</span><br>    <br>    # 获取架构信息<br>    arch_long = <span class="hljs-title function_">dump_arch_info</span>(target)<br>    logger.<span class="hljs-title function_">info</span>(f<span class="hljs-string">&#x27;arch =&gt; &#123;arch_long&#125;&#x27;</span>)<br><br>    # 获取寄存器信息<br>    frame = exe_ctx.<span class="hljs-title class_">GetFrame</span>() # <span class="hljs-attr">type</span>: <span class="hljs-title class_">SBFrame</span><br>    regs = <span class="hljs-title function_">dump_regs</span>(frame)<br><br>    # 获取内存分段信息<br>    sections = <span class="hljs-title function_">dump_memory_info</span>(target)<br><br>    # 创建临时文件夹<br>    dump_path = <span class="hljs-title class_">Path</span>(f<span class="hljs-string">&#x27;DumpContext_&#123;log_time&#125;&#x27;</span>).<span class="hljs-title function_">resolve</span>()<br>    <span class="hljs-keyword">if</span> dump_path.<span class="hljs-title function_">exists</span>() is <span class="hljs-title class_">False</span>:<br>        dump_path.<span class="hljs-title function_">mkdir</span>()<br>    logger.<span class="hljs-title function_">info</span>(f<span class="hljs-string">&#x27;dump to &#123;dump_path.as_posix()&#125;&#x27;</span>)<br><br>    # 保存内存分段信息<br>    memory_info = json.<span class="hljs-title function_">dumps</span>(sections, ensure_ascii=<span class="hljs-title class_">False</span>, indent=<span class="hljs-number">4</span>)<br>    (dump_path / <span class="hljs-string">&#x27;_memory.json&#x27;</span>).<span class="hljs-title function_">write_text</span>(memory_info, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>    logger.<span class="hljs-title function_">info</span>(f<span class="hljs-string">&#x27;dump _memory.json end&#x27;</span>)<br><br>    # 设置过滤黑名单 符合下面条件的跳过dump<br>    black_list = &#123;<br>        <span class="hljs-string">&#x27;startswith&#x27;</span>: [<span class="hljs-string">&#x27;/dev&#x27;</span>, <span class="hljs-string">&#x27;/system/fonts&#x27;</span>, <span class="hljs-string">&#x27;/dmabuf&#x27;</span>],<br>        <span class="hljs-string">&#x27;endswith&#x27;</span>: [<span class="hljs-string">&#x27;(deleted)&#x27;</span>, <span class="hljs-string">&#x27;.apk&#x27;</span>, <span class="hljs-string">&#x27;.odex&#x27;</span>, <span class="hljs-string">&#x27;.vdex&#x27;</span>, <span class="hljs-string">&#x27;.dex&#x27;</span>, <span class="hljs-string">&#x27;.jar&#x27;</span>, <span class="hljs-string">&#x27;.art&#x27;</span>, <span class="hljs-string">&#x27;.oat&#x27;</span>, <span class="hljs-string">&#x27;.art]&#x27;</span>],<br>        <span class="hljs-string">&#x27;includes&#x27;</span>: [],<br>    &#125;<br>    # 设置单个内存分段dump大小上限<br>    max_seg_size = <span class="hljs-number">64</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span><br><br>    # dump内存<br>    process = exe_ctx.<span class="hljs-title class_">GetProcess</span>() # <span class="hljs-attr">type</span>: <span class="hljs-title class_">SBProcess</span><br>    segments = <span class="hljs-title function_">dump_memory</span>(process, dump_path, black_list, max_seg_size)<br>    context = &#123;<br>        <span class="hljs-string">&#x27;arch&#x27;</span>: arch_long,<br>        <span class="hljs-string">&#x27;regs&#x27;</span>: regs,<br>        <span class="hljs-string">&#x27;segments&#x27;</span>: segments,<br>    &#125;<br><br>    # 保存内存信息<br>    context_config = json.<span class="hljs-title function_">dumps</span>(context, ensure_ascii=<span class="hljs-title class_">False</span>, indent=<span class="hljs-number">4</span>)<br>    (dump_path / <span class="hljs-string">&#x27;_index.json&#x27;</span>).<span class="hljs-title function_">write_text</span>(context_config, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>    logger.<span class="hljs-title function_">info</span>(f<span class="hljs-string">&#x27;dump _index.json end&#x27;</span>)<br><br>    # 打包临时文件夹<br>    <span class="hljs-title function_">archive</span>(dump_path)<br>    logger.<span class="hljs-title function_">info</span>(f<span class="hljs-string">&#x27;archive &#123;dump_path&#125; end&#x27;</span>)<br><br>def <span class="hljs-title function_">helloworld</span>(<span class="hljs-attr">debugger</span>: <span class="hljs-string">&#x27;SBDebugger&#x27;</span>, <span class="hljs-attr">command</span>: str, <span class="hljs-attr">exe_ctx</span>: <span class="hljs-string">&#x27;SBExecutionContext&#x27;</span>, <span class="hljs-attr">result</span>: <span class="hljs-string">&#x27;SBCommandReturnObject&#x27;</span>, <span class="hljs-attr">internal_dict</span>: dict):<br>    <span class="hljs-title function_">print</span>(<span class="hljs-string">&#x27;helloWorld debugger:&#x27;</span>, <span class="hljs-keyword">debugger</span>)<br>    <span class="hljs-title function_">print</span>(<span class="hljs-string">&#x27;helloWorld command:&#x27;</span>, command)<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/06/逆向/安卓逆向/6. 模拟执行/Unidbg/补环境/6. dump内存+模拟执行/2. lldb dump脚本/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/05/06/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/6.%20dump%E5%86%85%E5%AD%98+%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/3.%20lldb%20dump%E4%B8%8A%E4%B8%8B%E6%96%87/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/05/06/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/6.%20dump%E5%86%85%E5%AD%98+%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1.%20%E7%8E%AF%E5%A2%83/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

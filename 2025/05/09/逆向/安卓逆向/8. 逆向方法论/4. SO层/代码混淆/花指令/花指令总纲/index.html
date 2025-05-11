@@ -1,0 +1,661 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="参考：https:&#x2F;&#x2F;www.yuque.com&#x2F;lilac-2hqvv&#x2F;zfho3g&#x2F;issny5?  花指令扫盲 花指令是由设计者特别构思，希望使反汇编出错，让破解者无法清楚正确的理解程序逻辑的一种技术企图隐藏掉不想被逆向工程的代码块 (或其它功能) 的一种方法, 在真实代码中插入一些垃圾代码的同时还保证原有程序的正确执行, 而程序无法很好地反编译, 难以理解程序内容, 达到混淆视听的效果.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/05/09/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/8.%20%E9%80%86%E5%90%91%E6%96%B9%E6%B3%95%E8%AE%BA/4.%20SO%E5%B1%82/%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86/%E8%8A%B1%E6%8C%87%E4%BB%A4/%E8%8A%B1%E6%8C%87%E4%BB%A4%E6%80%BB%E7%BA%B2/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="参考：https:&#x2F;&#x2F;www.yuque.com&#x2F;lilac-2hqvv&#x2F;zfho3g&#x2F;issny5?  花指令扫盲 花指令是由设计者特别构思，希望使反汇编出错，让破解者无法清楚正确的理解程序逻辑的一种技术企图隐藏掉不想被逆向工程的代码块 (或其它功能) 的一种方法, 在真实代码中插入一些垃圾代码的同时还保证原有程序的正确执行, 而程序无法很好地反编译, 难以理解程序内容, 达到混淆视听的效果.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-09T02:34:24.157Z">
+<meta property="article:modified_time" content="2025-05-09T02:51:16.726Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-09 10:34" pubdate>
+          2025年5月9日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li>参考：<a target="_blank" rel="noopener" href="https://www.yuque.com/lilac-2hqvv/zfho3g/issny5">https://www.yuque.com/lilac-2hqvv/zfho3g/issny5</a>?</li>
+</ul>
+<h1 id="花指令扫盲"><a href="#花指令扫盲" class="headerlink" title="花指令扫盲"></a>花指令扫盲</h1><blockquote>
+<p>花指令是由<code>设计者特别构思，希望使反汇编出错</code>，让破解者无法清楚正确的理解程序逻辑的一种技术<br><code>企图隐藏掉不想被逆向工程的代码块 (或其它功能) 的一种方法</code>, <code>在真实代码中插入一些垃圾代码的同时还保证原有程序的正确执行</code>, <code>而程序无法很好地反编译</code>, 难以理解程序内容, 达到混淆视听的效果.</p>
+</blockquote>
+<h3 id="花指令的意图"><a href="#花指令的意图" class="headerlink" title="花指令的意图"></a>花指令的意图</h3><ul>
+<li>花指令试图去干扰 IDA、Ghidra 这些分析工具，让反汇编过程出错</li>
+<li>有的花指令未必得迷惑分析工具，恶心分析人员也是可行的</li>
+<li>指令膨胀 增加了我们分析的“体量</li>
+<li>实际场景中我们遇到的花指令主要会干扰工具，因为干扰工具的花指令往往也能干扰分析人员，一举两得。</li>
+</ul>
+<h3 id="区分花指令"><a href="#区分花指令" class="headerlink" title="区分花指令"></a>区分花指令</h3><p>比如 Windows 上的“热补丁”技术，会将函数开头预留几个字节的空间，填充为 nop。这看起来和 P1 是类似的，但它是花指令吗，当然不是。它的意图是为 Inline Hook 提供便利。</p>
+<h3 id="常见花指令特征"><a href="#常见花指令特征" class="headerlink" title="常见花指令特征"></a>常见花指令特征</h3><ol>
+<li><code>JNI_OnLoad 作为一个鲜明的入口，就可以称得上关键函数</code>。对它的反编译是否正常和顺利，往往就能判断出是否有花指令或其他代码保护手段</li>
+<li><code>栈开的也太小了</code>，如只有 32 字节，它存进去了四个 X 系列寄存器，每个占 8 字节空间，<code>直接满了</code>，难道程序没有局部变量要处理？</li>
+<li><code>备份的寄存器很奇怪</code>，X1、X2、X3 没有备份的必要，这些本就是函数中需要被使用到的、易变的寄存器，它们的值被破坏是可预见以及可接受的。</li>
+<li><code>只有函数序言没有函数尾声</code></li>
+</ol>
+<h1 id="汇编语言之序言和尾声"><a href="#汇编语言之序言和尾声" class="headerlink" title="汇编语言之序言和尾声"></a>汇编语言之序言和尾声</h1><ul>
+<li><p>函数开头的几行代码叫函数序言，与之对应，函数结尾处的几行代码叫函数尾声。</p>
+</li>
+<li><p><code>函数序言</code>： <code>会修改 SP 寄存器，让它的值更小，因为栈默认是从高地址往低地址方向增长，所以这是开辟栈空间的动作，一般称为开栈</code>。新开辟的栈内存用于存储局部变量以及不想被污染的寄存器。局部变量不必多说，不想被污染的寄存器指的是在当前函数中这些寄存器可能被使用，进而其值会被改变，但我们希望在函数结束后可以恢复这些寄存器，这可以理解为备份</p>
+</li>
+<li><p><code>函数尾声</code>：<code>函数序言的逆操作</code>，比如我们举例的这个函数，将不想被污染的寄存器 完完整整的从栈中取出，即恢复它们为进入函数前的状态，然后修改 SP 寄存器，同样回到原先状态，和函数序言形成对应，开多少栈就清多少，即<code>清栈</code>。</p>
+</li>
+<li><p>比如下面是一个普通 ARM64 函数的序言部分</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript">.<span class="hljs-property">text</span>:00000000000311D4 <span class="hljs-variable constant_">FF</span> <span class="hljs-number">83</span> <span class="hljs-number">02</span> <span class="hljs-variable constant_">D1</span>                 <span class="hljs-variable constant_">SUB</span>             <span class="hljs-variable constant_">SP</span>, <span class="hljs-variable constant_">SP</span>, #<span class="hljs-number">0xA0</span><br>.<span class="hljs-property">text</span>:00000000000311D8 <span class="hljs-variable constant_">FC</span> 6F <span class="hljs-number">04</span> <span class="hljs-variable constant_">A9</span>                 <span class="hljs-variable constant_">STP</span>             <span class="hljs-variable constant_">X28</span>, <span class="hljs-variable constant_">X27</span>, [<span class="hljs-variable constant_">SP</span>,#<span class="hljs-number">0x90</span>+var_50]<br>.<span class="hljs-property">text</span>:00000000000311DC <span class="hljs-variable constant_">FA</span> <span class="hljs-number">67</span> <span class="hljs-number">05</span> <span class="hljs-variable constant_">A9</span>                 <span class="hljs-variable constant_">STP</span>             <span class="hljs-variable constant_">X26</span>, <span class="hljs-variable constant_">X25</span>, [<span class="hljs-variable constant_">SP</span>,#<span class="hljs-number">0x90</span>+var_40]<br>.<span class="hljs-property">text</span>:00000000000311E0 <span class="hljs-variable constant_">F8</span> 5F <span class="hljs-number">06</span> <span class="hljs-variable constant_">A9</span>                 <span class="hljs-variable constant_">STP</span>             <span class="hljs-variable constant_">X24</span>, <span class="hljs-variable constant_">X23</span>, [<span class="hljs-variable constant_">SP</span>,#<span class="hljs-number">0x90</span>+var_30]<br>.<span class="hljs-property">text</span>:00000000000311E4 <span class="hljs-variable constant_">F6</span> <span class="hljs-number">57</span> <span class="hljs-number">07</span> <span class="hljs-variable constant_">A9</span>                 <span class="hljs-variable constant_">STP</span>             <span class="hljs-variable constant_">X22</span>, <span class="hljs-variable constant_">X21</span>, [<span class="hljs-variable constant_">SP</span>,#<span class="hljs-number">0x90</span>+var_20]<br>.<span class="hljs-property">text</span>:00000000000311E8 <span class="hljs-variable constant_">F4</span> 4F <span class="hljs-number">08</span> <span class="hljs-variable constant_">A9</span>                 <span class="hljs-variable constant_">STP</span>             <span class="hljs-variable constant_">X20</span>, <span class="hljs-variable constant_">X19</span>, [<span class="hljs-variable constant_">SP</span>,#<span class="hljs-number">0x90</span>+var_10]<br>.<span class="hljs-property">text</span>:00000000000311EC <span class="hljs-variable constant_">FD</span> 7B <span class="hljs-number">09</span> <span class="hljs-variable constant_">A9</span>                 <span class="hljs-variable constant_">STP</span>             <span class="hljs-variable constant_">X29</span>, <span class="hljs-variable constant_">X30</span>, [<span class="hljs-variable constant_">SP</span>,#<span class="hljs-number">0x90</span>+var_s0]<br></code></pre></td></tr></table></figure></li>
+<li><p>开辟了 0xA0 字节的栈空间，然后<code>先将 X19 - X30 的值放到了栈里，这可以理解为备份</code>。其余的栈空间在程序中用于存放局部变量。</p>
+</li>
+<li><p>函数尾声是函数序言的逆操作，比如我们举例的这个函数，将 X19 - X30 完完整整的从栈中取出，即恢复它们为进入函数前的状态，然后修改 SP 寄存器，同样回到原先状态，和函数序言形成对应，开多少栈就清多少，即清栈。</p>
+</li>
+</ul>
+<h1 id="自动化或半自动化去除花指令"><a href="#自动化或半自动化去除花指令" class="headerlink" title="自动化或半自动化去除花指令"></a>自动化或半自动化去除花指令</h1><h3 id="简易方案"><a href="#简易方案" class="headerlink" title="简易方案"></a>简易方案</h3><ul>
+<li>junk code 的核心特征是“事倍功半——较多的代码量只对寄存器和内存环境做了微小甚至单一的改变。</li>
+<li>那么如果我们定位到花指令的起始处，我们称此处是初始状态（包括寄存器、堆栈、内存），然后使用指令模拟器往下执行，<code>在某一位置，运行状态相较于初始状态仅有极小的差异</code>，比如仅有单个通用寄存器的值不同，那么此处大概率就是 junk code 的结束位置</li>
+</ul>
+<h3 id="激进方案"><a href="#激进方案" class="headerlink" title="激进方案"></a>激进方案</h3><ul>
+<li>就是不用指定起始执行地址，工具采用随机或遍历执行的方式，<code>寻找可以“压缩”的执行片段</code>。</li>
+<li>比如限定每次执行至少十行以上汇编，如果两端的寄存器状态差异极小，那么就认为是花指令的边界，然后生成对应的等效代码并 patch处理。</li>
+<li>这个方案很激进，好处当然很大，根本不需要分析人员去理解花指令以及抽象出对应的匹配特征。但缺点也很大，存在很大的不稳定性以及可能有很严重的误判。</li>
+<li>比如 <a target="_blank" rel="noopener" href="https://github.com/alex-ilgayev/ida-pro-junk-code-removal">ida-pro-junk-code-removal</a> 、<a target="_blank" rel="noopener" href="https://github.com/tkmru/nao">nao</a> 这些项目虽然很简陋，其实都有这种思路的影子</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/09/逆向/安卓逆向/8. 逆向方法论/4. SO层/代码混淆/花指令/花指令总纲/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/05/09/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/8.%20%E9%80%86%E5%90%91%E6%96%B9%E6%B3%95%E8%AE%BA/4.%20SO%E5%B1%82/%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86/%E6%80%BB%E7%BA%B2/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/05/07/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/8.%20%E9%80%86%E5%90%91%E6%96%B9%E6%B3%95%E8%AE%BA/4.%20SO%E5%B1%82/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8SVC%E9%97%AE%E9%A2%98/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

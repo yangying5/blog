@@ -1,0 +1,679 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta property="og:type" content="website">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/page/5/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="An elegant Material-Design theme for Hexo"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/ioctl/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/ioctl/" target="_self">
+        <div>
+          思路1：详见补系统调用   hook&lt;推荐&gt;123456789101112public void hookioctl()&#123;    //获取 HookZz 实例    HookZz hookZz = HookZz.getInstance(emulator);    //创建 replace 回调    ReplaceCallback replaceCallback = new
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 19:08" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/getuid/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/getuid/" target="_self">
+        <div>
+          参考同盾项目  1234567891011121314// 获取uid// https://blog.csdn.net/huilin9960/article/details/81530568// unidbg输出是0，所以要改long getuidAddress = mymodule.findSymbolByName(&quot;getuid&quot;).getAddress();emulat
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 19:08" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/free/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/free/" target="_self">
+        <div>
+          参考：https://www.yuque.com/lilac-2hqvv/xdwlsg/bzoykwvuim3hkz2o  函数原型 free 函数是重要的内存释放函数，原型如下。 void free(void *ptr)    问题 Unidbg 在内存管理方面存在一些问题，在内存的释放上尤为明显，munmap 以及 free 都有不低的出错概率。先讨论 free，常见报错如下。12Inval
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 19:08" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/gethostbyname/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/gethostbyname/" target="_self">
+        <div>
+          case 引入 我们可以通过IP查主机名，或者反之，通过主机名查IP。 Android 基于Linux，可以使用Linux的API实现等效功能，在DEMO中，先通过IP得到雅虎的域名，再用雅虎的域名获取IP。12345678910111213141516171819202122232425262728293031323334353637383940414243#include &lt;jni.h&
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 19:08" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/getrusage/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/getrusage/" target="_self">
+        <div>
+          getrusage介绍作用 每个进程都会消耗诸如内存和 CPU 时间之类的系统资源，getrusage 函数用于查看当前进程及子进程已经用掉的资源。在Android中，getrusage 是一个库函数，位于Libc，但它只是对系统调用的简单封装。  getrusage 函数 接下来仔细了解 getrusage 函数，函数定义如下 int getrusage(int who, struct rusa
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 19:07" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/clock_gettime/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/clock_gettime/" target="_self">
+        <div>
+          函数原型 int clock_gettime(clockid_t __clock, struct timespec* __ts);   clock_gettime 用于获取有参数1 clock所指定的时钟的时间值，返回的时间值置于ts所指向的timespec结构中，函数的返回值为-1或者0，分别代表函数调用失败以及成功。  clock 有如下选项 123456789101112#define CL
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 19:07" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/2.%20%E5%A4%84%E7%90%86%E5%BA%93%E5%87%BD%E6%95%B0%E6%80%9D%E8%B7%AF/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/2.%20%E5%A4%84%E7%90%86%E5%BA%93%E5%87%BD%E6%95%B0%E6%80%9D%E8%B7%AF/" target="_self">
+        <div>
+          处理库函数常规思路1. 通过so导出方法，确认so使用到的常用库函数 在IDA中可以看到，样本有一百五十多个导入函数，我们挑选出潜在的、可能出问题的导入函数即库函数。 dlopen/dlsym/clock_gettime/sigaction/socket/popen/uname/stat/statfs/getpid/syscall/dladdr/system_property_get/getrus
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 18:55" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/1.%20%E5%BA%93%E5%87%BD%E6%95%B0%E4%BB%8B%E7%BB%8D/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/1.%20%E5%BA%93%E5%87%BD%E6%95%B0%E4%BB%8B%E7%BB%8D/" target="_self">
+        <div>
+          参考: https://www.yuque.com/lilac-2hqvv/xdwlsg/usg3an5x2x78ug0b  在 Android Native 代码开发中，会使用各种各样的库函数，一部分依赖于底层系统调用，一部分依赖于系统环境，一部分依赖于其他库，另一部分什么都不依赖，只是单纯的工具函数， 第一类：依赖于系统调用 以 openat 为代表的各类文件访问函数都依赖于系统调用1234
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 18:50" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/2.%20%E8%A1%A5%E6%96%87%E4%BB%B6/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/2.%20%E8%A1%A5%E6%96%87%E4%BB%B6/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6/" target="_self">
+        <div>
+          参考：  https://www.yuque.com/docs/share/1559bab0-90de-422c-a3fb-eb32e68f44e0 https://www.yuque.com/docs/share/c5c3ceab-570c-4e2a-823d-0c0a275cca33  文件常识-常用文件及作用 &#x2F;proc&#x2F;self&#x2F;maps：  检测 frida
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 17:36" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/2.%20%E8%A1%A5%E6%96%87%E4%BB%B6/%E8%A1%A5so%E6%96%87%E4%BB%B6/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/2.%20%E8%A1%A5%E6%96%87%E4%BB%B6/%E8%A1%A5so%E6%96%87%E4%BB%B6/" target="_self">
+        <div>
+          判断场景 发现需要引入其他so，先判断是否是系统so， 还是app的so 日志报错提示找不到依赖库12[08:13:48 753]  INFO [com.github.unidbg.linux.AndroidElfLoader] (AndroidElfLoader:474) - libnet_crypto.so load dependency libandroid.so failedlibnet_
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 17:36" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/blog/page/4/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/blog/">1</a><span class="space">&hellip;</span><a class="page-number" href="/blog/page/3/#board">3</a><a class="page-number" href="/blog/page/4/#board">4</a><span class="page-number current">5</span><a class="page-number" href="/blog/page/6/#board">6</a><a class="page-number" href="/blog/page/7/#board">7</a><span class="space">&hellip;</span><a class="page-number" href="/blog/page/12/#board">12</a><a class="extend next" rel="next" href="/blog/page/6/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

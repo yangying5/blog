@@ -1,0 +1,743 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="c库速查：  lock_gettime 用于获取有参数1 clock所指定的时钟的时间值，返回的时间值置于ts所指向的timespec结构中，函数的返回值为-1或者0，分别代表函数调用失败以及成功。 函数声明和原型1int clock_gettime(clockid_t __clock, struct timespec* __ts);  clock clock 有如下选项123456789101">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/04/22/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/2.%20%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80/6.%20C/2.%20C%E5%BA%93%E5%87%BD%E6%95%B0%E9%80%9F%E6%9F%A5/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="c库速查：  lock_gettime 用于获取有参数1 clock所指定的时钟的时间值，返回的时间值置于ts所指向的timespec结构中，函数的返回值为-1或者0，分别代表函数调用失败以及成功。 函数声明和原型1int clock_gettime(clockid_t __clock, struct timespec* __ts);  clock clock 有如下选项123456789101">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/c/c%E5%87%BD%E6%95%B0%E9%80%9F%E6%9F%A5.png">
+<meta property="og:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/c/1745408082471.jpg">
+<meta property="og:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/c/1745408091559.jpg">
+<meta property="og:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/c/1745408105033.jpg">
+<meta property="og:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/c/1745408111807.jpg">
+<meta property="og:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/c/1745408118879.jpg">
+<meta property="og:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/c/1745408122543.jpg">
+<meta property="og:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/c/1745409598611.jpg">
+<meta property="og:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/c/0zm2912000k1el3qmA067.png">
+<meta property="og:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/c/0zm4912000k1elavo104D.png">
+<meta property="article:published_time" content="2025-04-22T08:36:26.975Z">
+<meta property="article:modified_time" content="2025-04-23T12:02:02.046Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/android/%E5%9F%BA%E7%A1%80/c/c%E5%87%BD%E6%95%B0%E9%80%9F%E6%9F%A5.png">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-22 16:36" pubdate>
+          2025年4月22日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li>c库速查：<img src="/blog/../../../../../images/android/%E5%9F%BA%E7%A1%80/c/c%E5%87%BD%E6%95%B0%E9%80%9F%E6%9F%A5.png" srcset="/blog/img/loading.gif" lazyload></li>
+</ul>
+<h2 id="lock-gettime"><a href="#lock-gettime" class="headerlink" title="lock_gettime"></a>lock_gettime</h2><ul>
+<li>用于<code>获取有参数1 clock所指定的时钟的时间值</code>，<code>返回的时间值置于ts所指向的timespec结构</code>中，函数的返回值为-1或者0，分别代表函数调用失败以及成功。</li>
+<li>函数声明和原型<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">clock_gettime</span><span class="hljs-params">(<span class="hljs-type">clockid_t</span> __clock, <span class="hljs-keyword">struct</span> timespec* __ts)</span></span>;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="clock"><a href="#clock" class="headerlink" title="clock"></a>clock</h4><ul>
+<li>clock 有如下选项<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-comment">#define CLOCK_REALTIME 0</span><br><span class="hljs-comment">#define CLOCK_MONOTONIC 1</span><br><span class="hljs-comment">#define CLOCK_PROCESS_CPUTIME_ID 2</span><br><span class="hljs-comment">#define CLOCK_THREAD_CPUTIME_ID 3</span><br><span class="hljs-comment">#define CLOCK_MONOTONIC_RAW 4</span><br><span class="hljs-comment">#define CLOCK_REALTIME_COARSE 5</span><br><span class="hljs-comment">#define CLOCK_MONOTONIC_COARSE 6</span><br><span class="hljs-comment">#define CLOCK_BOOTTIME 7</span><br><span class="hljs-comment">#define CLOCK_REALTIME_ALARM 8</span><br><span class="hljs-comment">#define CLOCK_BOOTTIME_ALARM 9</span><br><span class="hljs-comment">#define CLOCK_SGI_CYCLE 10</span><br><span class="hljs-comment">#define CLOCK_TAI 11</span><br></code></pre></td></tr></table></figure></li>
+<li>比如CLOCK_REALTIME （0）代表当前真实时间，CLOCK_MONOTONIC_RAW（4）代表开机时间。clockID为7，即CLOCK_BOOTTIME，大意也是开机时间</li>
+</ul>
+<h4 id="timespec"><a href="#timespec" class="headerlink" title="timespec"></a>timespec</h4><ul>
+<li>而 timespec 结构体如下<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">timespec</span>&#123;<br>  <span class="hljs-type">int</span> tv_sec;  <span class="hljs-comment">//秒</span><br>  <span class="hljs-type">int</span> tv_nsec;  <span class="hljs-comment">//纳秒</span><br>&#125;;<br></code></pre></td></tr></table></figure></li>
+<li>IDA不支持timespec结构，需要手动设置，如下：<br><img src="/blog/../../../../../images/android/%E5%9F%BA%E7%A1%80/c/1745408082471.jpg" srcset="/blog/img/loading.gif" lazyload><br><img src="/blog/../../../../../images/android/%E5%9F%BA%E7%A1%80/c/1745408091559.jpg" srcset="/blog/img/loading.gif" lazyload><br><img src="/blog/../../../../../images/android/%E5%9F%BA%E7%A1%80/c/1745408105033.jpg" srcset="/blog/img/loading.gif" lazyload><br>接下来回到sub_59EC函数，在v2上右键<br><img src="/blog/../../../../../images/android/%E5%9F%BA%E7%A1%80/c/1745408111807.jpg" srcset="/blog/img/loading.gif" lazyload><br>声明为timespec结构体<br><img src="/blog/../../../../../images/android/%E5%9F%BA%E7%A1%80/c/1745408118879.jpg" srcset="/blog/img/loading.gif" lazyload><br><img src="/blog/../../../../../images/android/%E5%9F%BA%E7%A1%80/c/1745408122543.jpg" srcset="/blog/img/loading.gif" lazyload></li>
+</ul>
+<h2 id="dladdr"><a href="#dladdr" class="headerlink" title="dladdr"></a>dladdr</h2><ul>
+<li>dladdr函数用于获取某个地址的符号信息，地址address的符号信息返回在dlip这个Dl_info结构体中。<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">dladdr</span><span class="hljs-params">(<span class="hljs-type">void</span> *address, Dl_info *dlip)</span></span>;<br></code></pre></td></tr></table></figure></li>
+<li>来看一下Dl_info结构体的定义<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> &#123;<br><span class="hljs-type">const</span> <span class="hljs-type">char</span> *dli_fname;　　<span class="hljs-comment">//address所位于的SO文件其路径名</span><br><span class="hljs-type">void</span> *dli_fbase;<br><span class="hljs-type">const</span> <span class="hljs-type">char</span> *dli_sname;<br><span class="hljs-type">void</span> dli_saddr;<br><span class="hljs-type">size_t</span> dli_size; / ELF only /<br><span class="hljs-type">int</span> dli_bind; / ELF only */<br><span class="hljs-type">int</span> dli_type;<br>&#125;;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="statfs结构体"><a href="#statfs结构体" class="headerlink" title="statfs结构体"></a>statfs结构体</h2><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><span class="hljs-comment">/* 32-bit ARM or x86 (corresponds to the kernel&#x27;s statfs64 type). */</span><br><span class="hljs-comment">#define __STATFS64_BODY \</span><br>  uint32_t f_type; <span class="hljs-string">\</span><br>  uint32_t f_bsize; <span class="hljs-string">\</span><br>  uint64_t f_blocks; <span class="hljs-string">\</span><br>  uint64_t f_bfree; <span class="hljs-string">\</span><br>  uint64_t f_bavail; <span class="hljs-string">\</span><br>  uint64_t f_files; <span class="hljs-string">\</span><br>  uint64_t f_ffree; <span class="hljs-string">\</span><br>  fsid_t f_fsid; <span class="hljs-string">\</span><br>  uint32_t f_namelen; <span class="hljs-string">\</span><br>  uint32_t f_frsize; <span class="hljs-string">\</span><br>  uint32_t f_flags; <span class="hljs-string">\</span><br>  uint32_t f_spare[<span class="hljs-number">4</span>]; <span class="hljs-string">\</span><br><br><span class="hljs-comment">#endif</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs smali">int sub_5624()<br>&#123;<span class="hljs-built_in"></span><br><span class="hljs-built_in">int </span>v0; // r1<span class="hljs-built_in"></span><br><span class="hljs-built_in">int </span>result; // r0<br>_BYTE v2[88]; // [sp+0h] [bp-68h] BYREF<br>memset(v2, 0, sizeof(v2));<br>v0 = statfs(<span class="hljs-string">&quot;/data&quot;</span>, (struct statfs *)v2);<br>result = -1;<span class="hljs-built_in"></span><br><span class="hljs-built_in">if </span>( v0 &gt;= 0 )<br>result = *(_DWORD *)&amp;v2[8] * *(_DWORD *)&amp;v2[4];<span class="hljs-built_in"></span><br><span class="hljs-built_in">return </span>result;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>v2在IDA中是byte数组，但实际上是statfs结构体</code>，*(_DWORD *)&amp;v2[8]即f_blocks，后者是f_bsize，语义分别为数据块的个数以及单个数据块的大小，两者相乘就是data目录的存储空间大小。</li>
+</ul>
+<h2 id="sysinfo函数"><a href="#sysinfo函数" class="headerlink" title="sysinfo函数"></a>sysinfo函数</h2><ul>
+<li>函数功能为获取系统信息，信息返回在入参sysinfo结构体中。</li>
+<li>函数声明和原型：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/sysinfo.h&gt;</span></span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">sysinfo</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> sysinfo *info)</span></span>;<br></code></pre></td></tr></table></figure></li>
+<li>来看一下sysinfo结构体<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs sqf">struct sysinfo &#123;<br><span class="hljs-variable">__kernel_long_t</span> uptime;<br><span class="hljs-variable">__kernel_ulong_t</span> loads[<span class="hljs-number">3</span>];<br><span class="hljs-variable">__kernel_ulong_t</span> totalram;<br><span class="hljs-variable">__kernel_ulong_t</span> freeram;<br><span class="hljs-variable">__kernel_ulong_t</span> sharedram;<br><span class="hljs-variable">__kernel_ulong_t</span> bufferram;<br><span class="hljs-variable">__kernel_ulong_t</span> totalswap;<br><span class="hljs-variable">__kernel_ulong_t</span> freeswap;<br><span class="hljs-variable">__u16</span> procs;<br><span class="hljs-variable">__u16</span> pad;<br><span class="hljs-variable">__kernel_ulong_t</span> totalhigh;<br><span class="hljs-variable">__kernel_ulong_t</span> freehigh;<br><span class="hljs-variable">__u32</span> mem_unit;<br>char <span class="hljs-variable">_f</span>[<span class="hljs-number">20</span> - <span class="hljs-number">2</span> * <span class="hljs-built_in">sizeof</span>(<span class="hljs-variable">__kernel_ulong_t</span>) - <span class="hljs-built_in">sizeof</span>(<span class="hljs-variable">__u32</span>)];<br>&#125;;<br></code></pre></td></tr></table></figure></li>
+<li>结构体中的uptime字段，uptime为开机至今经过的秒数</li>
+</ul>
+<h2 id="malloc和calloc"><a href="#malloc和calloc" class="headerlink" title="malloc和calloc"></a>malloc和calloc</h2><ul>
+<li>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/zhongjiekangping/article/details/6162748">https://blog.csdn.net/zhongjiekangping/article/details/6162748</a></li>
+<li>函数malloc()和calloc()都可以用来动态分配内存空间,但两者稍有区别。 </li>
+<li><code>malloc()</code>函数有一个参数,即要分配的内存空间的大小: void *malloc(size_t size); </li>
+<li><code>calloc()</code>函数有两个参数,分别为元素的数目和每个元素的大小,这两个参数的乘积就是要分配的内存空间的大小: void *calloc(size_t numElements,size_t sizeOfElement); </li>
+<li>如果调用成功,函数malloc()和函数calloc()都将返回所分配的内存空间的首地址。</li>
+</ul>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><ul>
+<li><code>函数malloc()和函数calloc()的主要区别是前者不能初始化所分配的内存空间,而后者能</code>。<ul>
+<li>如果由malloc()函数分配的内存空间原来没有被使用过，则其中的每一位可能都是0;反之,</li>
+<li>如果这部分内存曾经被分配过,则其中可能遗留有各种各样的数据。</li>
+<li>也就是说，使用malloc()函数的程序开始时(内存空间还没有被重新分配)能正常进行,但经过一段时间(内存空间还已经被重新分配)可能会出现问题。</li>
+</ul>
+</li>
+<li>函数calloc()会将所分配的内存空间中的每一位都初始化为零<ul>
+<li>也就是说,如果你是为字符类型或整数类型的元素分配内存,那麽这些元素将保证会被初始化为0;</li>
+<li>如果你是为指针类型的元素分配内存,那麽这些元素通常会被初始化为空指针;</li>
+<li>如果你为实型数据分配内存,则这些元素会被初始化为浮点型的零</li>
+</ul>
+</li>
+<li>另外有一点不能直接看出的区别是，malloc 只管分配内存，并不能对所得的内存进行初始化，所以得到的一片新内存中，其值将是随机的。</li>
+</ul>
+<h2 id="memset"><a href="#memset" class="headerlink" title="memset"></a>memset</h2><ul>
+<li>参考：<a target="_blank" rel="noopener" href="https://www.runoob.com/cprogramming/c-function-memset.html">https://www.runoob.com/cprogramming/c-function-memset.html</a></li>
+<li>C库函数**void <em>memset(void <em>str, int c, size_t n)</em></em> 复制字符c（一个无符号字符）到参数str所指向的字符串的前n个字符。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span> <span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>   <span class="hljs-type">char</span> str[<span class="hljs-number">50</span>];<br>   <span class="hljs-built_in">strcpy</span>(str,<span class="hljs-string">&quot;This is string.h library function&quot;</span>);<br>   <span class="hljs-built_in">puts</span>(str);<br>   <span class="hljs-built_in">memset</span>(str,<span class="hljs-string">&#x27;$&#x27;</span>,<span class="hljs-number">7</span>);<br>   <span class="hljs-built_in">puts</span>(str);<br>   <span class="hljs-keyword">return</span>(<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>让我们编译并运行上面的程序，这将产生以下结果：<blockquote>
+<p>This is string.h library function</p>
+<p>$$$$$$$ string.h library function</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="memcpy"><a href="#memcpy" class="headerlink" title="memcpy"></a>memcpy</h2><ul>
+<li>参考：<a target="_blank" rel="noopener" href="https://www.runoob.com/cprogramming/c-function-memcpy.html">https://www.runoob.com/cprogramming/c-function-memcpy.html</a></li>
+<li>C库函数**void *memcpy(void *str1, const void *str2, size_t n)**从存储区str2复制n个字节到存储区str1。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;string.h&gt;</span></span><br> <br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"> </span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-type">char</span> *s=<span class="hljs-string">&quot;http://www.runoob.com&quot;</span>;<br>  <span class="hljs-type">char</span> d[<span class="hljs-number">20</span>];<br>  <span class="hljs-built_in">memcpy</span>(d, s<span class="hljs-number">+11</span>, <span class="hljs-number">6</span>);<span class="hljs-comment">// 从第 11 个字符(r)开始复制，连续复制 6 个字符(runoob)</span><br>  <span class="hljs-comment">// 或者 memcpy(d, s+11*sizeof(char), 6*sizeof(char));</span><br>  d[<span class="hljs-number">6</span>]=<span class="hljs-string">&#x27;\0&#x27;</span>;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s&quot;</span>, d);<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>让我们编译并运行上面的程序，这将产生以下结果：<blockquote>
+<p>runoob</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="strcat"><a href="#strcat" class="headerlink" title="strcat"></a>strcat</h2><ul>
+<li>参考：<a target="_blank" rel="noopener" href="https://www.runoob.com/cprogramming/c-function-strcat.html">https://www.runoob.com/cprogramming/c-function-strcat.html</a></li>
+<li>C库函数**char *strcat(char <em>dest, const char <em>src)</em></em> 把src所指向的字符串追加到dest所指向的字符串的结尾。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br> <br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span> <span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>   <span class="hljs-type">char</span> src[<span class="hljs-number">50</span>], dest[<span class="hljs-number">50</span>];<br> <br>   <span class="hljs-built_in">strcpy</span>(src,  <span class="hljs-string">&quot;This is source&quot;</span>);<br>   <span class="hljs-built_in">strcpy</span>(dest, <span class="hljs-string">&quot;This is destination&quot;</span>);<br>   <span class="hljs-built_in">strcat</span>(dest, src);<br>   <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;最终的目标字符串： |%s|&quot;</span>, dest);<br>   <br>   <span class="hljs-keyword">return</span>(<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>让我们编译并运行上面的程序，这将产生以下结果：<blockquote>
+<p>最终的目标字符串： |This is destinationThis is source|</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="strcpy"><a href="#strcpy" class="headerlink" title="strcpy"></a>strcpy</h2><ul>
+<li>C库函数<code>char *strcpy(char *dest, const char *src)</code>把src所指向的字符串复制到dest。</li>
+<li>需要注意的是如果目标数组 dest 不够大，而源字符串的长度又太长，可能会造成缓冲溢出的情况。</li>
+<li>声明：char *strcpy(char *dest, const char *src)</li>
+<li>参数：<ul>
+<li>dest– 指向用于存储复制内容的目标数组。 </li>
+<li>src– 要复制的字符串。</li>
+</ul>
+</li>
+</ul>
+<h2 id="LOWORD-HIWORD-LOBYTE-HIBYTE"><a href="#LOWORD-HIWORD-LOBYTE-HIBYTE" class="headerlink" title="LOWORD &#x2F; HIWORD &#x2F; LOBYTE &#x2F; HIBYTE"></a>LOWORD &#x2F; HIWORD &#x2F; LOBYTE &#x2F; HIBYTE</h2><ul>
+<li><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_31054897/article/details/82144900">https://blog.csdn.net/sinat_31054897/article/details/82144900</a></p>
+</li>
+<li><p>在对一个进程的通信部分做分析时反复遇到了这四类函数，特做此记录。</p>
+</li>
+<li><p>这里的位是bit，8位则为2hex</p>
+</li>
+<li><p>OWORD：取32位数的低16位 </p>
+</li>
+<li><p>HIWORD：取32位数的高16位 </p>
+</li>
+<li><p>LOBYTE：取16位数的低8位&lt;是取得16进制数最低（最右边）那个字节的内容&gt;</p>
+</li>
+<li><p>HIBYTE： 取16位数的高8位&lt;是取得16进制数最高（最左边）那个字节的内容&gt;</p>
+</li>
+<li><p>ps：LOBYTE、HIBYTE应用于32位数时，会取32bit数的后16bit.<br><img src="/blog/../../../../../images/android/%E5%9F%BA%E7%A1%80/c/1745409598611.jpg" srcset="/blog/img/loading.gif" lazyload></p>
+</li>
+</ul>
+<h2 id="异或与取反"><a href="#异或与取反" class="headerlink" title="异或与取反"></a>异或与取反</h2><ul>
+<li>异或和取反都作用于位，并逐位执行操作。取反运算将二进制数 0 变成 1，1 变成 0 ；异或运算规定两个二进制数相同为 0 ，相异为 1 。用表格看起来更清楚。</li>
+</ul>
+<h3 id="异或"><a href="#异或" class="headerlink" title="异或"></a>异或</h3><p><img src="/blog/../../../../../images/android/%E5%9F%BA%E7%A1%80/c/0zm2912000k1el3qmA067.png" srcset="/blog/img/loading.gif" lazyload></p>
+<h3 id="取反"><a href="#取反" class="headerlink" title="取反"></a>取反</h3><p><img src="/blog/../../../../../images/android/%E5%9F%BA%E7%A1%80/c/0zm4912000k1elavo104D.png" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>当异或中 Q 为 1时，不论 P 取 0 还是 1，此处异或和取反的结果相同。扩展到8位，或者说单字节时，也就是异或中 Q 为 0b11111111 （0xFF）时，此处异或和取反等价。byteA &amp; 0xFF &#x3D; ~byteA</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/04/22/逆向/安卓逆向/2. 逆向基础/6. C/2. C库函数速查/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年4月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/04/23/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/2.%20%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80/3.%20Native/NDK%E5%BC%80%E5%8F%91/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/04/22/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/2.%20%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80/6.%20C/1.%20C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,737 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Frida 破解so用到的内容">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Frida hook so">
+<meta property="og:url" content="http://example.com/2025/04/12/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/%E9%80%86%E5%90%91%E5%B7%A5%E5%85%B7/Frida/Frida%20hook%20so/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="Frida 破解so用到的内容">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-04-12T08:06:53.821Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="安卓逆向">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Frida hook so - 杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Frida hook so"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-12 00:00" pubdate>
+          2025年4月12日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Frida hook so</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="frida-hook-native常用模块"><a href="#frida-hook-native常用模块" class="headerlink" title="frida hook native常用模块"></a>frida hook native常用模块</h1><h3 id="举例："><a href="#举例：" class="headerlink" title="举例："></a>举例：</h3><p>hello.so有printhello()方法</p>
+<p>var pointer &#x3D; Module.findExportByName(‘hello.so’, ‘printhello’)<br>var base_pointer &#x3D; Module.findBaseAddress(‘hello.so’)<br>var module &#x3D; Process.findModuleByAddress(base_pointer)</p>
+<h3 id="Module模块"><a href="#Module模块" class="headerlink" title="Module模块"></a>Module模块</h3><p><strong>.findExportByName(moduleName|null, exportName)</strong></p>
+<ul>
+<li>moduleName: lib名字</li>
+<li>exportname: 函数名字</li>
+<li>返回exportName的地址指针</li>
+</ul>
+<p><strong>.getExportByName(moduleName|null, exportName)</strong></p>
+<ul>
+<li>moduleName: lib名字</li>
+<li>exportname: 函数名字</li>
+<li>返回exportName的地址指针</li>
+</ul>
+<p><strong>.findBaseAddress(moduleName)</strong></p>
+<ul>
+<li>moduleName: lib名字</li>
+<li>返回lib的基地址</li>
+</ul>
+<h3 id="Process模块"><a href="#Process模块" class="headerlink" title="Process模块"></a>Process模块</h3><p><strong>.findModuleByAddress(address)</strong></p>
+<ul>
+<li>address: lib的指针地址</li>
+<li>返回一个Module对象</li>
+</ul>
+<h3 id="Memory模块"><a href="#Memory模块" class="headerlink" title="Memory模块"></a>Memory模块</h3><p><strong>.readCString(pointer)</strong></p>
+<ul>
+<li>pointer:指针地址</li>
+<li>把pointer还原成字符串</li>
+</ul>
+<p><strong>.readUtf8String(pointer)</strong></p>
+<p><strong>.readAnsiString(pointer)</strong></p>
+<h3 id="Interceptor模块：监听"><a href="#Interceptor模块：监听" class="headerlink" title="Interceptor模块：监听"></a>Interceptor模块：监听</h3><p><strong>.attach(target, callback)</strong></p>
+<ul>
+<li>target: 指针地址</li>
+<li>callbacks: 回调函数<ul>
+<li>onEnter</li>
+<li>onLeave<br><strong>.replace(target, replacement)</strong></li>
+</ul>
+</li>
+</ul>
+<h1 id="查看加载了哪些SO文件"><a href="#查看加载了哪些SO文件" class="headerlink" title="查看加载了哪些SO文件"></a>查看加载了哪些SO文件</h1><h4 id="方式1-cat-proc-pid-maps"><a href="#方式1-cat-proc-pid-maps" class="headerlink" title="方式1: cat &#x2F;proc&#x2F;[pid]&#x2F;maps"></a>方式1: cat &#x2F;proc&#x2F;[pid]&#x2F;maps</h4><h4 id="方式2：hook系统so库"><a href="#方式2：hook系统so库" class="headerlink" title="方式2：hook系统so库"></a>方式2：hook系统so库</h4><ul>
+<li>该库常调用函数：void * dlopen(const char *filename, int flag)；加载动态链接库</li>
+</ul>
+<h4 id="方式3：-java-lang-Runtime"><a href="#方式3：-java-lang-Runtime" class="headerlink" title="方式3： java.lang.Runtime"></a>方式3： java.lang.Runtime</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://www.breakyizhan.com/java/4982.html">https://www.breakyizhan.com/java/4982.html</a></li>
+<li>java.lang.Runtime：每个Java应用程序都有一个Runtime类实例</li>
+<li>Runtime.getRuntime().loadLibrary() 加载lib</li>
+</ul>
+<h4 id="方案4：frida代码查看加载运行了哪些so文件"><a href="#方案4：frida代码查看加载运行了哪些so文件" class="headerlink" title="方案4：frida代码查看加载运行了哪些so文件"></a>方案4：frida代码查看加载运行了哪些so文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs 方式1">import frida<br>import sys<br><br><br>def on_message(message, data):<br>    if message[&#x27;type&#x27;] == &#x27;send&#x27;:<br>        print(f&#x27;[*] &#123;message[&quot;payload&quot;]&#125;&#x27;)<br>    else:<br>        print(message)<br><br><br>oncreate_script = &quot;&quot;&quot;<br>    Java.perform(<br>        function()&#123;<br>            var testsign = Java.use(&#x27;com.yaotong.crackme.MainActivity&#x27;);<br>            // .overload(&#x27;android.os.Bundle&#x27;)  重载函数，当需要传递参数的时候使用overload方法<br>            testsign.onCreate.overload(&#x27;android.os.Bundle&#x27;).implementation = function(v)&#123;<br>                send(&#x27;I am here&#x27;);<br>                // this.onCreate();: 不改变原来函数的含义才行<br>                this.onCreate();<br>            &#125;;<br>        &#125;<br>    );<br><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs 方式2">test_module_script = &quot;&quot;&quot;<br>    var walk = Process.enumerateModules();<br>    for (var i = 0; i&lt;walk.length; i++)&#123;<br>        send(walk[i].name);<br>    &#125;<br>    var base_address = Module.findBaseAddress(&#x27;libc.so&#x27;);<br>    send(&#x27;base_address: &#x27; + base_address)<br>    <br>    var mod_address = Module.findExportByName(&#x27;libc.so&#x27;, &#x27;dlopen&#x27;);<br>    send(&#x27;mod_address: &#x27; + mod_address);<br>    <br>    var lib_module = Process.findModuleByAddress(base_address);<br>    send(&#x27;lib_module_name:&#x27; + lib_module.name);<br>    <br>    Interceptor.attach(mod_address, <br>    &#123;<br>        onEnter: function(args)&#123;<br>            //send(&quot;open(&quot;+args[0]+&quot;,&quot;+args[1]+&quot;)&quot;);<br>            send(&quot;open(&quot;+Memory.readUtf8String(args[0])+&quot;,&quot;+args[1]+&quot;)&quot;);<br>        &#125;,<br>        onLeave: function(retval)&#123;<br>            send(&quot;retval:&quot;+retval);<br>        &#125;<br>    &#125;);<br>&quot;&quot;&quot;<br><br><br>device = frida.get_usb_device()<br>pid = device.spawn([&#x27;com.yaotong.crackme&#x27;])<br>print(pid)<br>process = device.attach(pid)<br>script = process.create_script(test_module_script)<br>script.on(&#x27;message&#x27;, on_message)<br>print(&#x27;runing&#x27;)<br>script.load()<br><br># 重启app<br>device.resume(pid)<br>sys.stdin.read()<br></code></pre></td></tr></table></figure>
+
+
+<h1 id="frida-hook-native-模板"><a href="#frida-hook-native-模板" class="headerlink" title="frida hook native 模板"></a>frida hook native 模板</h1><h3 id="需要注意"><a href="#需要注意" class="headerlink" title="需要注意"></a>需要注意</h3><ul>
+<li>区分 thumb指令 和arm指令</li>
+</ul>
+<ol>
+<li>1个thumb指令 2个字节</li>
+<li>1个arm指令   4个字节</li>
+<li>如果hook native，是thumb指令，要在地址上 + 1</li>
+</ol>
+<h3 id="代码模板"><a href="#代码模板" class="headerlink" title="代码模板"></a>代码模板</h3><figure class="highlight scilab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs scilab">import frida, sys<br><br>jscode = <span class="hljs-string">&quot;&quot;</span><span class="hljs-string">&quot;</span><br><span class="hljs-string">setImmediate(function () &#123;</span><br><span class="hljs-string">    send(&quot;</span>start<span class="hljs-string">&quot;);</span><br><span class="hljs-string">    //遍历模块找基址</span><br><span class="hljs-string">    Process.enumerateModules(&#123;</span><br><span class="hljs-string">        onMatch: function (exp) &#123;</span><br><span class="hljs-string">            if (exp.name == &#x27;</span>libdemo.so&#x27;) &#123;<br>                send(<span class="hljs-string">&#x27;enumerateModules find&#x27;</span>);<br>                send(exp.name + <span class="hljs-string">&quot;|&quot;</span> + exp.base + <span class="hljs-string">&quot;|&quot;</span> + exp.<span class="hljs-built_in">size</span> + <span class="hljs-string">&quot;|&quot;</span> + exp.path);<br>                send(<span class="hljs-built_in">exp</span>);<br>                <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;stop&#x27;</span>;<br>            &#125;<br>        &#125;,<br>        onComplete: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> &#123;</span><br>            send(<span class="hljs-string">&#x27;enumerateModules stop&#x27;</span>);<br>        &#125;<br>    &#125;);<br> <br>    <span class="hljs-comment">//hook导出函数</span><br>    var exports = Module.enumerateExportsSync(<span class="hljs-string">&quot;libdemo.so&quot;</span>);<br>    <span class="hljs-keyword">for</span>(var i=<span class="hljs-number">0</span>;i&lt;exports.<span class="hljs-built_in">length</span>;i++)&#123;<br>        send(<span class="hljs-string">&quot;name:&quot;</span>+exports[i].name+<span class="hljs-string">&quot;  address:&quot;</span>+exports[i].address);<br>    &#125;<br>    <br>    <span class="hljs-comment">//通过模块名直接查找基址</span><br>    var baseSOFile = Module.findBaseAddress(<span class="hljs-string">&quot;libdemo.so&quot;</span>);  <br>    Interceptor.attach(baseSOFile.add(<span class="hljs-number">0x00001270</span>),&#123;  <span class="hljs-comment">//如果hook native，是thumb指令，要在地址上 + 1；</span><br>        onEnter: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args)</span> &#123;</span><br>            <span class="hljs-comment">//console.log(Memory.readCString(args[0]));</span><br>            <span class="hljs-comment">//console.log(Memory.readUtf16String(args[3]));</span><br>            console.<span class="hljs-built_in">log</span>(args[<span class="hljs-number">2</span>]);<br>            console.<span class="hljs-built_in">log</span>(args[<span class="hljs-number">3</span>]);<br>            console.<span class="hljs-built_in">log</span>(args[<span class="hljs-number">4</span>]);<br>        &#125;,<br>        onLeave: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(retval)</span>&#123;</span><br>        <br>        &#125;<br>    &#125;);<br>&#125;);<br><span class="hljs-string">&quot;&quot;</span><span class="hljs-string">&quot;</span><br><span class="hljs-string"></span><br><span class="hljs-string">def on_message(message, data):</span><br><span class="hljs-string">    if message[&#x27;</span>type&#x27;] == <span class="hljs-string">&#x27;send&#x27;</span>:<br>        print(<span class="hljs-string">&quot;[*] &#123;0&#125;&quot;</span>.format(message[<span class="hljs-string">&#x27;payload&#x27;</span>]))<br>    <span class="hljs-keyword">else</span>:<br>        print(message)<br><br>process = frida.get_usb_device().attach(<span class="hljs-string">&#x27;com.qianyu.demo&#x27;</span>)<br>script = process.create_script(jscode)<br>script.on(<span class="hljs-string">&#x27;message&#x27;</span>, on_message)<br>script.<span class="hljs-built_in">load</span>()<br>sys.stdin.read()<br></code></pre></td></tr></table></figure>
+
+<h1 id="hook-so文件动态注册函数"><a href="#hook-so文件动态注册函数" class="headerlink" title="hook so文件动态注册函数"></a>hook so文件动态注册函数</h1><ul>
+<li>参考博客：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/DirWang/p/12240423.html">https://www.cnblogs.com/DirWang/p/12240423.html</a></li>
+<li>运行命令：frida -U –no-pause -f package_name -l hook_RegisterNatives.js</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs 方式1">function hook_RegisterNatives() &#123;<br>    var symbols = Module.enumerateSymbolsSync(&quot;libart.so&quot;);<br>    var addrRegisterNatives = null;<br>    for (var i = 0; i &lt; symbols.length; i++) &#123;<br>        var symbol = symbols[i];<br>        <br>        //_ZN3art3JNI15RegisterNativesEP7_JNIEnvP7_jclassPK15JNINativeMethodi<br>        if (symbol.name.indexOf(&quot;art&quot;) &gt;= 0 &amp;&amp;<br>                symbol.name.indexOf(&quot;JNI&quot;) &gt;= 0 &amp;&amp; <br>                symbol.name.indexOf(&quot;RegisterNatives&quot;) &gt;= 0 &amp;&amp; <br>                symbol.name.indexOf(&quot;CheckJNI&quot;) &lt; 0) &#123;<br>            addrRegisterNatives = symbol.address;<br>            console.log(&quot;RegisterNatives is at &quot;, symbol.address, symbol.name);<br>        &#125;<br>    &#125;<br><br>    if (addrRegisterNatives != null) &#123;<br>        Interceptor.attach(addrRegisterNatives, &#123;<br>            onEnter: function (args) &#123;<br>                console.log(&quot;[RegisterNatives] method_count:&quot;, args[3]);<br>                var env = args[0];<br>                var java_class = args[1];<br>                var class_name = Java.vm.tryGetEnv().getClassName(java_class);<br>                //console.log(class_name);<br><br>                var methods_ptr = ptr(args[2]);<br><br>                var method_count = parseInt(args[3]);<br>                for (var i = 0; i &lt; method_count; i++) &#123;<br>                    var name_ptr = Memory.readPointer(methods_ptr.add(i * Process.pointerSize * 3));<br>                    var sig_ptr = Memory.readPointer(methods_ptr.add(i * Process.pointerSize * 3 + Process.pointerSize));<br>                    var fnPtr_ptr = Memory.readPointer(methods_ptr.add(i * Process.pointerSize * 3 + Process.pointerSize * 2));<br><br>                    var name = Memory.readCString(name_ptr);<br>                    var sig = Memory.readCString(sig_ptr);<br>                    var find_module = Process.findModuleByAddress(fnPtr_ptr);<br>                    console.log(&quot;[RegisterNatives] java_class:&quot;, class_name, &quot;name:&quot;, name, &quot;sig:&quot;, sig, &quot;fnPtr:&quot;, fnPtr_ptr, &quot;module_name:&quot;, find_module.name, &quot;module_base:&quot;, find_module.base, &quot;offset:&quot;, ptr(fnPtr_ptr).sub(find_module.base));<br><br>                &#125;<br>            &#125;<br>        &#125;);<br>    &#125;<br>&#125;<br><br>setImmediate(hook_RegisterNatives);<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs 方式2">function hook_RegisterNatives() &#123;<br>    var symbols = Module.enumerateSymbolsSync(&quot;libart.so&quot;);<br>    var addrRegisterNatives = null;<br>    for (var i = 0; i &lt; symbols.length; i++) &#123;<br>        var symbol = symbols[i];<br>        <br>        //_ZN3art3JNI15RegisterNativesEP7_JNIEnvP7_jclassPK15JNINativeMethodi<br>        if (symbol.name.indexOf(&quot;art&quot;) &gt;= 0 &amp;&amp;<br>                symbol.name.indexOf(&quot;JNI&quot;) &gt;= 0 &amp;&amp; <br>                symbol.name.indexOf(&quot;RegisterNatives&quot;) &gt;= 0 &amp;&amp; <br>                symbol.name.indexOf(&quot;CheckJNI&quot;) &lt; 0) &#123;<br>            addrRegisterNatives = symbol.address;<br>            console.log(&quot;RegisterNatives is at &quot;, symbol.address, symbol.name);<br>        &#125;<br>    &#125;<br><br>    if (addrRegisterNatives != null) &#123;<br>        Interceptor.attach(addrRegisterNatives, &#123;<br>            onEnter: function (args) &#123;<br>                console.log(&quot;[RegisterNatives] method_count:&quot;, args[3]);<br>                var env = args[0];<br>                var java_class = args[1];<br>                var class_name = Java.vm.tryGetEnv().getClassName(java_class);<br>                //console.log(class_name);<br><br>                var methods_ptr = ptr(args[2]);<br><br>                var method_count = parseInt(args[3]);<br>                for (var i = 0; i &lt; method_count; i++) &#123;<br>                    var name_ptr = Memory.readPointer(methods_ptr.add(i * Process.pointerSize * 3));<br>                    var sig_ptr = Memory.readPointer(methods_ptr.add(i * Process.pointerSize * 3 + Process.pointerSize));<br>                    var fnPtr_ptr = Memory.readPointer(methods_ptr.add(i * Process.pointerSize * 3 + Process.pointerSize * 2));<br><br>                    var name = Memory.readCString(name_ptr);<br>                    var sig = Memory.readCString(sig_ptr);<br>                    var find_module = Process.findModuleByAddress(fnPtr_ptr);<br>                    console.log(&quot;[RegisterNatives] java_class:&quot;, class_name, &quot;name:&quot;, name, &quot;sig:&quot;, sig, &quot;fnPtr:&quot;, fnPtr_ptr, &quot;module_name:&quot;, find_module.name, &quot;module_base:&quot;, find_module.base, &quot;offset:&quot;, ptr(fnPtr_ptr).sub(find_module.base));<br><br>                &#125;<br>            &#125;<br>        &#125;);<br>    &#125;<br>&#125;<br><br>setImmediate(hook_RegisterNatives);<br><br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/blog/categories/%E9%80%86%E5%90%91/" class="category-chain-item">逆向</a>
+  
+  
+    <span>></span>
+    
+  <a href="/blog/categories/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/" class="category-chain-item">安卓逆向</a>
+  
+  
+    <span>></span>
+    
+  <a href="/blog/categories/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/%E9%80%86%E5%90%91%E5%B7%A5%E5%85%B7/" class="category-chain-item">逆向工具</a>
+  
+  
+    <span>></span>
+    
+  <a href="/blog/categories/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/%E9%80%86%E5%90%91%E5%B7%A5%E5%85%B7/Frida/" class="category-chain-item">Frida</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/" class="print-no-link">#安卓逆向</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Frida hook so</div>
+      <div>http://example.com/2025/04/12/逆向/安卓逆向/逆向工具/Frida/Frida hook so/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年4月12日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/04/12/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/%E9%80%86%E5%90%91%E5%B7%A5%E5%85%B7/Frida/Frida%20%E5%B7%A5%E5%85%B7/" title="Frida 工具">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Frida 工具</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/04/12/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/4.%20%E9%80%86%E5%90%91%E6%A1%86%E6%9E%B6/Frida/Frida%20hook%20so/" title="Frida hook so">
+                        <span class="hidden-mobile">Frida hook so</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

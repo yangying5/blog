@@ -1,0 +1,623 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="参考：https:&#x2F;&#x2F;www.yuque.com&#x2F;lilac-2hqvv&#x2F;xdwlsg&#x2F;tns2uu133m9sw4x5  1. 先unidbg执行目标方法，获得走过的地址并保存文件1234567891011121314151617181920212223242526272829303132333435363738394041&#x2F;&#x2F; 10.7.30.27161public class KS ext">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/05/09/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/8.%20%E9%80%86%E5%90%91%E6%96%B9%E6%B3%95%E8%AE%BA/4.%20SO%E5%B1%82/%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86/%E8%8A%B1%E6%8C%87%E4%BB%A4/%E5%A2%9E%E5%BC%BA%E5%AF%B9%E6%89%A7%E8%A1%8C%E5%92%8C%E6%9C%AA%E6%89%A7%E8%A1%8C%E4%BB%A3%E7%A0%81%E7%9A%84%E5%8C%BA%E5%88%86/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="参考：https:&#x2F;&#x2F;www.yuque.com&#x2F;lilac-2hqvv&#x2F;xdwlsg&#x2F;tns2uu133m9sw4x5  1. 先unidbg执行目标方法，获得走过的地址并保存文件1234567891011121314151617181920212223242526272829303132333435363738394041&#x2F;&#x2F; 10.7.30.27161public class KS ext">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-09T02:50:04.298Z">
+<meta property="article:modified_time" content="2025-05-09T03:10:14.739Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-09 10:50" pubdate>
+          2025年5月9日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li>参考：<a target="_blank" rel="noopener" href="https://www.yuque.com/lilac-2hqvv/xdwlsg/tns2uu133m9sw4x5">https://www.yuque.com/lilac-2hqvv/xdwlsg/tns2uu133m9sw4x5</a></li>
+</ul>
+<h3 id="1-先unidbg执行目标方法，获得走过的地址并保存文件"><a href="#1-先unidbg执行目标方法，获得走过的地址并保存文件" class="headerlink" title="1. 先unidbg执行目标方法，获得走过的地址并保存文件"></a>1. 先unidbg执行目标方法，获得走过的地址并保存文件</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 10.7.30.27161</span><br>public <span class="hljs-keyword">class</span> <span class="hljs-title class_">KS</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">AbstractJni</span> &#123;<br>    ....<br>    public <span class="hljs-title function_">KS</span>(<span class="hljs-params"></span>) &#123;<br>        .....<br>        <span class="hljs-title class_">DalvikModule</span> dm = vm.<span class="hljs-title function_">loadLibrary</span>(<span class="hljs-string">&quot;kwsgmain&quot;</span>, <span class="hljs-literal">true</span>);<br>        <span class="hljs-variable language_">module</span> = dm.<span class="hljs-title function_">getModule</span>();<br>        <span class="hljs-title function_">getTrace</span>();<br>        dm.<span class="hljs-title function_">callJNI_OnLoad</span>(emulator);<br>    &#125;<br><br>    public <span class="hljs-keyword">void</span> <span class="hljs-title function_">getTrace</span>(<span class="hljs-params"></span>)&#123;<br>        emulator.<span class="hljs-title function_">getBackend</span>().<span class="hljs-title function_">hook_add_new</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">CodeHook</span>() &#123;<br>            @<span class="hljs-title class_">Override</span><br>            public <span class="hljs-keyword">void</span> <span class="hljs-title function_">hook</span>(<span class="hljs-params">Backend backend, long address, int size, <span class="hljs-built_in">Object</span> user</span>) &#123;<br>                int offset = (int) (address - <span class="hljs-variable language_">module</span>.<span class="hljs-property">base</span>);<br>                traceSet.<span class="hljs-title function_">add</span>(offset);<br>            &#125;<br>            @<span class="hljs-title class_">Override</span><br>            public <span class="hljs-keyword">void</span> <span class="hljs-title function_">onAttach</span>(<span class="hljs-params">UnHook unHook</span>) &#123;&#125;<br>            @<span class="hljs-title class_">Override</span><br>            public <span class="hljs-keyword">void</span> <span class="hljs-title function_">detach</span>(<span class="hljs-params"></span>) &#123;&#125;<br>        &#125;, <span class="hljs-variable language_">module</span>.<span class="hljs-property">base</span>, <span class="hljs-variable language_">module</span>.<span class="hljs-property">base</span>+<span class="hljs-variable language_">module</span>.<span class="hljs-property">size</span>, <span class="hljs-literal">null</span>);<br>    &#125;<br>    public <span class="hljs-keyword">void</span> <span class="hljs-title function_">saveToFile</span>(<span class="hljs-params"></span>)&#123;<br>        <span class="hljs-title class_">FileOutputStream</span> outputStream;<br>        <span class="hljs-keyword">try</span> &#123;<br>            outputStream = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileOutputStream</span>(<span class="hljs-string">&quot;unidbg-android/src/test/java/com/unidbg/idaTrace/trace.log&quot;</span>);<br>            <span class="hljs-keyword">for</span> (<span class="hljs-title class_">Integer</span> integer : traceSet) &#123;<br>                outputStream.<span class="hljs-title function_">write</span>((integer +<span class="hljs-string">&quot;,&quot;</span>).<span class="hljs-title function_">getBytes</span>(<span class="hljs-title class_">StandardCharsets</span>.<span class="hljs-property">UTF_8</span>));<br>            &#125;<br>            outputStream.<span class="hljs-title function_">close</span>();<br>        &#125; <span class="hljs-keyword">catch</span> (<span class="hljs-title class_">IOException</span> e) &#123;<br>            e.<span class="hljs-title function_">printStackTrace</span>();<br>        &#125;<br>    &#125;<br>    public <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span>(<span class="hljs-params"><span class="hljs-built_in">String</span>[] args</span>) &#123;<br>        <span class="hljs-variable constant_">KS</span> ks = <span class="hljs-keyword">new</span> <span class="hljs-title function_">KS</span>();<br>        ks.<span class="hljs-title function_">saveToFile</span>();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="2-idapython对so进行不同场景处理"><a href="#2-idapython对so进行不同场景处理" class="headerlink" title="2. idapython对so进行不同场景处理"></a>2. idapython对so进行不同场景处理</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 场景2：增强区分——使用 trace 增强对执行和未执行代码的区分。在 IDA 里对 trace 走过的地址染色</span><br><span class="hljs-keyword">import</span> idc<br><br>def <span class="hljs-title function_">setColor</span>(addr):<br>    idc.<span class="hljs-title function_">set_color</span>(addr, idc.<span class="hljs-property">CIC_ITEM</span>, <span class="hljs-number">0x33BDFF</span>)<br><br><br>contents = <span class="hljs-string">&quot;266244,266240,266252,266248,43024,266260,43028,43032,43036,266264,307244,307240,307252,266292,307248,266288,307260,266300,307256,266296,307268,307264,266304,307276,307272,266324,266320,266340,266348,266344,266356,266352,266364,266360,43136,307332,266372,43140,307328,266368,43144,307340,266380,43148,307336,266376,307348,266388,307344,266384,307356,307352,307364,307360,307372,307368,307380,307376,307388,307384,307396,266436,43200,307392,266432,43204,307404,266444,43208,307400,266440,43212,307412,266452,307408,266448,307420,266460,110808,307416,266456,110812,266468,307428,110816,266464,307424,110820,266476,307436,110824,266472,307432,110828,266484,307444,110832,266480,307440,110836,266492,307452,110840,266488,307448,110844,266500,307460,110848,266496,307456,110852,266508,307468,110856,266504,307464,110860,43280,266516,307476,110864,43284,266512,307472,110868,43288,266524,307484,110872,43292,266520,307480,110876,266532,307492,110880,266528,307488,110884,307500,110888,307496,110892,307508,110896,307504,110900,307516,110904,307512,110908,41280,307524,110912,41284,307520,110916,41288,307532,110920,41292,307528,110924,307540,110928,307536,110932,307548,110936,307544,110940,307556,110944,307552,110948,266604,307564,110952,307560,110956,266612,110960,266608,110964,266620,110968,266616,110972,266628,110976,266624,110980,110984,266632,110988,110992,110996,266652,111000,266648,51612,111004,51616,111008,266656,51620,111012,266668,51624,307628,111016,266664,51628,111020,266676,51632,307636,111024,266672,51636,307632,111028,266684,51640,111032,266680,51644,111036,266692,307652,51648,111040,266688,307648,111044,266700,307660,111048,266696,307656,111052,266708,307668,111056,266704,307664,111060,266716,307676,111064,266712,307672,111068,307684,111072,266720,307680,111076,307692,111080,307688,111084,307700,41456,111088,307696,41460,111092,307708,41464,111096,307704,41468,111100,266756,307716,111104,307712,111108,266764,307724,111112,266760,307720,111116,266772,307732,111120,266768,307728,111124,266780,307740,111128,266776,307736,111132,266788,307748,266784,307744,266796,307756,266792,307752,111148,111152,266800,111156,266812,111160,266808,111164,266820,111168,266816,111172,264780,266828,111176,264776,266824,111180,264788,266836,307796,111184,264784,266832,307792,111188,264796,266844,307804,111192,264792,266840,307800,111196,264804,41568,266852,307812,111200,264800,41572,266848,307808,111204,264812,41576,266860,307820,111208,264808,41580,266856,307816,264820,266868,307828,111216,264816,266864,307824,111220,264828,266876,307836,111224,264824,266872,307832,111228,266884,307844,111232,264832,266880,307840,111236,305804,266892,307852,111240,266888,307848,111244,305812,266900,307860,305808,266896,307856,266908,307868,305816,266904,307864,111260,266916,307876,111264,266912,307872,111268,266924,307884,111272,266920,307880,111276,266932,307892,111280,266928,307888,111284,266940,307900,111288,266936,307896,111292,266948,307908,111296,266944,307904,111300,266956,307916,111304,266952,307912,111308,266964,307924,111312,266960,307920,111316,266972,307932,111320,266968,111324,266980,307940,111328,266976,307936,111332,266988,307948,111336,266984,307944,111340,266996,266992,307952,267004,267000,111356,267012,307972,111360,267008,307968,111364,267020,307980,111368,267016,307976,111372,267028,307988,111376,267024,307984,267036,307996,267032,307992,267044,308004,267040,308000,265004,267052,308012,267048,308008,265012,267060,308020,41776,265008,267056,41780,267068,308028,41784,265016,267064,308024,41788,267076,308036,267072,308032,267084,308044,267080,308040,267092,308052,242512,267088,308048,242516,267100,308060,242520,267096,242524,41824,267108,308068,242528,41828,267104,308064,242532,41832,267116,308076,242536,41836,267112,308072,242540,267124,308084,242544,267120,308080,267132,269180,308092,242552,267128,308088,242556,267140,269188,308100,242560,267136,269184,308096,242564,267148,269196,308108,242568,267144,269192,242572,267156,269204,308116,242576,267152,269200,308112,242580,267164,269212,308124,242584,267160,269208,308120,242588,267172,269220,242592,267168,269216,308128,242596,267180,269228,242600,267176,269224,242604,306100,267188,269236,308148,242608,267184,269232,308144,242612,306108,267196,269244,308156,242616,306104,267192,269240,308152,242620,306116,267204,269252,308164,242624,306112,267200,269248,308160,242628,306124,267212,269260,308172,242632,306120,267208,269256,308168,242636,306132,267220,269268,308180,242640,306128,267216,269264,308176,242644,269276,308188,242648,306136,267224,269272,308184,242652,267236,269284,308196,242656,267232,269280,242660,267244,269292,308204,242664,267240,269288,308200,242668,267252,269300,308212,41968,267248,269296,308208,41972,242676,267260,269308,308220,41976,242680,267256,269304,308216,41980,242684,267268,269316,308228,242688,267264,269312,308224,242692,306188,269324,308236,269320,306196,269332,308244,306192,269328,308240,306204,269340,308252,306200,269336,308248,306212,269348,308260,306208,269344,308256,306220,267308,269356,308268,306216,267304,269352,308264,306228,267316,269364,308276,306224,267312,269360,308272,306236,267324,269372,308284,306232,267320,269368,306244,267332,269380,308292,306240,267328,308288,306252,267340,269388,308300,306248,267336,269384,308296,267348,269396,308308,267344,269392,308304,267356,269404,308316,267352,269400,308312,42080,267364,269412,308324,42084,267360,269408,306284,42088,267372,269420,308332,306280,42092,267368,269416,308328,306292,267380,269428,308340,306288,267376,269424,308336,306300,269436,308348,306296,269432,308344,306308,42112,269444,308356,306304,42116,269440,308352,306316,42120,269452,308364,306312,42124,269448,308360,306324,267412,269460,308372,306320,269456,308368,306332,267420,269468,308380,306328,267416,269464,308376,306340,267428,269476,306336,267424,269472,308384,306348,267436,269484,306344,267432,269480,306356,267444,269492,308404,306352,267440,269488,308400,306364,267452,269500,308412,306360,267448,269496,308408,306372,267460,306368,267456,306380,267468,269516,306376,267464,269512,267476,269524,306384,267472,269520,267484,269532,267480,269528,267492,269540,267488,269536,267500,269548,267496,269544,60652,267508,269556,60656,267504,269552,60660,267516,269564,60664,267512,269560,60668,267524,60672,267520,269568,60676,267532,60680,267528,267540,60688,267536,60692,267548,60696,267544,60700,267556,60704,267552,60708,267564,60712,267560,60716,306484,267572,60720,267568,60724,267580,60728,306492,267576,60732,267588,60736,306500,267584,60740,306496,267596,60744,306508,267592,60748,306504,267604,60752,306516,267600,60756,306512,267612,306524,267608,306520,42336,267620,306532,42340,267616,306528,42344,267628,306540,42348,267624,306536,267636,42352,306548,267632,42356,306544,267644,42360,306556,267640,42364,306552,267652,306564,267648,306560,306572,267660,306568,267656,267668,306580,267664,306576,267676,306588,267672,306584,267684,42400,306596,267680,42404,306592,267692,42408,306604,267688,42412,306600,267700,306612,267696,306608,267708,306620,267704,306616,267716,306628,267712,306624,267724,306636,267720,306632,267732,265684,306644,267728,265680,306640,265692,267740,306652,267736,265688,306648,265700,267748,306660,265696,267744,306656,265708,267756,306668,265704,267752,306664,265716,267764,306676,265712,267760,306672,267772,306684,267768,306680,267780,306692,267776,306688,267788,306700,267784,306696,267796,306708,267792,306704,267804,306716,267800,306712,308772,306724,267808,306720,265772,308780,306732,265768,308776,306728,265780,308788,306740,265776,308784,306736,265788,308796,306748,265784,308792,306744,265796,42560,308804,306756,265792,42564,308800,306752,265804,42568,308812,265800,42572,308808,306760,265812,265808,265820,265816,265828,308836,265824,265836,308844,265832,308840,265844,308852,265840,308848,265852,308860,265848,308856,42624,265860,308868,42628,265856,308864,42632,265868,42636,265864,265876,306836,265872,265884,265880,306840,265892,265888,265900,265896,265908,308916,265904,308912,265916,308924,265912,308920,265924,308932,306884,265920,308928,306880,265932,308940,306892,265928,308936,306888,265940,308948,306900,265936,308944,306896,267996,308956,306908,265944,308952,306904,268004,306916,268000,308960,306912,268012,306924,268008,306920,268020,306932,268016,306928,268028,306940,268024,306936,268036,306948,268032,306944,306956,306952,306964,306960,306972,306968,306996,306992,268092,307004,268088,307000,266052,268100,307012,268096,307008,266060,268108,266056,268104,266068,268116,266064,268112,266076,268124,266072,268120,266084,268132,266080,268128,266092,268140,266088,268136,268148,268144,268156,268172,268168,268180,268176,268188,268184,266148,268196,307108,266144,268192,307104,266156,307116,266152,268200,307112,266164,307124,266160,307120,266172,268220,307132,266168,268216,307128,266180,307140,266176,268224,307136,266188,307148,266184,307144,266196,307156,266192,307152,266204,266200,307160,266212,266208,266220,266216,42992,266228,42996,266224,43000,266236,43004,266232,&quot;</span><br>addrs = contents.<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;,&quot;</span>)<br><span class="hljs-keyword">for</span> addr <span class="hljs-keyword">in</span> <span class="hljs-attr">addrs</span>:<br>    <span class="hljs-keyword">if</span> <span class="hljs-attr">addr</span>:<br>        addr = <span class="hljs-title function_">int</span>(addr)<br>        <span class="hljs-title function_">setColor</span>(addr)<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/09/逆向/安卓逆向/8. 逆向方法论/4. SO层/代码混淆/花指令/增强对执行和未执行代码的区分/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/05/09/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/8.%20%E9%80%86%E5%90%91%E6%96%B9%E6%B3%95%E8%AE%BA/4.%20SO%E5%B1%82/%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86/%E8%8A%B1%E6%8C%87%E4%BB%A4/jumpout/%E4%BB%8B%E7%BB%8D/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/05/09/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/8.%20%E9%80%86%E5%90%91%E6%96%B9%E6%B3%95%E8%AE%BA/4.%20SO%E5%B1%82/%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86/%E8%8A%B1%E6%8C%87%E4%BB%A4/%E4%BB%A3%E7%A0%81%E5%9D%97%E6%95%B0%E6%8D%AE%E5%9D%97%E8%AF%AF%E8%AF%86%E5%88%AB/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

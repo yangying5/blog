@@ -1,0 +1,713 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="参考 https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_38851536&#x2F;article&#x2F;details&#x2F;117923970 https:&#x2F;&#x2F;www.yuque.com&#x2F;lilac-2hqvv&#x2F;xdwlsg&#x2F;avlc01hrko6yvr26    getMethodId问题问题 补JNI报错：com.github.unidbg.arm.backend.BackendException  原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/3.%20%E8%A1%A5JNI/%E8%A1%A5JNI%E5%9C%BA%E6%99%AF%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="参考 https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_38851536&#x2F;article&#x2F;details&#x2F;117923970 https:&#x2F;&#x2F;www.yuque.com&#x2F;lilac-2hqvv&#x2F;xdwlsg&#x2F;avlc01hrko6yvr26    getMethodId问题问题 补JNI报错：com.github.unidbg.arm.backend.BackendException  原理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746427588062.jpg">
+<meta property="og:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746427582679.jpg">
+<meta property="og:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746428407489.jpg">
+<meta property="og:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746428412553.jpg">
+<meta property="article:published_time" content="2025-05-05T06:43:02.058Z">
+<meta property="article:modified_time" content="2025-05-05T10:42:28.722Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746427588062.jpg">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-05 14:43" pubdate>
+          2025年5月5日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li>参考<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38851536/article/details/117923970">https://blog.csdn.net/qq_38851536/article/details/117923970</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.yuque.com/lilac-2hqvv/xdwlsg/avlc01hrko6yvr26">https://www.yuque.com/lilac-2hqvv/xdwlsg/avlc01hrko6yvr26</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="getMethodId问题"><a href="#getMethodId问题" class="headerlink" title="getMethodId问题"></a>getMethodId问题</h1><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><ul>
+<li>补JNI报错：<strong>com.github.unidbg.arm.backend.BackendException</strong></li>
+</ul>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p><img src="/blog/../../../../../../../images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746427588062.jpg" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>比如一个方法，getPackageName，通过context.getPackageName  |   application.getPackageName  |  activity.getPackageName等方式都可以调用到该方法。是因为上图的原因。application |  activity的超类是context的实现类contextWrapper。所以如果只构造一种类型，另一种类型就找不到该方法。</li>
+</ul>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
+<li>两种思路二选一</li>
+</ul>
+<h4 id="构造目标类全部继承或接口"><a href="#构造目标类全部继承或接口" class="headerlink" title="构造目标类全部继承或接口"></a>构造目标类全部继承或接口</h4><ul>
+<li>unidbg构造的目标类是否有继承或者接口等形式，全部找出来，以下面的形式来构造<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">list</span><span class="hljs-selector-class">.add</span>(vm.<span class="hljs-built_in">addLocalObject</span>(vm.<span class="hljs-built_in">resolveClass</span>(<span class="hljs-string">&quot;java/util/TreeMap&quot;</span>, vm.<span class="hljs-built_in">resolveClass</span>(<span class="hljs-string">&quot;java/util/AbstractMap&quot;</span>, vm.<span class="hljs-built_in">resolveClass</span>(<span class="hljs-string">&quot;java/util/Map&quot;</span>))).<span class="hljs-built_in">newObject</span>(keymap)));<br><span class="hljs-selector-tag">or</span><br><span class="hljs-selector-tag">return</span> <span class="hljs-selector-tag">vm</span><span class="hljs-selector-class">.resolveClass</span>(<span class="hljs-string">&quot;android/app/Application&quot;</span>, vm.<span class="hljs-built_in">resolveClass</span>(<span class="hljs-string">&quot;android/content/ContextWrapper&quot;</span>, vm.<span class="hljs-built_in">resolveClass</span>(<span class="hljs-string">&quot;android/content/Context&quot;</span>)))<span class="hljs-selector-class">.newObject</span>(signature);<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="根据日志提示进行补全"><a href="#根据日志提示进行补全" class="headerlink" title="根据日志提示进行补全"></a>根据日志提示进行补全</h4><ol>
+<li><p>提示报错位置&lt;src&#x2F;main&#x2F;java&#x2F;com&#x2F;github&#x2F;unidbg&#x2F;linux&#x2F;android&#x2F;dvm&#x2F;DalvikVM.java&gt;增加：</p>
+<blockquote>
+<p>throw new BackendException(“dvmObject&#x3D;” + dvmObject + “, dvmClass&#x3D;” + dvmClass + “, jmethodId&#x3D;” + jmethodID);</p>
+</blockquote>
+</li>
+<li><p>打开日志打印开关</p>
+</li>
+<li><p>观察日志，复制methodIdId对所有日志进行搜索，搜到之后，复制对应的类签名即可。<br><img src="/blog/../../../../../../../images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746427582679.jpg" srcset="/blog/img/loading.gif" lazyload></p>
+</li>
+</ol>
+<h1 id="构造return的时候不能加分号"><a href="#构造return的时候不能加分号" class="headerlink" title="构造return的时候不能加分号"></a>构造return的时候不能加分号</h1><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">正确：<span class="hljs-keyword">return</span> vm.resolveClass(<span class="hljs-string">&quot;android/content/Context&quot;</span>).newObject(<span class="hljs-literal">null</span>);<br>错误：<span class="hljs-keyword">return</span> vm.resolveClass(<span class="hljs-string">&quot;android/content/Context;&quot;</span>).newObject(<span class="hljs-literal">null</span>);<br>错误：<span class="hljs-keyword">return</span> vm.resolveClass(<span class="hljs-string">&quot;Landroid/content/Context;&quot;</span>).newObject(<span class="hljs-literal">null</span>);<br></code></pre></td></tr></table></figure>
+
+
+<h1 id="传感器基本操作补环境"><a href="#传感器基本操作补环境" class="headerlink" title="传感器基本操作补环境"></a>传感器基本操作补环境</h1><ul>
+<li>参考：<a target="_blank" rel="noopener" href="https://www.yuque.com/lilac-2hqvv/xdwlsg/avlc01hrko6yvr26">https://www.yuque.com/lilac-2hqvv/xdwlsg/avlc01hrko6yvr26</a></li>
+</ul>
+<h1 id="allocObject"><a href="#allocObject" class="headerlink" title="allocObject"></a>allocObject</h1><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">java<span class="hljs-selector-class">.lang</span><span class="hljs-selector-class">.UnsupportedOperationException</span>: java/lang/StringBuilder-&gt;allocObject<br>	at com<span class="hljs-selector-class">.github</span><span class="hljs-selector-class">.unidbg</span><span class="hljs-selector-class">.linux</span><span class="hljs-selector-class">.android</span><span class="hljs-selector-class">.dvm</span><span class="hljs-selector-class">.AbstractJni</span><span class="hljs-selector-class">.allocObject</span>(AbstractJni<span class="hljs-selector-class">.java</span>:<span class="hljs-number">800</span>)<br>	at com<span class="hljs-selector-class">.github</span><span class="hljs-selector-class">.unidbg</span><span class="hljs-selector-class">.linux</span><span class="hljs-selector-class">.android</span><span class="hljs-selector-class">.dvm</span><span class="hljs-selector-class">.DvmClass</span><span class="hljs-selector-class">.allocObject</span>(DvmClass<span class="hljs-selector-class">.java</span>:<span class="hljs-number">74</span>)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>分配一个 StringBuilder 对象，大家可能对 allocObject 这个 JNI 调用感到陌生，它用于分配对象，我们可以在 AbstractJNI 中得到参考。<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-title class_">DvmObject</span>&lt;?&gt; <span class="hljs-title function_">allocObject</span>(<span class="hljs-params"><span class="hljs-title class_">BaseVM</span> vm, <span class="hljs-title class_">DvmClass</span> dvmClass, <span class="hljs-title class_">String</span> signature</span>) &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;java/util/HashMap-&gt;allocObject&quot;</span>.<span class="hljs-title function_">equals</span>(signature)) &#123;<br>        <span class="hljs-keyword">return</span> dvmClass.<span class="hljs-title function_">newObject</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;());<br>    &#125;<br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnsupportedOperationException</span>(signature);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>但按照前文所讨论的规范，StringBuilder 是 JDK 中的类库，使用ProxyDvmObject.createObject更好。<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-title class_">DvmObject</span>&lt;?&gt; <span class="hljs-title function_">allocObject</span>(<span class="hljs-params"><span class="hljs-title class_">BaseVM</span> vm, <span class="hljs-title class_">DvmClass</span> dvmClass, <span class="hljs-title class_">String</span> signature</span>) &#123;<br>    <span class="hljs-keyword">switch</span> (signature)&#123;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;java/lang/StringBuilder-&gt;allocObject&quot;</span>:&#123;<br>            <span class="hljs-comment">//return dvmClass.newObject(new StringBuilder());</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-title class_">ProxyDvmObject</span>.<span class="hljs-title function_">createObject</span>(vm, <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>());<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">super</span>.<span class="hljs-title function_">allocObject</span>(vm, dvmClass, signature);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>另一种情况最好不要这么做：<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-comment">// 前面遇到过一个 allocObject，你可能想如法炮制;</span><br><span class="hljs-comment">// 但最好不要再这么做了，这是有隐患的处理办法。FileInputStream 没有无参构造函数，它所需要的初始化参数在allocObject阶段并没有展露出来，在后续真正初始化的时候才有值。</span><br><span class="hljs-comment">//这里直接用空的dvmObject占位，这里的 dvmClass 等价于vm.resolveClass(&quot;java/io/FileInputStream&quot;)。</span><br><span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;java/io/FileInputStream-&gt;allocObject&quot;</span>.<span class="hljs-built_in">equals</span>(signature))&#123;<br>    <span class="hljs-keyword">return</span> dvmClass.newObject(signature);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="init"><a href="#init" class="headerlink" title="-&gt;init&gt;"></a>-&gt;init&gt;</h1><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs stylus">java<span class="hljs-selector-class">.lang</span><span class="hljs-selector-class">.UnsupportedOperationException</span>: java/lang/StringBuilder-&gt;&lt;init&gt;()V<br>	at com<span class="hljs-selector-class">.github</span><span class="hljs-selector-class">.unidbg</span><span class="hljs-selector-class">.linux</span><span class="hljs-selector-class">.android</span><span class="hljs-selector-class">.dvm</span><span class="hljs-selector-class">.AbstractJni</span><span class="hljs-selector-class">.callVoidMethodV</span>(AbstractJni<span class="hljs-selector-class">.java</span>:<span class="hljs-number">996</span>)<br>	at com<span class="hljs-selector-class">.github</span><span class="hljs-selector-class">.unidbg</span><span class="hljs-selector-class">.linux</span><span class="hljs-selector-class">.android</span><span class="hljs-selector-class">.dvm</span><span class="hljs-selector-class">.DvmMethod</span><span class="hljs-selector-class">.callVoidMethodA</span>(DvmMethod<span class="hljs-selector-class">.java</span>:<span class="hljs-number">237</span>)<br>	at com<span class="hljs-selector-class">.github</span><span class="hljs-selector-class">.unidbg</span><span class="hljs-selector-class">.linux</span><span class="hljs-selector-class">.android</span><span class="hljs-selector-class">.dvm</span>.DalvikVM$<span class="hljs-number">60</span><span class="hljs-selector-class">.handle</span>(DalvikVM<span class="hljs-selector-class">.java</span>:<span class="hljs-number">1071</span>)<br></code></pre></td></tr></table></figure>
+<ul>
+<li><p>这里在做初始化，什么都不必处理。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-built_in">void</span> <span class="hljs-title function_">callVoidMethodV</span>(<span class="hljs-params"><span class="hljs-title class_">BaseVM</span> vm, <span class="hljs-title class_">DvmObject</span>&lt;?&gt; dvmObject, <span class="hljs-title class_">String</span> signature, <span class="hljs-title class_">VaList</span> vaList</span>) &#123;<br>    <span class="hljs-keyword">switch</span> (signature)&#123;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;java/lang/StringBuilder-&gt;&lt;init&gt;()V&quot;</span>:&#123;<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-variable language_">super</span>.<span class="hljs-title function_">callVoidMethodV</span>(vm, dvmObject, signature, vaList);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>另一种情况</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">case</span> &quot;java/io/FileInputStream-&gt;&lt;init&gt;(Ljava/lang/String;)V&quot;: &#123;<br>    String <span class="hljs-type">name</span> = vaList.getObjectArg(<span class="hljs-number">0</span>).getValue().toString();<br>    <span class="hljs-keyword">if</span> (<span class="hljs-type">name</span>.equals(&quot;/proc/cpuinfo&quot;)) &#123;<br>        <span class="hljs-type">name</span> = &quot;unidbg-android/src/test/resources/dianping/cpuinfo&quot;;<br>    &#125;<br>    <span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(&quot;FileInputStream:&quot; + <span class="hljs-type">name</span>);<br>    try &#123;<br>        fileInputStream = <span class="hljs-built_in">new</span> FileInputStream(<span class="hljs-type">name</span>);<br>    &#125; catch (FileNotFoundException e) &#123;<br>        e.printStackTrace();<br>    &#125;<br>    <span class="hljs-keyword">return</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="getSystemService"><a href="#getSystemService" class="headerlink" title="getSystemService"></a>getSystemService</h1><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">java.lang.UnsupportedOperationException: </span><span class="hljs-keyword">android/content/Context-&gt;getSystemService(Ljava/lang/String;)Ljava/lang/Object;</span><br><span class="hljs-keyword"></span>	<span class="hljs-built_in">at</span> com.github.unidbg.linux.<span class="hljs-keyword">android.dvm.AbstractJni.callObjectMethodV(AbstractJni.java:416)</span><br><span class="hljs-keyword"></span>	<span class="hljs-built_in">at</span> com.<span class="hljs-keyword">dianping.NBridge.callObjectMethodV(NBridge.java:125)</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>系统服务是 Android 所提供的一项重要服务，在 JNI 补环境中出现频率相当高， Unidbg 对它做了专门处理，可以参考 AbstractJni，其中有如下代码片段。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">case</span> <span class="hljs-string">&quot;android/app/Application-&gt;getSystemService(Ljava/lang/String;)Ljava/lang/Object;&quot;</span>: &#123;<br>    <span class="hljs-type">StringObject</span> <span class="hljs-variable">serviceName</span> <span class="hljs-operator">=</span> vaList.getObjectArg(<span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">assert</span> serviceName != <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SystemService</span>(vm, serviceName.getValue());<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="callVoidxxx系列"><a href="#callVoidxxx系列" class="headerlink" title="callVoidxxx系列"></a>callVoidxxx系列</h1><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">java.lang.UnsupportedOperationException: </span><span class="hljs-keyword">java/io/FileInputStream-&gt;&lt;init&gt;(Ljava/lang/String;)V</span><br><span class="hljs-keyword"></span>	<span class="hljs-built_in">at</span> com.github.unidbg.linux.<span class="hljs-keyword">android.dvm.AbstractJni.callVoidMethodV(AbstractJni.java:996)</span><br><span class="hljs-keyword"></span>	<span class="hljs-built_in">at</span> com.<span class="hljs-keyword">dianping.NBridge.callVoidMethodV(NBridge.java:112)</span><br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>这里的处理和java&#x2F;io&#x2F;FileInputStream-&gt;allocObject的处理相呼应 </p>
+<p>因为callVoid系列 API 没有返回值，它的操作基于原先的占位dvmObject&lt;即java&#x2F;io&#x2F;FileInputStream-&gt;allocObject的处理&gt;，因为我们没法对它重新赋值，所以我声明为一个全局变量处理它以及后面的逻辑</p>
+</blockquote>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs scala">public <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NBridge</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractJni</span> <span class="hljs-title">implements</span> <span class="hljs-title">IOResolver</span> </span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AndroidEmulator</span> emulator;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">DvmObject</span>&lt;?&gt; <span class="hljs-type">SIUACollector</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">VM</span> vm;<br>    public <span class="hljs-type">FileInputStream</span> fileInputStream;<br>    public <span class="hljs-type">InputStreamReader</span> inputStreamReader;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">case</span> &quot;java/io/FileInputStream-&gt;&lt;init&gt;(Ljava/lang/String;)V&quot;:&#123;<br>    String <span class="hljs-type">name</span> = vaList.getObjectArg(<span class="hljs-number">0</span>).getValue().toString();<br>    <span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(&quot;FileInputStream:&quot;+<span class="hljs-type">name</span>);<br>    try &#123;<br>        fileInputStream = <span class="hljs-built_in">new</span> FileInputStream(<span class="hljs-type">name</span>);<br>    &#125; catch (FileNotFoundException e) &#123;<br>        e.printStackTrace();<br>    &#125;<br>    <span class="hljs-keyword">return</span>;<br>&#125;<br><span class="hljs-keyword">case</span> &quot;java/io/InputStreamReader-&gt;&lt;init&gt;(Ljava/io/InputStream;)V&quot;:&#123;<br>    inputStreamReader = <span class="hljs-built_in">new</span> InputStreamReader(fileInputStream);<br>    <span class="hljs-keyword">return</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>运行发现有问题</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs routeros">FileInputStream:/proc/cpuinfo<br>[12:47:54 570]  WARN [com.github.unidbg.linux.ARM32SyscallHandler] (ARM32SyscallHandler:532) - handleInterrupt <span class="hljs-attribute">intno</span>=2, <span class="hljs-attribute">NR</span>=-1073744088, <span class="hljs-attribute">svcNumber</span>=0x13b, <span class="hljs-attribute">PC</span>=unidbg@0xfffe0444, <span class="hljs-attribute">LR</span>=RX@0x40030391[libmtguard.so]0x30391, <span class="hljs-attribute">syscall</span>=<span class="hljs-literal">null</span><br>java.lang.UnsupportedOperationException: java/io/FileInputStream-&gt;&lt;init&gt;(Ljava/lang/String;)V<br>    <br>java.io.FileNotFoundException: /proc/cpuinfo (系统找不到指定的路径。)<br>	at java.base/java.io.FileInputStream.open0(Native Method)<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>程序在访问 &#x2F;proc&#x2F;cpuinfo 文件，首先将 &#x2F;proc&#x2F;cpuinfo 文件拖到本地</p>
+<blockquote>
+<p>C:\Users\13352&gt;adb pull &#x2F;proc&#x2F;cpuinfo xxx\unidbg-labs\unidbg-android\src\test\resources\dianping\files&#x2F;proc&#x2F;cpuinfo: 1 file pulled, 0 skipped. 0.1 MB&#x2F;s (1716 bytes in 0.014s)</p>
+</blockquote>
+</li>
+<li><p>然后做路径的重定位。</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">case</span> &quot;java/io/FileInputStream-&gt;&lt;init&gt;(Ljava/lang/String;)V&quot;:&#123;<br>    String <span class="hljs-type">name</span> = vaList.getObjectArg(<span class="hljs-number">0</span>).getValue().toString();<br>    <span class="hljs-keyword">if</span>(<span class="hljs-type">name</span>.equals(&quot;/proc/cpuinfo&quot;))&#123;<br>        <span class="hljs-type">name</span> = &quot;unidbg-android/src/test/resources/dianping/files/cpuinfo&quot;;<br>    &#125;<br>    <span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(&quot;FileInputStream:&quot;+<span class="hljs-type">name</span>);<br>    try &#123;<br>        fileInputStream = <span class="hljs-built_in">new</span> FileInputStream(<span class="hljs-type">name</span>);<br>    &#125; catch (FileNotFoundException e) &#123;<br>        e.printStackTrace();<br>    &#125;<br>    <span class="hljs-keyword">return</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="注意：newObjectV的几种形式-dvmClass表示当前类即“-”前面的类"><a href="#注意：newObjectV的几种形式-dvmClass表示当前类即“-”前面的类" class="headerlink" title="注意：newObjectV的几种形式 &amp;&amp; dvmClass表示当前类即“-&gt;”前面的类"></a>注意：newObjectV的几种形式 &amp;&amp; dvmClass表示当前类即“-&gt;”前面的类</h1><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs ruby"><span class="hljs-variable">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title class_">DvmObject</span>&lt;<span class="hljs-string">?&gt;</span> newObjectV(<span class="hljs-title class_">Base</span>VM vm, <span class="hljs-title class_">DvmClass</span> dvmClass, <span class="hljs-title class_">String</span> signature, <span class="hljs-title class_">VaList</span> vaList) &#123;<br>        switch (signature)&#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;java/io/File-&gt;&lt;init&gt;(Ljava/lang/String;)V&quot;</span><span class="hljs-symbol">:</span>&#123;<br>                <span class="hljs-title class_">System</span>.out.println(<span class="hljs-string">&quot;file init args: &quot;</span> + vaList.getObjectArg(<span class="hljs-number">0</span>));<br>                <span class="hljs-keyword">return</span> dvmClass.newObject(vaList.getObjectArg(<span class="hljs-number">0</span>).getValue().toString());<br><span class="hljs-regexp">//</span>                <span class="hljs-keyword">return</span> dvmClass.newObject(new <span class="hljs-title class_">File</span>(vaList.getObjectArg(<span class="hljs-number">0</span>).getValue().toString()));<br><span class="hljs-regexp">//</span>                <span class="hljs-keyword">return</span> vm.resolveClass(<span class="hljs-string">&quot;java/io/File&quot;</span>).newObject(vaList.getObjectArg(<span class="hljs-number">0</span>).getValue().toString());<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">super</span>.newObjectV(vm, dvmClass, signature, vaList);<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="补JNI中文件路径相关"><a href="#补JNI中文件路径相关" class="headerlink" title="补JNI中文件路径相关"></a>补JNI中文件路径相关</h1><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs lasso"><span class="hljs-comment">// 怎么把文件和后续的path对应上，两个比较常见的办法</span><br><span class="hljs-comment">// 1是通过signature</span><br><span class="hljs-comment">// 2是通过emulator get/set</span><br><span class="hljs-comment">// 其他办法不是那么好，比如newObject里传真实file，逻辑复杂的话，处理很麻烦</span><br><span class="hljs-keyword">case</span> <span class="hljs-string">&quot;android/content/Context-&gt;getFilesDir()Ljava/io/File;&quot;</span>: &#123;<br>    <span class="hljs-keyword">return</span> vm.resolveClass(<span class="hljs-string">&quot;java/io/File&quot;</span>).newObject(signature);<br>&#125;<br><span class="hljs-keyword">case</span> <span class="hljs-string">&quot;java/io/File-&gt;getAbsolutePath()Ljava/lang/String;&quot;</span>: &#123;<br>    <span class="hljs-built_in">String</span> <span class="hljs-built_in">tag</span> = dvmObject.getValue().toString();<br>    switch (<span class="hljs-built_in">tag</span>) &#123;<br>        <span class="hljs-comment">// 对于这种官方API，不管是JNItrace看，还是查官方文档，或是写Demo测试，以及Frida Hook 目标函数，又或者Hook Native JNI函数返回值，都是可行的。</span><br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;android/content/Context-&gt;getFilesDir()Ljava/io/File;&quot;</span>: &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">new</span> StringObject(vm, <span class="hljs-string">&quot;/data/user/0/com.dhgate.buyermob/files&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;android/os/Environment-&gt;getExternalStorageDirectory()Ljava/io/File;&quot;</span>: &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">new</span> StringObject(vm, <span class="hljs-string">&quot;/storage/emulated/0&quot;</span>);<br>        &#125;<br>    &#125;<br>&#125;<br><span class="hljs-comment">// 获取app存在外部SD卡上的缓存目录</span><br><span class="hljs-comment">// https://blog.csdn.net/zhaoyanjun6/article/details/72283289</span><br><span class="hljs-keyword">case</span> <span class="hljs-string">&quot;android/content/Context-&gt;getExternalFilesDir(Ljava/lang/String;)Ljava/io/File;&quot;</span>: &#123;<br>    <span class="hljs-keyword">return</span> vm.resolveClass(<span class="hljs-string">&quot;java/io/File&quot;</span>).newObject(signature);<br>&#125;<br><br><span class="hljs-keyword">case</span> <span class="hljs-string">&quot;java/io/File-&gt;toString()Ljava/lang/String;&quot;</span>: &#123;<br>    <span class="hljs-built_in">String</span> <span class="hljs-built_in">tag</span> = dvmObject.getValue().toString();<br>    switch (<span class="hljs-built_in">tag</span>) &#123;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;android/content/Context-&gt;getExternalFilesDir(Ljava/lang/String;)Ljava/io/File;&quot;</span>: &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">new</span> StringObject(vm, <span class="hljs-string">&quot;/storage/emulated/0/Android/data/com.example.hookinunidbg/files&quot;</span>);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="补一个空类"><a href="#补一个空类" class="headerlink" title="补一个空类"></a>补一个空类</h1><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-title class_">DvmObject</span>&lt;?&gt; <span class="hljs-title function_">callObjectMethodV</span>(<span class="hljs-params"><span class="hljs-title class_">BaseVM</span> vm, <span class="hljs-title class_">DvmObject</span>&lt;?&gt; dvmObject, <span class="hljs-title class_">String</span> signature, <span class="hljs-title class_">VaList</span> vaList</span>) &#123;<br>    <span class="hljs-keyword">switch</span> (signature) &#123;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;android/content/Context-&gt;getClass()Ljava/lang/Class;&quot;</span>:&#123;<br>            <span class="hljs-keyword">return</span> dvmObject.<span class="hljs-title function_">getObjectType</span>();<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">super</span>.<span class="hljs-title function_">callObjectMethodV</span>(vm, dvmObject, signature, vaList);<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+
+<h1 id="缺少自定义的类或者方法"><a href="#缺少自定义的类或者方法" class="headerlink" title="缺少自定义的类或者方法"></a>缺少自定义的类或者方法</h1><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs avrasm"><span class="hljs-symbol">java.lang.UnsupportedOperationException:</span> <span class="hljs-keyword">com</span>/bilibili/nativelibrary/SignedQuery-&gt;r(Ljava/util/Map<span class="hljs-comment">;)Ljava/lang/String;</span><br>	at <span class="hljs-keyword">com</span>.github.unidbg.linux.android.dvm.AbstractJni.callStaticObjectMethod(AbstractJni.java:<span class="hljs-number">402</span>)<br>	at <span class="hljs-keyword">com</span>.github.unidbg.linux.android.dvm.AbstractJni.callStaticObjectMethod(AbstractJni.java:<span class="hljs-number">397</span>)<br></code></pre></td></tr></table></figure>
+<p><img src="/blog/../../../../../../../images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746428407489.jpg" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li>新建一个util工具类，负责补充这个方法以及后续可能出现的各种方法。 </li>
+<li>然后设置jni调用：<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title class_">DvmObject</span>&lt;?&gt; <span class="hljs-title function_">callStaticObjectMethod</span>(<span class="hljs-params"><span class="hljs-title class_">BaseVM</span> vm, <span class="hljs-title class_">DvmClass</span> dvmClass, <span class="hljs-title class_">String</span> signature, <span class="hljs-title class_">VarArg</span> varArg</span>) &#123;<br>        <span class="hljs-keyword">switch</span> (signature)&#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;com/bilibili/nativelibrary/SignedQuery-&gt;r(Ljava/util/Map;)Ljava/lang/String;&quot;</span>:&#123;<br>                <span class="hljs-title class_">DvmObject</span>&lt;?&gt; mapObject = varArg.<span class="hljs-title function_">getObjectArg</span>(<span class="hljs-number">0</span>);<br>                <span class="hljs-title class_">TreeMap</span>&lt;<span class="hljs-title class_">String</span>, <span class="hljs-title class_">String</span>&gt; mymap = (<span class="hljs-title class_">TreeMap</span>&lt;<span class="hljs-title class_">String</span>, <span class="hljs-title class_">String</span>&gt;) mapObject.<span class="hljs-title function_">getValue</span>();<br>                <span class="hljs-title class_">String</span> result = utils.<span class="hljs-title function_">r</span>(mymap);<br>                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringObject</span>(vm, result);<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">super</span>.<span class="hljs-title function_">callStaticObjectMethod</span>(vm, dvmClass, signature, varArg);<br>    &#125;<br><br></code></pre></td></tr></table></figure></li>
+<li>缺少类对象-搞一个简化版的内部类。构造类，初始化类<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs avrasm"><span class="hljs-symbol">java.lang.UnsupportedOperationException:</span> <span class="hljs-keyword">com</span>/bilibili/nativelibrary/SignedQuery-&gt;&lt;init&gt;(Ljava/lang/String<span class="hljs-comment">;Ljava/lang/String;)V</span><br>	at <span class="hljs-keyword">com</span>.github.unidbg.linux.android.dvm.AbstractJni.newObject(AbstractJni.java:<span class="hljs-number">678</span>)<br>	at <span class="hljs-keyword">com</span>.github.unidbg.linux.android.dvm.AbstractJni.newObject(AbstractJni.java:<span class="hljs-number">659</span>)<br></code></pre></td></tr></table></figure>
+<img src="/blog/../../../../../../../images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746428412553.jpg" srcset="/blog/img/loading.gif" lazyload><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs haxe"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> DvmObject&lt;?&gt; newObject(BaseVM vm, DvmClass dvmClass, <span class="hljs-keyword">String</span> signature, VarArg varArg) &#123;<br>    <span class="hljs-keyword">switch</span> (signature) &#123;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;com/bilibili/nativelibrary/SignedQuery-&gt;&lt;init&gt;(Ljava/lang/String;Ljava/lang/String;)V&quot;</span>:<span class="hljs-type"></span><br>            StringObject stringObject1 = varArg.getObjectArg(<span class="hljs-number">0</span>);<br>            StringObject stringObject2 = varArg.getObjectArg(<span class="hljs-number">1</span>);<br>            <span class="hljs-keyword">String</span> str1 = stringObject1.getValue();<br>            <span class="hljs-keyword">String</span> str2 = stringObject2.getValue();<br>            <span class="hljs-keyword">return</span> vm.resolveClass(<span class="hljs-string">&quot;com/bilibili/nativelibrary/SignedQuery&quot;</span>).newObject(<span class="hljs-keyword">new</span><span class="hljs-type"></span> SignedQuery(str1, str2));<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.newObject(vm, dvmClass, signature, varArg);<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-title class_"><span class="hljs-keyword">class</span> <span class="hljs-title">SignedQuery</span> </span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">String</span> a;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">String</span> b;<br><br>    <span class="hljs-keyword">public</span> SignedQuery(<span class="hljs-keyword">String</span> str, <span class="hljs-keyword">String</span> str2) &#123;<br>        <span class="hljs-built_in">this</span>.a = str;<br>        <span class="hljs-built_in">this</span>.b = str2;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/05/逆向/安卓逆向/6. 模拟执行/Unidbg/补环境/3. 补JNI/补JNI场景汇总/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/2.%20%E8%A1%A5%E6%96%87%E4%BB%B6/%E8%A1%A5%E6%96%87%E4%BB%B6%E6%B5%81%E7%A8%8B/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/3.%20%E8%A1%A5JNI/%E8%8E%B7%E5%8F%96JNI%E8%B0%83%E7%94%A8%E7%BB%93%E6%9E%9C/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

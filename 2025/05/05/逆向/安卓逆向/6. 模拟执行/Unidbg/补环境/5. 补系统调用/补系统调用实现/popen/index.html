@@ -1,0 +1,672 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="参考：https:&#x2F;&#x2F;www.yuque.com&#x2F;lilac-2hqvv&#x2F;xdwlsg&#x2F;wsww25qka54fbnur  通过libc.so的popen()管道从shell中获取系统属性，其效果可以理解成在NDK中使用adb shell。popen参数一就是shell命令，返回值是一个fd文件描述符，可以read其内容。system函数也可以做这一件事，两者在底层都依赖于execve系统调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/popen/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="参考：https:&#x2F;&#x2F;www.yuque.com&#x2F;lilac-2hqvv&#x2F;xdwlsg&#x2F;wsww25qka54fbnur  通过libc.so的popen()管道从shell中获取系统属性，其效果可以理解成在NDK中使用adb shell。popen参数一就是shell命令，返回值是一个fd文件描述符，可以read其内容。system函数也可以做这一件事，两者在底层都依赖于execve系统调用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746524778414.jpg">
+<meta property="og:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746524785946.jpg">
+<meta property="article:published_time" content="2025-05-05T12:42:50.184Z">
+<meta property="article:modified_time" content="2025-05-06T09:54:14.290Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746524778414.jpg">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-05 20:42" pubdate>
+          2025年5月5日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>参考：<a target="_blank" rel="noopener" href="https://www.yuque.com/lilac-2hqvv/xdwlsg/wsww25qka54fbnur">https://www.yuque.com/lilac-2hqvv/xdwlsg/wsww25qka54fbnur</a></p>
+<blockquote>
+<p>通过libc.so的<code>popen()</code>管道从shell中获取系统属性，其效果可以理解成在NDK中使用adb shell。popen参数一就是shell命令，<code>返回值是一个fd文件描述符</code>，可以read其内容。system函数也可以做这一件事，<code>两者在底层都依赖于execve系统调用</code></p>
+</blockquote>
+<h1 id="什么场景下需要popen"><a href="#什么场景下需要popen" class="headerlink" title="什么场景下需要popen"></a>什么场景下需要popen</h1><ol>
+<li>当发现调用号是vfork | dup X；其实是和popen相关</li>
+<li><font color="#dc143c"> com.github.unidbg.linux.file.PipedWriteFileIO</font>报错，那么就应该直接转入处理popen的逻辑</li>
+<li>没有提示没有报错但是不出来结果也需要酌情考虑</li>
+</ol>
+<h1 id="为什么会有上述现象"><a href="#为什么会有上述现象" class="headerlink" title="为什么会有上述现象"></a>为什么会有上述现象</h1><blockquote>
+<p>popen 在底层原理上是创建了一个新进程，然后通过管道去做通信，返回数据。但 Unidbg 在多进程相关的系统调用处理上十分不完善，无法支撑popen正常的执行它的底层逻辑。</p>
+</blockquote>
+<h1 id="固定处理流程"><a href="#固定处理流程" class="headerlink" title="固定处理流程"></a>固定处理流程</h1><h2 id="1-获取到-popen-的-command"><a href="#1-获取到-popen-的-command" class="headerlink" title="1. 获取到 popen 的 command"></a>1. 获取到 popen 的 command</h2><h3 id="方式1"><a href="#方式1" class="headerlink" title="方式1"></a>方式1</h3><blockquote>
+<p>用 Dobby 或任意 Hook 工具，在库函数的层面 Hook 获取到 popen 的 command，放到 emulator 的全局变量里</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs javascript">public <span class="hljs-keyword">void</span> <span class="hljs-title function_">hookPopen</span>(<span class="hljs-params"></span>)&#123;<br>        <span class="hljs-title class_">IxHook</span> xHook = <span class="hljs-title class_">XHookImpl</span>.<span class="hljs-title function_">getInstance</span>(emulator);<br>        xHook.<span class="hljs-title function_">register</span>(<span class="hljs-string">&quot;libszstone.so&quot;</span>, <span class="hljs-string">&quot;popen&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReplaceCallback</span>() &#123;<br>            @<span class="hljs-title class_">Override</span><br>            public <span class="hljs-title class_">HookStatus</span> <span class="hljs-title function_">onCall</span>(<span class="hljs-params">Emulator&lt;?&gt; emulator, HookContext context, long originFunction</span>) &#123;<br>                <span class="hljs-title class_">RegisterContext</span> registerContext = emulator.<span class="hljs-title function_">getContext</span>();<br>                <span class="hljs-title class_">String</span> command = registerContext.<span class="hljs-title function_">getPointerArg</span>(<span class="hljs-number">0</span>).<span class="hljs-title function_">getString</span>(<span class="hljs-number">0</span>);<br>                emulator.<span class="hljs-title function_">set</span>(<span class="hljs-string">&quot;command&quot;</span>, command);<br>                <span class="hljs-title class_">System</span>.<span class="hljs-property">out</span>.<span class="hljs-title function_">println</span>(<span class="hljs-string">&quot;command:&quot;</span>+command);<br>                <span class="hljs-keyword">return</span> <span class="hljs-title class_">HookStatus</span>.<span class="hljs-title function_">RET</span>(emulator, originFunction);<br>            &#125;<br>        &#125;, <span class="hljs-literal">true</span>);<br>        <span class="hljs-comment">// 使其生效</span><br>        xHook.<span class="hljs-title function_">refresh</span>();<br>    &#125;<br>    <br>public <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span>(<span class="hljs-params"><span class="hljs-built_in">String</span>[] args</span>) &#123;<br>        dewuNew dewuNew = <span class="hljs-keyword">new</span> <span class="hljs-title function_">dewuNew</span>();<br>        dewuNew.<span class="hljs-title function_">hookPopen</span>();<br>        dewuNew.<span class="hljs-title function_">call_fun</span>();<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+
+<h3 id="方式2"><a href="#方式2" class="headerlink" title="方式2"></a>方式2</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs javascript"> <span class="hljs-comment">// 注意：在加载目标so前，先去加载libc.so，hook时机会早一点，省得遗漏。</span><br> <span class="hljs-comment">// 但须注意：它并非毫无副作用，我们的样本SO的基地址就并非0x40000000了，做算法分析时需要注意一下。</span><br><span class="hljs-title class_">DalvikModule</span> dmLibc = vm.<span class="hljs-title function_">loadLibrary</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;unidbg-android/src/main/resources/android/sdk23/lib/libc.so&quot;</span>), <span class="hljs-literal">true</span>);<br><span class="hljs-title class_">Module</span> moduleLibc = dmLibc.<span class="hljs-title function_">getModule</span>();<br><span class="hljs-comment">// HOOK popen</span><br>int popenAddress = (int) moduleLibc.<span class="hljs-title function_">findSymbolByName</span>(<span class="hljs-string">&quot;popen&quot;</span>).<span class="hljs-title function_">getAddress</span>();<br><span class="hljs-comment">// 函数原型：FILE *popen(const char *command, const char *type);</span><br>emulator.<span class="hljs-title function_">attach</span>().<span class="hljs-title function_">addBreakPoint</span>(popenAddress, <span class="hljs-keyword">new</span> <span class="hljs-title class_">BreakPointCallback</span>() &#123;<br>    @<span class="hljs-title class_">Override</span><br>    public boolean <span class="hljs-title function_">onHit</span>(<span class="hljs-params">Emulator&lt;?&gt; emulator, long address</span>) &#123;<br>        <span class="hljs-title class_">RegisterContext</span> registerContext = emulator.<span class="hljs-title function_">getContext</span>();<br>        <span class="hljs-title class_">String</span> command = registerContext.<span class="hljs-title function_">getPointerArg</span>(<span class="hljs-number">0</span>).<span class="hljs-title function_">getString</span>(<span class="hljs-number">0</span>);<br>        <span class="hljs-title class_">System</span>.<span class="hljs-property">out</span>.<span class="hljs-title function_">println</span>(<span class="hljs-string">&quot;lilac popen command:&quot;</span>+command);<br>        emulator.<span class="hljs-title function_">set</span>(<span class="hljs-string">&quot;command&quot;</span>,  command);           <span class="hljs-comment">// 如果传值，需要加上这句配合下面的方式 </span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-adb-shell里打印获取的command"><a href="#2-adb-shell里打印获取的command" class="headerlink" title="2. adb shell里打印获取的command"></a>2. adb shell里打印获取的command</h2><h2 id="3-系统调用端处理"><a href="#3-系统调用端处理" class="headerlink" title="3. 系统调用端处理"></a>3. 系统调用端处理</h2><blockquote>
+<p>实现自己的ARM32SyscallHandler，方便给popen指定值</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">Emulator</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">arm</span>.<span class="hljs-property">context</span>.<span class="hljs-property">EditableArm32RegisterContext</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">ARM32SyscallHandler</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">file</span>.<span class="hljs-property">ByteArrayFileIO</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">file</span>.<span class="hljs-property">DumpFileIO</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">memory</span>.<span class="hljs-property">SvcMemory</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">sun</span>.<span class="hljs-property">jna</span>.<span class="hljs-property">Pointer</span>;<br><br><span class="hljs-keyword">import</span> java.<span class="hljs-property">util</span>.<span class="hljs-property">concurrent</span>.<span class="hljs-property">ThreadLocalRandom</span>;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MySyscallHandler</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">ARM32SyscallHandler</span> &#123;<br><br>    public <span class="hljs-title class_">MySyscallHandler</span>(<span class="hljs-title class_">SvcMemory</span> svcMemory) &#123;<br>        <span class="hljs-variable language_">super</span>(svcMemory);<br>    &#125;<br><br>    @<span class="hljs-title class_">Override</span><br>    protected boolean <span class="hljs-title function_">handleUnknownSyscall</span>(<span class="hljs-params">Emulator emulator, int NR</span>) &#123;<br>        <span class="hljs-keyword">switch</span> (<span class="hljs-variable constant_">NR</span>) &#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">190</span>:<br>                <span class="hljs-title function_">vfork</span>(emulator);<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">114</span>:<br>                <span class="hljs-title function_">wait4</span>(emulator);<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br><span class="hljs-comment">// case 359:</span><br><span class="hljs-comment">//                pipe2(emulator);</span><br><span class="hljs-comment">//                return true;</span><br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">super</span>.<span class="hljs-title function_">handleUnknownSyscall</span>(emulator, <span class="hljs-variable constant_">NR</span>);<br>    &#125;<br><br>    private <span class="hljs-keyword">void</span> <span class="hljs-title function_">vfork</span>(<span class="hljs-params">Emulator&lt;?&gt; emulator</span>) &#123;<br>        <span class="hljs-comment">// emulator.getUnwinder().unwind();  //打印调用栈</span><br>        <span class="hljs-title class_">EditableArm32RegisterContext</span> context = (<span class="hljs-title class_">EditableArm32RegisterContext</span>) emulator.<span class="hljs-title function_">getContext</span>();<br>        int childPid = emulator.<span class="hljs-title function_">getPid</span>() + <span class="hljs-title class_">ThreadLocalRandom</span>.<span class="hljs-title function_">current</span>().<span class="hljs-title function_">nextInt</span>(<span class="hljs-number">256</span>);<br>        int r0 = childPid;<br>        <span class="hljs-title class_">System</span>.<span class="hljs-property">out</span>.<span class="hljs-title function_">println</span>(<span class="hljs-string">&quot;vfork pid=&quot;</span> + r0);<br>        context.<span class="hljs-title function_">setR0</span>(r0);<br>    &#125;<br><br>    private <span class="hljs-keyword">void</span> <span class="hljs-title function_">wait4</span>(<span class="hljs-params">Emulator emulator</span>) &#123;<br>        <span class="hljs-title class_">EditableArm32RegisterContext</span> context = (<span class="hljs-title class_">EditableArm32RegisterContext</span>) emulator.<span class="hljs-title function_">getContext</span>();<br>        int pid = context.<span class="hljs-title function_">getR0Int</span>();<br>        <span class="hljs-title class_">Pointer</span> wstatus = context.<span class="hljs-title function_">getR1Pointer</span>();<br>        int options = context.<span class="hljs-title function_">getR2Int</span>();<br>        <span class="hljs-title class_">Pointer</span> rusage = context.<span class="hljs-title function_">getR3Pointer</span>();<br>        <span class="hljs-title class_">System</span>.<span class="hljs-property">out</span>.<span class="hljs-title function_">println</span>(<span class="hljs-string">&quot;wait4 pid=&quot;</span> + pid + <span class="hljs-string">&quot;, wstatus=&quot;</span> + wstatus + <span class="hljs-string">&quot;, options=0x&quot;</span> + <span class="hljs-title class_">Integer</span>.<span class="hljs-title function_">toHexString</span>(options) + <span class="hljs-string">&quot;, rusage=&quot;</span> + rusage);<br>    &#125;<br><br>    protected int <span class="hljs-title function_">pipe2</span>(<span class="hljs-params">Emulator&lt;?&gt; emulator</span>) &#123;<br>        <span class="hljs-title class_">EditableArm32RegisterContext</span> context = (<span class="hljs-title class_">EditableArm32RegisterContext</span>) emulator.<span class="hljs-title function_">getContext</span>();<br>        <span class="hljs-title class_">Pointer</span> pipefd = context.<span class="hljs-title function_">getPointerArg</span>(<span class="hljs-number">0</span>);<br>        int flags = context.<span class="hljs-title function_">getIntArg</span>(<span class="hljs-number">1</span>);<br>        int write = <span class="hljs-title function_">getMinFd</span>();<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">fdMap</span>.<span class="hljs-title function_">put</span>(write, <span class="hljs-keyword">new</span> <span class="hljs-title class_">DumpFileIO</span>(write));<br>        int read = <span class="hljs-title function_">getMinFd</span>();<br>        <span class="hljs-title class_">String</span> stdout = <span class="hljs-string">&quot;\n&quot;</span>;<br>        <span class="hljs-comment">// stdout中写入popen command 应该返回的结果</span><br>        <span class="hljs-title class_">String</span> command = emulator.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;command&quot;</span>);<br>        <span class="hljs-title class_">System</span>.<span class="hljs-property">out</span>.<span class="hljs-title function_">println</span>(<span class="hljs-string">&quot;command:&quot;</span> + command);<br>        <span class="hljs-keyword">switch</span> (command)&#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;cat /proc/sys/kernel/random/boot_id&quot;</span>:&#123;<br>                stdout = <span class="hljs-string">&quot;9ab5f193-ca2a-4d7e-8dc2-09e0ff1f257f\n&quot;</span>;<br>            &#125;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;ps&quot;</span>:&#123;<br>                <span class="hljs-title class_">String</span> psString = <span class="hljs-title function_">readToString</span>(<span class="hljs-string">&quot;unidbg-android/src/test/resources/tongdun/proc/ps&quot;</span>);<br>         stdout = psString + <span class="hljs-string">&quot;\n&quot;</span>;        <br>            &#125;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;uname -a&quot;</span>:&#123;<br>                stdout = <span class="hljs-string">&quot;Linux localhost 4.9.186-perf-gd3d6708 #1 SMP PREEMPT Wed Nov 4 01:05:59 CST 2020 aarch64\n&quot;</span>;<br>            &#125;<br>            <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;cd /system/bin &amp;&amp; ls -l&quot;</span>:&#123;<br>                stdout = <span class="hljs-string">&quot;total 25152\n&quot;</span> +<br>                        <span class="hljs-string">&quot;-rwxr-xr-x 1 root   shell     128688 2009-01-01 08:00 abb\n&quot;</span> +<br>                        <span class="hljs-string">&quot;lrwxr-xr-x 1 root   shell          6 2009-01-01 08:00 acpi -&gt; toybox\n&quot;</span> +<br>                        <span class="hljs-string">&quot;-rwxr-xr-x 1 root   shell      30240 2009-01-01 08:00 adbd\n&quot;</span> +<br>                        <span class="hljs-string">&quot;-rwxr-xr-x 1 root   shell        207 2009-01-01 08:00 am\n&quot;</span> +<br>                        <span class="hljs-string">&quot;-rwxr-xr-x 1 root   shell     456104 2009-01-01 08:00 apexd\n&quot;</span> +<br>                        <span class="hljs-string">&quot;lrwxr-xr-x 1 root   shell         13 2009-01-01 08:00 app_process -&gt; app_process64\n&quot;</span> +<br>                        <span class="hljs-string">&quot;-rwxr-xr-x 1 root   shell      25212 2009-01-01 08:00 app_process32\n&quot;</span>;<br>            &#125;<br>            <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;stat /root&quot;</span>:&#123;<br>                stdout = <span class="hljs-string">&quot;stat: &#x27;/root&#x27;: No such file or directory\n&quot;</span>;<br>            &#125;<br>            <span class="hljs-keyword">break</span>;<br>            <span class="hljs-attr">default</span>:<br>                <span class="hljs-title class_">System</span>.<span class="hljs-property">out</span>.<span class="hljs-title function_">println</span>(<span class="hljs-string">&quot;command do not match!&quot;</span>);<br>        &#125;<br><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">fdMap</span>.<span class="hljs-title function_">put</span>(read, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayFileIO</span>(<span class="hljs-number">0</span>, <span class="hljs-string">&quot;pipe2_read_side&quot;</span>, stdout.<span class="hljs-title function_">getBytes</span>()));<br>        pipefd.<span class="hljs-title function_">setInt</span>(<span class="hljs-number">0</span>, read);<br>        pipefd.<span class="hljs-title function_">setInt</span>(<span class="hljs-number">4</span>, write);<br>        <span class="hljs-title class_">System</span>.<span class="hljs-property">out</span>.<span class="hljs-title function_">println</span>(<span class="hljs-string">&quot;pipe2 pipefd=&quot;</span> + pipefd + <span class="hljs-string">&quot;, flags=0x&quot;</span> + flags + <span class="hljs-string">&quot;, read=&quot;</span> + read + <span class="hljs-string">&quot;, write=&quot;</span> + write + <span class="hljs-string">&quot;, stdout=&quot;</span> + stdout);<br>        context.<span class="hljs-title function_">setR0</span>(<span class="hljs-number">0</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    &#125;<br>    public <span class="hljs-title class_">String</span> <span class="hljs-title function_">readToString</span>(<span class="hljs-params"><span class="hljs-built_in">String</span> fileName</span>) &#123;<br>        <span class="hljs-title class_">String</span> encoding = <span class="hljs-string">&quot;UTF-8&quot;</span>;<br>        <span class="hljs-title class_">File</span> file = <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(fileName);<br>        <span class="hljs-title class_">Long</span> filelength = file.<span class="hljs-title function_">length</span>();<br>        byte[] filecontent = <span class="hljs-keyword">new</span> byte[filelength.<span class="hljs-title function_">intValue</span>()];<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-title class_">FileInputStream</span> <span class="hljs-keyword">in</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileInputStream</span>(file);<br>            <span class="hljs-keyword">in</span>.<span class="hljs-title function_">read</span>(filecontent);<br>            <span class="hljs-keyword">in</span>.<span class="hljs-title function_">close</span>();<br>        &#125; <span class="hljs-keyword">catch</span> (<span class="hljs-title class_">IOException</span> e) &#123;<br>            e.<span class="hljs-title function_">printStackTrace</span>();<br>        &#125;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(filecontent, encoding);<br>        &#125; <span class="hljs-keyword">catch</span> (<span class="hljs-title class_">UnsupportedEncodingException</span> e) &#123;<br>            <span class="hljs-title class_">System</span>.<span class="hljs-property">err</span>.<span class="hljs-title function_">println</span>(<span class="hljs-string">&quot;The OS does not support &quot;</span> + encoding);<br>            e.<span class="hljs-title function_">printStackTrace</span>();<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="4-让emulator使用我们自定义的syscallHandler"><a href="#4-让emulator使用我们自定义的syscallHandler" class="headerlink" title="4. 让emulator使用我们自定义的syscallHandler"></a>4. 让emulator使用我们自定义的syscallHandler</h2><blockquote>
+<p>接下来让我们的emulator使用我们自己的syscallHandler，<code>emulator = new AndroidARMEmulator(new File(&quot;target/rootfs&quot;))</code>; 由如下洋洋洒洒十来行取代。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">AndroidEmulatorBuilder</span> builder = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AndroidEmulatorBuilder</span>(<span class="hljs-literal">false</span>) &#123;<br>        public <span class="hljs-title class_">AndroidEmulator</span> <span class="hljs-title function_">build</span>(<span class="hljs-params"></span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AndroidARMEmulator</span>(processName, rootDir,backendFactories) &#123;<br>                @<span class="hljs-title class_">Override</span><br>                protected <span class="hljs-title class_">UnixSyscallHandler</span>&lt;<span class="hljs-title class_">AndroidFileIO</span>&gt; <span class="hljs-title function_">createSyscallHandler</span>(<span class="hljs-params">SvcMemory svcMemory</span>) &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MySyscallHandler</span>(svcMemory);<br>                &#125;<br>            &#125;;<br>        &#125;<br>    &#125;;<br>    emulator = builder<br>        .<span class="hljs-title function_">setRootDir</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;unidbg-android/src/test/resources/dewu/rootfs&quot;</span>))<br>        .<span class="hljs-title function_">addBackendFactory</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Unicorn2Factory</span>(<span class="hljs-literal">true</span>))<br>        .<span class="hljs-title function_">build</span>();<br></code></pre></td></tr></table></figure>
+
+<h1 id="其他场景汇总"><a href="#其他场景汇总" class="headerlink" title="其他场景汇总"></a>其他场景汇总</h1><ul>
+<li>注：下面的只是对知识补充，真实解决使用popen就行，因为这些问题都是popen衍生出来的。</li>
+</ul>
+<h2 id="NR-190：vfork"><a href="#NR-190：vfork" class="headerlink" title="NR&#x3D;190：vfork"></a>NR&#x3D;190：vfork</h2><ol>
+<li>到<a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#arm-32_bit_EABI">https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#arm-32_bit_EABI</a></li>
+<li>以上这些NR值都是代表某一种系统掉用<br><img src="/blog/../../../../../../../../images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746524778414.jpg" srcset="/blog/img/loading.gif" lazyload></li>
+<li>查看NR&#x3D;190代表什么，发现代表vfork</li>
+<li>实现vfork<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">Emulator</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">arm</span>.<span class="hljs-property">context</span>.<span class="hljs-property">EditableArm32RegisterContext</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">ARM32SyscallHandler</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">memory</span>.<span class="hljs-property">SvcMemory</span>;<br><br><span class="hljs-keyword">import</span> java.<span class="hljs-property">util</span>.<span class="hljs-property">concurrent</span>.<span class="hljs-property">ThreadLocalRandom</span>;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">* 我们的vfork只做了一件事，随机返回一个进程号，但我们啥都没有做，那个进程屁都没有。我们只能期待样本没有在新进程里做什么事，否则等待我们的只有报错，没办法，哎。</span><br><span class="hljs-comment">*/</span><br><br>public <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyARM32SyscallHandler</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">ARM32SyscallHandler</span> &#123;<br>    public <span class="hljs-title class_">MyARM32SyscallHandler</span>(<span class="hljs-title class_">SvcMemory</span> svcMemory) &#123;<br>        <span class="hljs-variable language_">super</span>(svcMemory);<br>    &#125;<br><br>    @<span class="hljs-title class_">Override</span><br>    protected boolean <span class="hljs-title function_">handleUnknownSyscall</span>(<span class="hljs-params">Emulator emulator, int NR</span>) &#123;<br>        <span class="hljs-keyword">switch</span> (<span class="hljs-variable constant_">NR</span>) &#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">190</span>:<br>                <span class="hljs-title function_">vfork</span>(emulator);<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">super</span>.<span class="hljs-title function_">handleUnknownSyscall</span>(emulator, <span class="hljs-variable constant_">NR</span>);<br>    &#125;<br><br>    private <span class="hljs-keyword">void</span> <span class="hljs-title function_">vfork</span>(<span class="hljs-params">Emulator&lt;?&gt; emulator</span>) &#123;<br>        <span class="hljs-title class_">EditableArm32RegisterContext</span> context = (<span class="hljs-title class_">EditableArm32RegisterContext</span>) emulator.<span class="hljs-title function_">getContext</span>();<br>        int childPid = emulator.<span class="hljs-title function_">getPid</span>() + <span class="hljs-title class_">ThreadLocalRandom</span>.<span class="hljs-title function_">current</span>().<span class="hljs-title function_">nextInt</span>(<span class="hljs-number">256</span>);<br>        int r0 = childPid;<br>        <span class="hljs-title class_">System</span>.<span class="hljs-property">out</span>.<span class="hljs-title function_">println</span>(<span class="hljs-string">&quot;vfork pid=&quot;</span> + r0);<br>        context.<span class="hljs-title function_">setR0</span>(r0);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title function_">shumei</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-comment">// 创建模拟器实例</span><br><span class="hljs-comment">//        emulator = AndroidEmulatorBuilder</span><br><span class="hljs-comment">//                .for32Bit()</span><br><span class="hljs-comment">//                .setRootDir(new File(&quot;target/rootfs&quot;))</span><br><span class="hljs-comment">//                .build();</span><br><br>        <span class="hljs-title class_">AndroidEmulatorBuilder</span> builder = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AndroidEmulatorBuilder</span>(<span class="hljs-literal">false</span>) &#123;<br>            @<span class="hljs-title class_">Override</span><br>            public <span class="hljs-title class_">AndroidEmulator</span> <span class="hljs-title function_">build</span>(<span class="hljs-params"></span>) &#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AndroidARMEmulator</span>(processName, rootDir, backendFactories) &#123;<br>                    @<span class="hljs-title class_">Override</span><br>                    protected <span class="hljs-title class_">UnixSyscallHandler</span>&lt;<span class="hljs-title class_">AndroidFileIO</span>&gt; <span class="hljs-title function_">createSyscallHandler</span>(<span class="hljs-params">SvcMemory svcMemory</span>) &#123;<br>                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyARM32SyscallHandler</span>(svcMemory);<br>                    &#125;<br>                &#125;;<br>            &#125;<br>            ;<br>        &#125;;<br>        emulator = builder.<span class="hljs-title function_">setRootDir</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;target/rootfs&quot;</span>)).<span class="hljs-title function_">build</span>();<br>        <span class="hljs-comment">// 获取模拟器的内存操作接口</span><br>        final <span class="hljs-title class_">Memory</span> memory = emulator.<span class="hljs-title function_">getMemory</span>();<br>        ....<br></code></pre></td></tr></table></figure>
+<h2 id="dup2"><a href="#dup2" class="headerlink" title="dup2"></a>dup2</h2><p><img src="/blog/../../../../../../../../images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746524785946.jpg" srcset="/blog/img/loading.gif" lazyload></p>
+<ul>
+<li><p>都是NR&#x3D;190？</p>
+</li>
+<li><p>dup2用于复制一个文件描述符，它还有一些姊妹，可以看这篇文章<a target="_blank" rel="noopener" href="https://blog.csdn.net/LOVETEDA/article/details/89021019">https://blog.csdn.net/LOVETEDA/article/details/89021019</a></p>
+</li>
+<li><p>报错的大意是com.github.unidbg.linux.file.PipedWriteFileIO没有实现这个dup2方法</p>
+</li>
+<li><p>那么有其他类型的文件形式实现了这个接口吗？可以借鉴一下吗？我们参考dumpfileIO，<strong>return this</strong> 完事儿。</p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/05/逆向/安卓逆向/6. 模拟执行/Unidbg/补环境/5. 补系统调用/补系统调用实现/popen/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/loctl%E5%AE%9E%E7%8E%B0/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/2.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E5%B1%9E%E6%80%A7/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

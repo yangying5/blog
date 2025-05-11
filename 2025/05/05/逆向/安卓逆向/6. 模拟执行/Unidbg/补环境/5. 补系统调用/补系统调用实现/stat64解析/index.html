@@ -1,0 +1,656 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="参考：https:&#x2F;&#x2F;www.yuque.com&#x2F;lilac-2hqvv&#x2F;xdwlsg&#x2F;ip3v0qlg5b8y620f  介绍 stat64是用于获取文件属性的系统调用  原型：  int stat(const char *path, struct stat *buf);   每个文件都有各种各样的属性，包括下面这些。 123456789101112131415struct stat &amp;#12">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/stat64%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="参考：https:&#x2F;&#x2F;www.yuque.com&#x2F;lilac-2hqvv&#x2F;xdwlsg&#x2F;ip3v0qlg5b8y620f  介绍 stat64是用于获取文件属性的系统调用  原型：  int stat(const char *path, struct stat *buf);   每个文件都有各种各样的属性，包括下面这些。 123456789101112131415struct stat &amp;#12">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-05T12:43:46.105Z">
+<meta property="article:modified_time" content="2025-05-05T12:58:42.809Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-05 20:43" pubdate>
+          2025年5月5日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          825 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li>参考：<a target="_blank" rel="noopener" href="https://www.yuque.com/lilac-2hqvv/xdwlsg/ip3v0qlg5b8y620f">https://www.yuque.com/lilac-2hqvv/xdwlsg/ip3v0qlg5b8y620f</a></li>
+</ul>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><ul>
+<li><p>stat64是用于获取文件属性的系统调用</p>
+</li>
+<li><p>原型：</p>
+<blockquote>
+<p>int stat(const char *path, struct stat *buf);</p>
+</blockquote>
+</li>
+<li><p>每个文件都有各种各样的属性，包括下面这些。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript">struct stat &#123;<br>    dev_t     st_dev;     <span class="hljs-comment">/* ID of device containing file */</span><br>    ino_t     st_ino;     <span class="hljs-comment">/* inode number */</span><br>    mode_t    st_mode;    <span class="hljs-comment">/* protection */</span><br>    nlink_t   st_nlink;   <span class="hljs-comment">/* number of hard links */</span><br>    uid_t     st_uid;     <span class="hljs-comment">/* user ID of owner */</span><br>    gid_t     st_gid;     <span class="hljs-comment">/* group ID of owner */</span><br>    dev_t     st_rdev;    <span class="hljs-comment">/* device ID (if special file) */</span><br>    off_t     st_size;    <span class="hljs-comment">/* total size, in bytes */</span><br>    blksize_t st_blksize; <span class="hljs-comment">/* blocksize for file system I/O */</span><br>    blkcnt_t  st_blocks;  <span class="hljs-comment">/* number of 512B blocks allocated */</span><br>    time_t    st_atime;   <span class="hljs-comment">/* time of last access */</span><br>    time_t    st_mtime;   <span class="hljs-comment">/* time of last modification */</span><br>    time_t    st_ctime;   <span class="hljs-comment">/* time of last status change */</span><br>&#125;;<br></code></pre></td></tr></table></figure></li>
+<li><p>这些文件属性可用作信息收集、设备标识等用途。</p>
+</li>
+</ul>
+<h1 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">Find</span> native <span class="hljs-keyword">function</span> <span class="hljs-title class_">Java</span>_com_kuaishou_dfp_envdetect_jni_Watermelon_jniCommand =&gt; <span class="hljs-variable constant_">RX</span>@<span class="hljs-number">0x40004951</span>[libksse.<span class="hljs-property">so</span>]<span class="hljs-number">0x4951</span><br>file <span class="hljs-attr">open</span>:<span class="hljs-regexp">/data/</span>system<br>[<span class="hljs-number">22</span>:<span class="hljs-number">28</span>:<span class="hljs-number">42</span> <span class="hljs-number">815</span>]  <span class="hljs-variable constant_">INFO</span> [com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">ARM32SyscallHandler</span>] (<span class="hljs-title class_">ARM32SyscallHandler</span>:<span class="hljs-number">1120</span>) - stat64 pathname=<span class="hljs-regexp">/data/</span>system, <span class="hljs-variable constant_">LR</span>=<span class="hljs-variable constant_">RX</span>@<span class="hljs-number">0x4001990d</span>[libksse.<span class="hljs-property">so</span>]<span class="hljs-number">0x1990d</span><br>file <span class="hljs-attr">open</span>:<span class="hljs-regexp">/data/</span>data/<br>[<span class="hljs-number">22</span>:<span class="hljs-number">28</span>:<span class="hljs-number">42</span> <span class="hljs-number">819</span>]  <span class="hljs-variable constant_">INFO</span> [com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">ARM32SyscallHandler</span>] (<span class="hljs-title class_">ARM32SyscallHandler</span>:<span class="hljs-number">1120</span>) - stat64 pathname=<span class="hljs-regexp">/data/</span>data/, <span class="hljs-variable constant_">LR</span>=<span class="hljs-variable constant_">RX</span>@<span class="hljs-number">0x4001990d</span>[libksse.<span class="hljs-property">so</span>]<span class="hljs-number">0x1990d</span><br>file <span class="hljs-attr">open</span>:<span class="hljs-regexp">/data/</span>data/com.<span class="hljs-property">android</span>.<span class="hljs-property">shell</span><br>[<span class="hljs-number">22</span>:<span class="hljs-number">28</span>:<span class="hljs-number">42</span> <span class="hljs-number">823</span>]  <span class="hljs-variable constant_">INFO</span> [com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">ARM32SyscallHandler</span>] (<span class="hljs-title class_">ARM32SyscallHandler</span>:<span class="hljs-number">1120</span>) - stat64 pathname=<span class="hljs-regexp">/data/</span>data/com.<span class="hljs-property">android</span>.<span class="hljs-property">shell</span>, <span class="hljs-variable constant_">LR</span>=<span class="hljs-variable constant_">RX</span>@<span class="hljs-number">0x4001990d</span>[libksse.<span class="hljs-property">so</span>]<span class="hljs-number">0x1990d</span><br>file <span class="hljs-attr">open</span>:<span class="hljs-regexp">/data/</span>system/install_sessions<br>[<span class="hljs-number">22</span>:<span class="hljs-number">28</span>:<span class="hljs-number">42</span> <span class="hljs-number">823</span>]  <span class="hljs-variable constant_">INFO</span> [com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">ARM32SyscallHandler</span>] (<span class="hljs-title class_">ARM32SyscallHandler</span>:<span class="hljs-number">1120</span>) - stat64 pathname=<span class="hljs-regexp">/data/</span>system/install_sessions, <span class="hljs-variable constant_">LR</span>=<span class="hljs-variable constant_">RX</span>@<span class="hljs-number">0x4001990d</span>[libksse.<span class="hljs-property">so</span>]<span class="hljs-number">0x1990d</span><br>file <span class="hljs-attr">open</span>:<span class="hljs-regexp">/data/</span>data/com.<span class="hljs-property">google</span>.<span class="hljs-property">android</span>.<span class="hljs-property">webview</span><br>[<span class="hljs-number">22</span>:<span class="hljs-number">28</span>:<span class="hljs-number">42</span> <span class="hljs-number">823</span>]  <span class="hljs-variable constant_">INFO</span> [com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">ARM32SyscallHandler</span>] (<span class="hljs-title class_">ARM32SyscallHandler</span>:<span class="hljs-number">1120</span>) - stat64 pathname=<span class="hljs-regexp">/data/</span>data/com.<span class="hljs-property">google</span>.<span class="hljs-property">android</span>.<span class="hljs-property">webview</span>, <span class="hljs-variable constant_">LR</span>=<span class="hljs-variable constant_">RX</span>@<span class="hljs-number">0x4001990d</span>[libksse.<span class="hljs-property">so</span>]<span class="hljs-number">0x1990d</span><br><span class="hljs-title class_">JNIEnv</span>-&gt;<span class="hljs-title class_">FindClass</span>(java/lang/<span class="hljs-title class_">String</span>) was called <span class="hljs-keyword">from</span> <span class="hljs-variable constant_">RX</span>@<span class="hljs-number">0x40037b87</span>[libksse.<span class="hljs-property">so</span>]<span class="hljs-number">0x37b87</span><br><span class="hljs-title class_">JNIEnv</span>-&gt;<span class="hljs-title class_">GetMethodID</span>(java/lang/<span class="hljs-title class_">String</span>.&lt;init&gt;([<span class="hljs-title class_">BLjava</span>/lang/<span class="hljs-title class_">String</span>;)V) =&gt; <span class="hljs-number">0x782c535e</span> was called <span class="hljs-keyword">from</span> <span class="hljs-variable constant_">RX</span>@<span class="hljs-number">0x40037b9d</span>[libksse.<span class="hljs-property">so</span>]<span class="hljs-number">0x37b9d</span><br><span class="hljs-title class_">JNIEnv</span>-&gt;<span class="hljs-title class_">NewByteArray</span>(<span class="hljs-number">19</span>) was called <span class="hljs-keyword">from</span> <span class="hljs-variable constant_">RX</span>@<span class="hljs-number">0x40037bb3</span>[libksse.<span class="hljs-property">so</span>]<span class="hljs-number">0x37bb3</span><br><span class="hljs-title class_">JNIEnv</span>-&gt;<span class="hljs-title class_">SetByteArrayRegion</span>([B@4de5031f, <span class="hljs-number">0</span>, <span class="hljs-number">19</span>, <span class="hljs-variable constant_">RW</span>@<span class="hljs-number">0x40223040</span>) was called <span class="hljs-keyword">from</span> <span class="hljs-variable constant_">RX</span>@<span class="hljs-number">0x40037bc7</span>[libksse.<span class="hljs-property">so</span>]<span class="hljs-number">0x37bc7</span><br><span class="hljs-title class_">JNIEnv</span>-&gt;<span class="hljs-title class_">NewStringUTF</span>(<span class="hljs-string">&quot;utf-8&quot;</span>) was called <span class="hljs-keyword">from</span> <span class="hljs-variable constant_">RX</span>@<span class="hljs-number">0x40037bd5</span>[libksse.<span class="hljs-property">so</span>]<span class="hljs-number">0x37bd5</span><br><span class="hljs-title class_">JNIEnv</span>-&gt;<span class="hljs-title class_">NewObjectV</span>(<span class="hljs-keyword">class</span> <span class="hljs-title class_">java</span>/lang/<span class="hljs-title class_">String</span>, &lt;init&gt;<span class="hljs-function">(<span class="hljs-params">[B@4de5031f, <span class="hljs-string">&quot;utf-8&quot;</span></span>) =&gt;</span> <span class="hljs-string">&quot;nnn|nnn|nnn|nnn|nnn&quot;</span>) was called <span class="hljs-keyword">from</span> <span class="hljs-variable constant_">RX</span>@<span class="hljs-number">0x40018283</span>[libksse.<span class="hljs-property">so</span>]<span class="hljs-number">0x18283</span><br><span class="hljs-attr">ret</span>:nnn|nnn|nnn|nnn|nnn<br></code></pre></td></tr></table></figure>
+<ul>
+<li>打开file读写，可看到系统调用stat64被调用，用于访问指定文件</li>
+<li>按要求补一下这些文件后发现return的结果变成了0::0|0::0|0::0|0::0|0::0</li>
+</ul>
+<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><ol>
+<li>这是不合理的，虽然我们补的是空文件夹，<code>但它同样有自己的文件属性，怎么会返回全 0 呢？说明stat64调用了每个文件的上述某些属性值</code></li>
+<li>通过stat 文件夹名 查看对应属性和值做对比，看看是哪些属性值被stat64调用<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">polaris</span>:<span class="hljs-regexp">/ $ stat /</span>data/data/com.<span class="hljs-property">google</span>.<span class="hljs-property">android</span>.<span class="hljs-property">webview</span><br>  <span class="hljs-title class_">File</span>: <span class="hljs-regexp">/data/</span>data/com.<span class="hljs-property">google</span>.<span class="hljs-property">android</span>.<span class="hljs-property">webview</span><br>  <span class="hljs-title class_">Size</span>: <span class="hljs-number">4096</span>     <span class="hljs-title class_">Blocks</span>: <span class="hljs-number">16</span>      <span class="hljs-variable constant_">IO</span> <span class="hljs-title class_">Blocks</span>: <span class="hljs-number">512</span> directory<br><span class="hljs-title class_">Device</span>: 10305h/66309d    <span class="hljs-title class_">Inode</span>: <span class="hljs-number">1024007</span>  <span class="hljs-title class_">Links</span>: <span class="hljs-number">7</span><br><span class="hljs-title class_">Access</span>: (<span class="hljs-number">0700</span>/drwx------)       <span class="hljs-title class_">Uid</span>: (<span class="hljs-number">10176</span>/ u0_a176)   <span class="hljs-title class_">Gid</span>: (<span class="hljs-number">10176</span>/ u0_a176)<br><span class="hljs-title class_">Access</span>: <span class="hljs-number">2022</span>-<span class="hljs-number">04</span>-<span class="hljs-number">22</span> <span class="hljs-number">16</span>:<span class="hljs-number">08</span>:<span class="hljs-number">51.936423786</span> +<span class="hljs-number">0800</span><br><span class="hljs-title class_">Modify</span>: <span class="hljs-number">2022</span>-<span class="hljs-number">11</span>-<span class="hljs-number">09</span> <span class="hljs-number">10</span>:<span class="hljs-number">15</span>:<span class="hljs-number">38.954950840</span> +<span class="hljs-number">0800</span><br><span class="hljs-title class_">Change</span>: <span class="hljs-number">2022</span>-<span class="hljs-number">11</span>-<span class="hljs-number">09</span> <span class="hljs-number">10</span>:<span class="hljs-number">15</span>:<span class="hljs-number">38.954950840</span> +<span class="hljs-number">0800</span><br></code></pre></td></tr></table></figure></li>
+<li>结果全为0的原因</li>
+</ol>
+<ul>
+<li>Unidbg 在文件属性这方面的模拟处理上做的不够好</li>
+<li>对于普通文件，Unidbg 的文件属性编码如下<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs javascript">@<span class="hljs-title class_">Override</span><br>public int <span class="hljs-title function_">fstat</span>(<span class="hljs-params">Emulator&lt;?&gt; emulator, StatStructure stat</span>) &#123;<br>    int st_mode;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable constant_">IO</span>.<span class="hljs-property">STDOUT</span>.<span class="hljs-title function_">equals</span>(file.<span class="hljs-title function_">getName</span>())) &#123;<br>        st_mode = <span class="hljs-variable constant_">IO</span>.<span class="hljs-property">S_IFCHR</span> | <span class="hljs-number">0x777</span>;<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-title class_">Files</span>.<span class="hljs-title function_">isSymbolicLink</span>(file.<span class="hljs-title function_">toPath</span>())) &#123;<br>        st_mode = <span class="hljs-variable constant_">IO</span>.<span class="hljs-property">S_IFLNK</span>;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        st_mode = <span class="hljs-variable constant_">IO</span>.<span class="hljs-property">S_IFREG</span>;<br>    &#125;<br>    stat.<span class="hljs-property">st_dev</span> = <span class="hljs-number">1</span>;<br>    stat.<span class="hljs-property">st_mode</span> = st_mode;<br>    stat.<span class="hljs-property">st_uid</span> = <span class="hljs-number">0</span>;<br>    stat.<span class="hljs-property">st_gid</span> = <span class="hljs-number">0</span>;<br>    stat.<span class="hljs-property">st_size</span> = file.<span class="hljs-title function_">length</span>();<br>    stat.<span class="hljs-property">st_blksize</span> = emulator.<span class="hljs-title function_">getPageAlign</span>();<br>    stat.<span class="hljs-property">st_ino</span> = <span class="hljs-number">1</span>;<br>    stat.<span class="hljs-property">st_blocks</span> = ((file.<span class="hljs-title function_">length</span>() + emulator.<span class="hljs-title function_">getPageAlign</span>() - <span class="hljs-number">1</span>) / emulator.<span class="hljs-title function_">getPageAlign</span>());<br>    stat.<span class="hljs-title function_">setLastModification</span>(file.<span class="hljs-title function_">lastModified</span>());<br>    stat.<span class="hljs-title function_">pack</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>看起来还不错，对时间做了处理，但 inode、dev 这些没法看，比如 inode 竟然硬编码为 1。</li>
+<li>对于文件夹或者说目录的处理，可以说几乎没处理，可见<code>src/main/java/com/github/unidbg/linux/file/DirectoryFileIO.java</code>。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript">@<span class="hljs-title class_">Override</span><br>public int <span class="hljs-title function_">fstat</span>(<span class="hljs-params">Emulator&lt;?&gt; emulator, StatStructure stat</span>) &#123;<br>    stat.<span class="hljs-property">st_mode</span> = <span class="hljs-variable constant_">IO</span>.<span class="hljs-property">S_IFDIR</span>;<br>    stat.<span class="hljs-property">st_dev</span> = <span class="hljs-number">0</span>;<br>    stat.<span class="hljs-property">st_size</span> = <span class="hljs-number">0</span>;<br>    stat.<span class="hljs-property">st_blksize</span> = <span class="hljs-number">0</span>;<br>    stat.<span class="hljs-property">st_ino</span> = <span class="hljs-number">0</span>;<br>    stat.<span class="hljs-title function_">pack</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>除了文件类型设置为目录外，其余全部置空，这就是返回0::0|0::0|0::0|0::0|0::0的原因</li>
+<li>这里可以做验证，胡乱设置一下 Access 时间<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript">public int <span class="hljs-title function_">fstat</span>(<span class="hljs-params">Emulator&lt;?&gt; emulator, StatStructure stat</span>) &#123;<br>    stat.<span class="hljs-property">st_mode</span> = <span class="hljs-variable constant_">IO</span>.<span class="hljs-property">S_IFDIR</span>;<br>    stat.<span class="hljs-property">st_dev</span> = <span class="hljs-number">0</span>;<br>    stat.<span class="hljs-property">st_size</span> = <span class="hljs-number">0</span>;<br>    stat.<span class="hljs-property">st_blksize</span> = <span class="hljs-number">0</span>;<br>    stat.<span class="hljs-property">st_ino</span> = <span class="hljs-number">0</span>;<br>    <span class="hljs-comment">// test</span><br>    stat.<span class="hljs-title function_">setSt_atim</span>(<span class="hljs-number">12345678</span>, <span class="hljs-number">9999</span>);<br>    stat.<span class="hljs-title function_">pack</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>重新运行<blockquote>
+<p>ret:999900876::54321|999900876::54321|999900876::54321|999900876::54321|999900876::54321</p>
+</blockquote>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/05/逆向/安卓逆向/6. 模拟执行/Unidbg/补环境/5. 补系统调用/补系统调用实现/stat64解析/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/sysinfo%E5%AE%9E%E7%8E%B0/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/gettimeofday%E5%AE%9E%E7%8E%B0/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

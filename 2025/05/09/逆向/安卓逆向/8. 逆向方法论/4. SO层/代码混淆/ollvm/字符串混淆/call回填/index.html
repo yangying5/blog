@@ -1,0 +1,654 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="call 回填法 存在一个蛮大的问题——似乎不少字符串没解密 在一般的hook+回填方案中，因为代码没法走到每一条方法和分支去，可能会有部分字符串没有解密，自然也hook不到，这个问题在dump回填方案中同样存在，我们可以手动处理部分解密，即call回填 正常情况下，hook回填为主，call为辅。但如果样本没有hook到的解密比较多，我们需要更依赖call call的方式可以采用frida ca">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/05/09/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/8.%20%E9%80%86%E5%90%91%E6%96%B9%E6%B3%95%E8%AE%BA/4.%20SO%E5%B1%82/%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86/ollvm/%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%B7%B7%E6%B7%86/call%E5%9B%9E%E5%A1%AB/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="call 回填法 存在一个蛮大的问题——似乎不少字符串没解密 在一般的hook+回填方案中，因为代码没法走到每一条方法和分支去，可能会有部分字符串没有解密，自然也hook不到，这个问题在dump回填方案中同样存在，我们可以手动处理部分解密，即call回填 正常情况下，hook回填为主，call为辅。但如果样本没有hook到的解密比较多，我们需要更依赖call call的方式可以采用frida ca">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-09T04:18:28.811Z">
+<meta property="article:modified_time" content="2025-05-09T04:40:18.670Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-09 12:18" pubdate>
+          2025年5月9日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="call-回填法"><a href="#call-回填法" class="headerlink" title="call 回填法"></a>call 回填法</h1><ul>
+<li>存在一个蛮大的问题——似乎不少字符串没解密</li>
+<li>在一般的hook+回填方案中，因为代码没法走到每一条方法和分支去，可能会有部分字符串没有解密，自然也hook不到，这个问题在dump回填方案中同样存在，我们可以手动处理部分解密，即call回填</li>
+<li>正常情况下，<code>hook回填为主，call为辅</code>。但如果样本没有hook到的解密比较多，我们需要更依赖call</li>
+<li>call的方式可以采用frida call。如果解密不复杂，可以使用IDAPython call</li>
+</ul>
+<h2 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h2><h3 id="方式1-遍历解密方法的所有调用xref"><a href="#方式1-遍历解密方法的所有调用xref" class="headerlink" title="方式1: 遍历解密方法的所有调用xref"></a>方式1: 遍历解密方法的所有调用xref</h3><p>注意：</p>
+<ol>
+<li>—一个字符串可能会在多个位置被解密，导致重复解密或错误。所以要做去重</li>
+<li>idaapi.get_arg_addrs得到调用参数</li>
+<li>ida_bytes.del_items：把IDA 指定范围数据反向优化重定义<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> ida_bytes<br><span class="hljs-keyword">import</span> idaapi<br><span class="hljs-keyword">import</span> idautils<br><span class="hljs-keyword">import</span> idc<br><br><br>def <span class="hljs-title function_">decryptStr</span>(trueAddress, key, length):<br>    buffer = <span class="hljs-string">&quot;&quot;</span><br>    encryptBytes = ida_bytes.<span class="hljs-title function_">get_bytes</span>(trueAddress, length)<br>    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-title function_">range</span>(length):<br>        decrypt_c = encryptBytes[j] ^ key<br>        ida_bytes.<span class="hljs-title function_">patch_byte</span>(trueAddress + j, decrypt_c)<br>        key = (key + <span class="hljs-number">3</span>) &amp; <span class="hljs-number">0xff</span><br>        buffer += <span class="hljs-title function_">chr</span>(decrypt_c)<br><br><br>    <span class="hljs-title function_">print</span>(buffer)<br><br># 打散data中的识别，<br>ida_bytes.<span class="hljs-title function_">del_items</span>(<span class="hljs-number">0xbf000</span>,<span class="hljs-number">0</span>, <span class="hljs-number">0xd1e98</span>)<br><br><br>encryptlist = []<br># 遍历解密函数的交叉引用<br>xrefs = idautils.<span class="hljs-title class_">CodeRefsTo</span>(<span class="hljs-number">0x41c4</span>, <span class="hljs-number">0</span>)<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-title function_">list</span>(xrefs):<br>    args = idaapi.<span class="hljs-title function_">get_arg_addrs</span>(i)<br>    <span class="hljs-keyword">if</span> <span class="hljs-attr">args</span>:<br>        length = idc.<span class="hljs-title function_">get_operand_value</span>(args[<span class="hljs-number">3</span>], <span class="hljs-number">1</span>)<br>        key = idc.<span class="hljs-title function_">get_operand_value</span>(args[<span class="hljs-number">2</span>], <span class="hljs-number">1</span>)<br>        encryptLine = args[<span class="hljs-number">1</span>]<br>        bufferLine = args[<span class="hljs-number">0</span>]<br>        # 解析encrypt地址<br>        <span class="hljs-attr">try</span>:<br>            encryptAddr = idc.<span class="hljs-title class_">GetDisasm</span>(encryptLine).<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;;&quot;</span>)[<span class="hljs-number">1</span>].<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;_&quot;</span>)[<span class="hljs-number">1</span>]<br>            <span class="hljs-keyword">if</span> encryptAddr not <span class="hljs-keyword">in</span> <span class="hljs-attr">encryptlist</span>:<br>                encryptlist.<span class="hljs-title function_">append</span>(encryptAddr)<br>                bufferAddr = <span class="hljs-number">0</span><br>                # 如果buffer也直接赋值，那么同理取一下，两步走，解析buffer地址，第一步是找到存储buffer的寄存器，它是第二个参数<br>                <span class="hljs-attr">try</span>:<br>                    bufferAddr = idc.<span class="hljs-title class_">GetDisasm</span>(encryptLine).<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;;&quot;</span>)[<span class="hljs-number">1</span>].<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;_&quot;</span>)[<span class="hljs-number">1</span>]<br>                <span class="hljs-attr">except</span>:<br>                    bufferReg = idc.<span class="hljs-title function_">get_operand_value</span>(bufferLine, <span class="hljs-number">1</span>)<br>                    # 往前递推最多<span class="hljs-number">20</span>条，寻找bufferReg的赋值处，解析它的unk_xxxxx<br>                    count = <span class="hljs-number">20</span><br>                    <span class="hljs-keyword">while</span> <span class="hljs-attr">count</span>:<br>                        count = count - <span class="hljs-number">1</span><br>                        bufferLine = idc.<span class="hljs-title function_">prev_head</span>(bufferLine)<br>                        oneLine = idc.<span class="hljs-title class_">GetDisasm</span>(bufferLine)<br>                        # 赋值处即第一个操作数是目标寄存器<br>                        lineReg = idc.<span class="hljs-title function_">get_operand_value</span>(bufferLine, <span class="hljs-number">0</span>)<br>                        <span class="hljs-keyword">if</span> bufferReg == <span class="hljs-attr">lineReg</span>:<br>                            bufferAddr = idc.<span class="hljs-title class_">GetDisasm</span>(bufferLine).<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;;&quot;</span>)[<span class="hljs-number">1</span>].<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;_&quot;</span>)[<span class="hljs-number">1</span>]<br>                            <span class="hljs-keyword">break</span><br>                <span class="hljs-title function_">decryptStr</span>(<span class="hljs-title function_">int</span>(encryptAddr, <span class="hljs-number">16</span>), key, length)<br>        <span class="hljs-attr">except</span>:<br>            pass<br>            <br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="方式2：正则匹配"><a href="#方式2：正则匹配" class="headerlink" title="方式2：正则匹配"></a>方式2：正则匹配</h3><ul>
+<li>如果需要call回填的比较多，我们也可以遍历所有F5的伪代码，对其做正则匹配,拿到所有的入参值<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> re<br><span class="hljs-keyword">import</span> ida_idaapi<br><span class="hljs-keyword">import</span> idaapi<br><span class="hljs-keyword">import</span> idautils<br><br><br><br>def <span class="hljs-title function_">f5All</span>():<br>    sub_ABB0_call = []<br>    # 正则匹配伪C中的魔数初始化，以及哈希运算部分<br>    <span class="hljs-keyword">for</span> func <span class="hljs-keyword">in</span> idautils.<span class="hljs-title class_">Functions</span>(<span class="hljs-number">0</span>, ida_idaapi.<span class="hljs-property">BADADDR</span>):<br>        <span class="hljs-attr">try</span>:<br>            decompilerStr = <span class="hljs-title function_">str</span>(idaapi.<span class="hljs-title function_">decompile</span>(func))<br>            decompileList = re.<span class="hljs-title function_">findall</span>(<span class="hljs-string">&quot;sub_ABB0(\(.*?\))&quot;</span>, decompilerStr)<br>            <span class="hljs-keyword">if</span> <span class="hljs-attr">decompileList</span>:<br>                sub_ABB0_call += decompileList<br>        <span class="hljs-attr">except</span>:<br>            pass<br><br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-attr">sub_ABB0_call</span>:<br>        <span class="hljs-title function_">print</span>(i)<br>        <br><span class="hljs-title function_">f5All</span>()<br></code></pre></td></tr></table></figure></li>
+<li>得到的结果：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript">(&amp;unk_23530, <span class="hljs-number">3</span>)<br>(float *a1, int a2)<br>(flt_23694, <span class="hljs-number">16</span>)<br>(v18, <span class="hljs-number">13</span>)<br>(v18, <span class="hljs-number">13</span>)<br>(v16, <span class="hljs-number">13</span>)<br>(v16 + <span class="hljs-number">13</span>, <span class="hljs-number">13</span>)<br>(v16, <span class="hljs-number">13</span>)<br>(&amp;flt_23780[<span class="hljs-number">106</span>], <span class="hljs-number">24</span>)<br></code></pre></td></tr></table></figure></li>
+<li>v18、v16这样的需要二次处理才能得到具体地址，比较麻烦，但因为数量较少，可以不理睬。&amp;unk_23530这样的格式最好，直接可以解析地址。而&amp;flt_23780[xxx] 这样的就要做额外转化。</li>
+<li>我们观察到一个现象，从上面的(float *a1, int a2)之后，参数1就变成了更难解析的&amp;flt_xxx，而早一些的时机是好解析的unk_xxx，(float *a1, int a2)是什么？从格式可以看出，这其实是函数定义的地方——ABB0解密函数。</li>
+<li>而在对它进行F5后，IDA根据对它的参数情况，进一步识别和优化了入参——参数1为float数组。理顺这个逻辑后，我们有些哭笑不得，IDA的优化反而增加了我们的工作量。</li>
+<li>所以我把SO重新打开，运行新的IDA脚本——跳过对sub_ABB0 F5<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> re<br><span class="hljs-keyword">import</span> ida_idaapi<br><span class="hljs-keyword">import</span> idaapi<br><span class="hljs-keyword">import</span> idautils<br><br>def <span class="hljs-title function_">f5All</span>():<br>    sub_ABB0_call = []<br>    # 正则匹配伪C中的魔数初始化，以及哈希运算部分<br>    <span class="hljs-keyword">for</span> func <span class="hljs-keyword">in</span> idautils.<span class="hljs-title class_">Functions</span>(<span class="hljs-number">0</span>, ida_idaapi.<span class="hljs-property">BADADDR</span>):<br>        <span class="hljs-keyword">if</span> func != <span class="hljs-number">0x41C4</span>:<br>            <span class="hljs-attr">try</span>:<br>                decompilerStr = <span class="hljs-title function_">str</span>(idaapi.<span class="hljs-title function_">decompile</span>(func))<br>                decompileList = re.<span class="hljs-title function_">findall</span>(<span class="hljs-string">&quot;sub_41C4(\(.*?\))&quot;</span>, decompilerStr)<br>                <span class="hljs-keyword">if</span> <span class="hljs-attr">decompileList</span>:<br>                    sub_ABB0_call += decompileList<br>            <span class="hljs-attr">except</span>:<br>                pass<br>            <br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-attr">sub_ABB0_call</span>:<br>        <span class="hljs-title function_">print</span>(i)<br>        <br><span class="hljs-title function_">f5All</span>()<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="call"><a href="#call" class="headerlink" title="call"></a>call</h2><h3 id="IDAPython-call"><a href="#IDAPython-call" class="headerlink" title="IDAPython call"></a>IDAPython call</h3><p>idaapi.get_arg_addrs</p>
+<ul>
+<li>浅色的函数，指IDA没有办法获取到准确的参数信息，参数列表是它自己推断出来的，而深色的相反，参数确凿。</li>
+<li>对于浅色的函数，因为参数的这种模糊不确定性，使用idaapi.get_arg_addrs 并不会生效。好在我们可以手动明确参数。</li>
+<li>在函数上右键，Set item type，因为IDA对sub_41C4函数的参数识别并没什么问题，我们不用做什么修改，只需要对IDA的参数猜测予以确认即可，所以跳出的窗口上直接OK。sub_41C4就变成深色的函数了。</li>
+</ul>
+<p>ida_bytes.del_items</p>
+<ul>
+<li>即加密内存块或buffer，被识别为字符串（尽管不可读），对于我们此处需求而言，也属于IDA的反向优化，我们希望它呈现地址——unk_xxxxx 的形式。在上一节中，只要不F5解密函数，就不会进行优化，这个例子并非如此。所以我手动将data段的内容全部undefine打散。</li>
+<li>segment 查看data 节区的范围，del_items api 可以删除掉这些定义，它的参数1和3为开始地址和结束地址，参数2默认填0，函数作用为取消整个范围内IDA所做的定义。<blockquote>
+<p>ida_bytes.del_items(0xbf000,0, 0xd1e98)</p>
+</blockquote>
+</li>
+<li>我IDA中重新打开SO，以及set item type 确认解密函数参数。完整代码逻辑如下</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">import</span> ida_bytes<br><span class="hljs-attribute">import</span> idaapi<br><span class="hljs-attribute">import</span> idautils<br><span class="hljs-attribute">import</span> idc<br><br><br><span class="hljs-attribute">def</span> decryptStr(trueAddress, key, length):<br>    <span class="hljs-attribute">buffer</span> = <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-attribute">encryptBytes</span> = ida_bytes.get_bytes(trueAddress, length)<br>    <span class="hljs-attribute">for</span> j in range(length):<br>        <span class="hljs-attribute">decrypt_c</span> = encryptBytes[j] ^ key<br>        <span class="hljs-attribute">ida_bytes</span>.patch_byte(trueAddress + j, decrypt_c)<br>        <span class="hljs-attribute">key</span> = (key + <span class="hljs-number">3</span>) &amp; <span class="hljs-number">0</span>xff<br>        <span class="hljs-attribute">buffer</span> += chr(decrypt_c)<br><br><br>    <span class="hljs-attribute">print</span>(buffer)<br><br><br><span class="hljs-comment"># 打散data中的识别，</span><br><span class="hljs-attribute">ida_bytes</span>.del_items(<span class="hljs-number">0</span>xbf000,<span class="hljs-number">0</span>, <span class="hljs-number">0</span>xd1e98)<br><br><br><span class="hljs-attribute">encryptlist</span> =<span class="hljs-meta"> []</span><br><span class="hljs-comment"># 遍历解密函数的交叉引用</span><br><span class="hljs-attribute">xrefs</span> = idautils.CodeRefsTo(<span class="hljs-number">0</span>x41c4, <span class="hljs-number">0</span>)<br><span class="hljs-attribute">for</span> i in list(xrefs):<br>    <span class="hljs-attribute">args</span> = idaapi.get_arg_addrs(i)<br>    <span class="hljs-attribute">if</span> args:<br>        <span class="hljs-attribute">length</span> = idc.get_operand_value(args[<span class="hljs-number">3</span>], <span class="hljs-number">1</span>)<br>        <span class="hljs-attribute">key</span> = idc.get_operand_value(args[<span class="hljs-number">2</span>], <span class="hljs-number">1</span>)<br>        <span class="hljs-attribute">encryptLine</span> = args[<span class="hljs-number">1</span>]<br>        <span class="hljs-attribute">bufferLine</span> = args[<span class="hljs-number">0</span>]<br>        <span class="hljs-comment"># 解析encrypt地址</span><br>        <span class="hljs-attribute">try</span>:<br>            <span class="hljs-attribute">encryptAddr</span> = idc.GetDisasm(encryptLine).split(<span class="hljs-string">&quot;;&quot;</span>)[<span class="hljs-number">1</span>].split(<span class="hljs-string">&quot;_&quot;</span>)[<span class="hljs-number">1</span>]<br>            <span class="hljs-attribute">if</span> encryptAddr not in encryptlist:<br>                <span class="hljs-attribute">encryptlist</span>.append(encryptAddr)<br>                <span class="hljs-attribute">bufferAddr</span> = <span class="hljs-number">0</span><br>                <span class="hljs-comment"># 如果buffer也直接赋值，那么同理取一下，两步走，解析buffer地址，第一步是找到存储buffer的寄存器，它是第二个参数</span><br>                <span class="hljs-attribute">try</span>:<br>                    <span class="hljs-attribute">bufferAddr</span> = idc.GetDisasm(encryptLine).split(<span class="hljs-string">&quot;;&quot;</span>)[<span class="hljs-number">1</span>].split(<span class="hljs-string">&quot;_&quot;</span>)[<span class="hljs-number">1</span>]<br>                <span class="hljs-attribute">except</span>:<br>                    <span class="hljs-attribute">bufferReg</span> = idc.get_operand_value(bufferLine, <span class="hljs-number">1</span>)<br>                    <span class="hljs-comment"># 往前递推最多20条，寻找bufferReg的赋值处，解析它的unk_xxxxx</span><br>                    <span class="hljs-attribute">count</span> = <span class="hljs-number">20</span><br>                    <span class="hljs-attribute">while</span> count:<br>                        <span class="hljs-attribute">count</span> = count - <span class="hljs-number">1</span><br>                        <span class="hljs-attribute">bufferLine</span> = idc.prev_head(bufferLine)<br>                        <span class="hljs-attribute">oneLine</span> = idc.GetDisasm(bufferLine)<br>                        <span class="hljs-comment"># 赋值处即第一个操作数是目标寄存器</span><br>                        <span class="hljs-attribute">lineReg</span> = idc.get_operand_value(bufferLine, <span class="hljs-number">0</span>)<br>                        <span class="hljs-attribute">if</span> bufferReg == lineReg:<br>                            <span class="hljs-attribute">bufferAddr</span> = idc.GetDisasm(bufferLine).split(<span class="hljs-string">&quot;;&quot;</span>)[<span class="hljs-number">1</span>].split(<span class="hljs-string">&quot;_&quot;</span>)[<span class="hljs-number">1</span>]<br>                            <span class="hljs-attribute">break</span><br>                <span class="hljs-attribute">decryptStr</span>(int(encryptAddr, <span class="hljs-number">16</span>), key, length)<br>        <span class="hljs-attribute">except</span>:<br>            <span class="hljs-attribute">pass</span><br></code></pre></td></tr></table></figure>
+<h3 id="frida-call"><a href="#frida-call" class="headerlink" title="frida call"></a>frida call</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">call_abb1</span>(<span class="hljs-params">offset, length</span>) &#123;<br>    <span class="hljs-comment">// 函数在内存中的地址</span><br>    <span class="hljs-keyword">var</span> baseSOFile = <span class="hljs-title class_">Module</span>.<span class="hljs-title function_">findBaseAddress</span>(so_name);<br>    <span class="hljs-comment">// console.log(&quot;base: &quot; + baseSOFile)</span><br>    <span class="hljs-keyword">var</span> real_addr = baseSOFile.<span class="hljs-title function_">add</span>(<span class="hljs-number">0xabb1</span>)<br>    <span class="hljs-keyword">var</span> md5_function = <span class="hljs-keyword">new</span> <span class="hljs-title class_">NativeFunction</span>(real_addr, <span class="hljs-string">&quot;pointer&quot;</span>, [<span class="hljs-string">&quot;pointer&quot;</span>, <span class="hljs-string">&quot;int&quot;</span>])<br>    <span class="hljs-keyword">var</span> input = baseSOFile.<span class="hljs-title function_">add</span>(offset);<br>    <span class="hljs-keyword">var</span> res = <span class="hljs-title function_">md5_function</span>(input, length);<br>    <span class="hljs-comment">// console.log(hexdump(res,&#123;length:length&#125;));</span><br>    <span class="hljs-comment">// console.log(res.readCString())</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(offset + <span class="hljs-string">&quot;###&quot;</span> + res.<span class="hljs-title function_">readUtf8String</span>())<br>&#125;<br><br><span class="hljs-comment">// call_abb1(0x26514, 21)</span><br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">var</span> res = [<span class="hljs-string">&#x27;235B0, 14&#x27;</span>, <span class="hljs-string">&#x27;235F0, 41&#x27;</span>, <span class="hljs-string">&#x27;24050, 2&#x27;</span>, <span class="hljs-string">&#x27;23FB0, 38&#x27;</span>, <span class="hljs-string">&#x27;244A0, 9&#x27;</span>, <span class="hljs-string">&#x27;244D0, 47&#x27;</span>, <span class="hljs-string">&#x27;24590, 10&#x27;</span>, <span class="hljs-string">&#x27;245C0, 47&#x27;</span>, <span class="hljs-string">&#x27;247DC, 4&#x27;</span>, <span class="hljs-string">&#x27;24680, 46&#x27;</span>, <span class="hljs-string">&#x27;24740, 5&#x27;</span>, <span class="hljs-string">&#x27;24760, 27&#x27;</span>, <span class="hljs-string">&#x27;24FE0, 4&#x27;</span>, <span class="hljs-string">&#x27;24CA0, 21&#x27;</span>, <span class="hljs-string">&#x27;24FF0, 4&#x27;</span>, <span class="hljs-string">&#x27;24D00, 22&#x27;</span>, <span class="hljs-string">&#x27;24D60, 9&#x27;</span>, <span class="hljs-string">&#x27;24D90, 47&#x27;</span>, <span class="hljs-string">&#x27;24E50, 10&#x27;</span>, <span class="hljs-string">&#x27;24E80, 47&#x27;</span>, <span class="hljs-string">&#x27;24F40, 5&#x27;</span>, <span class="hljs-string">&#x27;24F60, 27&#x27;</span>, <span class="hljs-string">&#x27;255E0, 5&#x27;</span>, <span class="hljs-string">&#x27;25600, 21&#x27;</span>, <span class="hljs-string">&#x27;25660, 5&#x27;</span>, <span class="hljs-string">&#x27;25680, 22&#x27;</span>, <span class="hljs-string">&#x27;256E0, 9&#x27;</span>, <span class="hljs-string">&#x27;25710, 47&#x27;</span>, <span class="hljs-string">&#x27;257D0, 10&#x27;</span>, <span class="hljs-string">&#x27;25800, 47&#x27;</span>, <span class="hljs-string">&#x27;258C0, 5&#x27;</span>, <span class="hljs-string">&#x27;258E0, 27&#x27;</span>, <span class="hljs-string">&#x27;23020, 7&#x27;</span>, <span class="hljs-string">&#x27;231BC, 20&#x27;</span>, <span class="hljs-string">&#x27;2320C, 21&#x27;</span>, <span class="hljs-string">&#x27;23020, 7&#x27;</span>, <span class="hljs-string">&#x27;231BC, 20&#x27;</span>, <span class="hljs-string">&#x27;233E8, 35&#x27;</span>, <span class="hljs-string">&#x27;23060, 10&#x27;</span>, <span class="hljs-string">&#x27;23260, 22&#x27;</span>, <span class="hljs-string">&#x27;2316C, 20&#x27;</span>, <span class="hljs-string">&#x27;23314, 25&#x27;</span>, <span class="hljs-string">&#x27;230EC, 15&#x27;</span>, <span class="hljs-string">&#x27;23128, 17&#x27;</span>, <span class="hljs-string">&#x27;23378, 28&#x27;</span>, <span class="hljs-string">&#x27;23088, 12&#x27;</span>, <span class="hljs-string">&#x27;232B8, 23&#x27;</span>, <span class="hljs-string">&#x27;230B8, 13&#x27;</span>, <span class="hljs-string">&#x27;23010, 4&#x27;</span>, <span class="hljs-string">&#x27;2316C, 20&#x27;</span>, <span class="hljs-string">&#x27;23314, 25&#x27;</span>, <span class="hljs-string">&#x27;2303C, 9&#x27;</span>, <span class="hljs-string">&#x27;23474, 37&#x27;</span>, <span class="hljs-string">&#x27;23510, 8&#x27;</span>, <span class="hljs-string">&#x27;23568, 4&#x27;</span>, <span class="hljs-string">&#x27;23578, 4&#x27;</span>, <span class="hljs-string">&#x27;2353C, 3&#x27;</span>, <span class="hljs-string">&#x27;23588, 9&#x27;</span>, <span class="hljs-string">&#x27;23548, 4&#x27;</span>, <span class="hljs-string">&#x27;23558, 4&#x27;</span>, <span class="hljs-string">&#x27;23530, 3&#x27;</span>, <span class="hljs-string">&#x27;23694, 16&#x27;</span>, <span class="hljs-string">&#x27;23928, 24&#x27;</span>, <span class="hljs-string">&#x27;23A4C, 26&#x27;</span>, <span class="hljs-string">&#x27;239E8, 25&#x27;</span>, <span class="hljs-string">&#x27;237D0, 21&#x27;</span>, <span class="hljs-string">&#x27;23780, 20&#x27;</span>, <span class="hljs-string">&#x27;23824, 21&#x27;</span>, <span class="hljs-string">&#x27;23878, 22&#x27;</span>, <span class="hljs-string">&#x27;238D0, 22&#x27;</span>, <span class="hljs-string">&#x27;23988, 24&#x27;</span>, <span class="hljs-string">&#x27;23AB4, 56&#x27;</span>, <span class="hljs-string">&#x27;23BA0, 13&#x27;</span>, <span class="hljs-string">&#x27;23BD4, 20&#x27;</span>, <span class="hljs-string">&#x27;23C24, 33&#x27;</span>, <span class="hljs-string">&#x27;23CA8, 33&#x27;</span>, <span class="hljs-string">&#x27;23F74, 15&#x27;</span>, <span class="hljs-string">&#x27;23F50, 9&#x27;</span>, <span class="hljs-string">&#x27;24058, 29&#x27;</span>, <span class="hljs-string">&#x27;24144, 15&#x27;</span>, <span class="hljs-string">&#x27;24180, 16&#x27;</span>, <span class="hljs-string">&#x27;243D0, 45&#x27;</span>, <span class="hljs-string">&#x27;24204, 23&#x27;</span>, <span class="hljs-string">&#x27;24110, 13&#x27;</span>, <span class="hljs-string">&#x27;240D0, 4&#x27;</span>, <span class="hljs-string">&#x27;24318, 23&#x27;</span>, <span class="hljs-string">&#x27;240E0, 12&#x27;</span>, <span class="hljs-string">&#x27;24374, 23&#x27;</span>, <span class="hljs-string">&#x27;24260, 23&#x27;</span>, <span class="hljs-string">&#x27;241C0, 17&#x27;</span>, <span class="hljs-string">&#x27;242BC, 23&#x27;</span>, <span class="hljs-string">&#x27;24A94, 22&#x27;</span>, <span class="hljs-string">&#x27;248E8, 10&#x27;</span>, <span class="hljs-string">&#x27;2480C, 4&#x27;</span>, <span class="hljs-string">&#x27;247FC, 4&#x27;</span>, <span class="hljs-string">&#x27;24A3C, 22&#x27;</span>, <span class="hljs-string">&#x27;248C0, 10&#x27;</span>, <span class="hljs-string">&#x27;24844, 5&#x27;</span>, <span class="hljs-string">&#x27;24830, 5&#x27;</span>, <span class="hljs-string">&#x27;24C1C, 30&#x27;</span>, <span class="hljs-string">&#x27;24AEC, 24&#x27;</span>, <span class="hljs-string">&#x27;247EC, 4&#x27;</span>, <span class="hljs-string">&#x27;249E4, 22&#x27;</span>, <span class="hljs-string">&#x27;24858, 6&#x27;</span>, <span class="hljs-string">&#x27;247D0, 3&#x27;</span>, <span class="hljs-string">&#x27;24898, 10&#x27;</span>, <span class="hljs-string">&#x27;2498C, 22&#x27;</span>, <span class="hljs-string">&#x27;24870, 10&#x27;</span>, <span class="hljs-string">&#x27;2481C, 5&#x27;</span>, <span class="hljs-string">&#x27;24BB4, 26&#x27;</span>, <span class="hljs-string">&#x27;24910, 15&#x27;</span>, <span class="hljs-string">&#x27;24B4C, 26&#x27;</span>, <span class="hljs-string">&#x27;2494C, 16&#x27;</span>, <span class="hljs-string">&#x27;25280, 22&#x27;</span>, <span class="hljs-string">&#x27;250D4, 10&#x27;</span>, <span class="hljs-string">&#x27;25010, 4&#x27;</span>, <span class="hljs-string">&#x27;25000, 4&#x27;</span>, <span class="hljs-string">&#x27;25228, 22&#x27;</span>, <span class="hljs-string">&#x27;250AC, 10&#x27;</span>, <span class="hljs-string">&#x27;25048, 5&#x27;</span>, <span class="hljs-string">&#x27;25034, 5&#x27;</span>, <span class="hljs-string">&#x27;251D0, 22&#x27;</span>, <span class="hljs-string">&#x27;25084, 10&#x27;</span>, <span class="hljs-string">&#x27;25020, 5&#x27;</span>, <span class="hljs-string">&#x27;25578, 26&#x27;</span>, <span class="hljs-string">&#x27;250FC, 15&#x27;</span>, <span class="hljs-string">&#x27;25510, 26&#x27;</span>, <span class="hljs-string">&#x27;252D8, 23&#x27;</span>, <span class="hljs-string">&#x27;25334, 23&#x27;</span>, <span class="hljs-string">&#x27;24FD8, 2&#x27;</span>, <span class="hljs-string">&#x27;254B0, 24&#x27;</span>, <span class="hljs-string">&#x27;25178, 22&#x27;</span>, <span class="hljs-string">&#x27;2505C, 10&#x27;</span>, <span class="hljs-string">&#x27;25390, 24&#x27;</span>, <span class="hljs-string">&#x27;253F0, 24&#x27;</span>, <span class="hljs-string">&#x27;24FD0, 2&#x27;</span>, <span class="hljs-string">&#x27;25450, 24&#x27;</span>, <span class="hljs-string">&#x27;25138, 16&#x27;</span>, <span class="hljs-string">&#x27;25BE0, 22&#x27;</span>, <span class="hljs-string">&#x27;25A34, 10&#x27;</span>, <span class="hljs-string">&#x27;25970, 4&#x27;</span>, <span class="hljs-string">&#x27;25960, 4&#x27;</span>, <span class="hljs-string">&#x27;25B88, 22&#x27;</span>, <span class="hljs-string">&#x27;25A0C, 10&#x27;</span>, <span class="hljs-string">&#x27;259A8, 5&#x27;</span>, <span class="hljs-string">&#x27;25994, 5&#x27;</span>, <span class="hljs-string">&#x27;25B30, 22&#x27;</span>, <span class="hljs-string">&#x27;259E4, 10&#x27;</span>, <span class="hljs-string">&#x27;25980, 5&#x27;</span>, <span class="hljs-string">&#x27;25ED8, 26&#x27;</span>, <span class="hljs-string">&#x27;25A5C, 15&#x27;</span>, <span class="hljs-string">&#x27;25E70, 26&#x27;</span>, <span class="hljs-string">&#x27;25C38, 23&#x27;</span>, <span class="hljs-string">&#x27;25C94, 23&#x27;</span>, <span class="hljs-string">&#x27;25958, 2&#x27;</span>, <span class="hljs-string">&#x27;25E10, 24&#x27;</span>, <span class="hljs-string">&#x27;25AD8, 22&#x27;</span>, <span class="hljs-string">&#x27;259BC, 10&#x27;</span>, <span class="hljs-string">&#x27;25CF0, 24&#x27;</span>, <span class="hljs-string">&#x27;25D50, 24&#x27;</span>, <span class="hljs-string">&#x27;25950, 2&#x27;</span>, <span class="hljs-string">&#x27;25DB0, 24&#x27;</span>, <span class="hljs-string">&#x27;25A98, 16&#x27;</span>, <span class="hljs-string">&#x27;25F40, 6&#x27;</span>, <span class="hljs-string">&#x27;26088, 43&#x27;</span>, <span class="hljs-string">&#x27;25F58, 22&#x27;</span>, <span class="hljs-string">&#x27;26140, 30&#x27;</span>, <span class="hljs-string">&#x27;266C0, 26&#x27;</span>, <span class="hljs-string">&#x27;26418, 21&#x27;</span>, <span class="hljs-string">&#x27;26728, 30&#x27;</span>, <span class="hljs-string">&#x27;262B4, 17&#x27;</span>, <span class="hljs-string">&#x27;26950, 40&#x27;</span>, <span class="hljs-string">&#x27;268B8, 38&#x27;</span>, <span class="hljs-string">&#x27;261C8, 4&#x27;</span>, <span class="hljs-string">&#x27;26664, 23&#x27;</span>, <span class="hljs-string">&#x27;2646C, 21&#x27;</span>, <span class="hljs-string">&#x27;26274, 16&#x27;</span>, <span class="hljs-string">&#x27;26828, 36&#x27;</span>, <span class="hljs-string">&#x27;267A0, 34&#x27;</span>, <span class="hljs-string">&#x27;261D8, 5&#x27;</span>, <span class="hljs-string">&#x27;261C0, 1&#x27;</span>, <span class="hljs-string">&#x27;264C0, 21&#x27;</span>, <span class="hljs-string">&#x27;261C4, 1&#x27;</span>, <span class="hljs-string">&#x27;26514, 21&#x27;</span>, <span class="hljs-string">&#x27;26244, 12&#x27;</span>, <span class="hljs-string">&#x27;262F8, 18&#x27;</span>, <span class="hljs-string">&#x27;26568, 21&#x27;</span>, <span class="hljs-string">&#x27;261EC, 7&#x27;</span>, <span class="hljs-string">&#x27;26340, 18&#x27;</span>, <span class="hljs-string">&#x27;265BC, 21&#x27;</span>, <span class="hljs-string">&#x27;26208, 7&#x27;</span>, <span class="hljs-string">&#x27;26388, 18&#x27;</span>, <span class="hljs-string">&#x27;26B08, 18&#x27;</span>, <span class="hljs-string">&#x27;26AC8, 16&#x27;</span>, <span class="hljs-string">&#x27;26B50, 19&#x27;</span>, <span class="hljs-string">&#x27;26A5C, 6&#x27;</span>, <span class="hljs-string">&#x27;26B9C, 21&#x27;</span>, <span class="hljs-string">&#x27;26AA4, 9&#x27;</span>, <span class="hljs-string">&#x27;26C44, 38&#x27;</span>, <span class="hljs-string">&#x27;26A74, 6&#x27;</span>, <span class="hljs-string">&#x27;26BF0, 21&#x27;</span>, <span class="hljs-string">&#x27;26A8C, 6&#x27;</span>, <span class="hljs-string">&#x27;26A18, 3&#x27;</span>, <span class="hljs-string">&#x27;26A24, 3&#x27;</span>, <span class="hljs-string">&#x27;269F0, 2&#x27;</span>, <span class="hljs-string">&#x27;269F8, 2&#x27;</span>, <span class="hljs-string">&#x27;26A00, 2&#x27;</span>, <span class="hljs-string">&#x27;26A30, 3&#x27;</span>, <span class="hljs-string">&#x27;26A08, 2&#x27;</span>, <span class="hljs-string">&#x27;26A10, 2&#x27;</span>, <span class="hljs-string">&#x27;26A3C, 4&#x27;</span>, <span class="hljs-string">&#x27;26A4C, 4&#x27;</span>, <span class="hljs-string">&#x27;26D40, 16&#x27;</span>, <span class="hljs-string">&#x27;26CE0, 5&#x27;</span>, <span class="hljs-string">&#x27;26CF4, 8&#x27;</span>, <span class="hljs-string">&#x27;26E10, 22&#x27;</span>, <span class="hljs-string">&#x27;26E70, 20&#x27;</span>];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; res.<span class="hljs-property">length</span>; i++) &#123;<br>        <span class="hljs-keyword">var</span> addr = res[i].<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;, &quot;</span>)[<span class="hljs-number">0</span>]<br>        <span class="hljs-keyword">var</span> length = res[i].<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;, &quot;</span>)[<span class="hljs-number">1</span>]<br>        <span class="hljs-title function_">call_abb1</span>(<span class="hljs-built_in">parseInt</span>(addr, <span class="hljs-number">16</span>), <span class="hljs-built_in">parseInt</span>(length))<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="分析密文解密后位置回填"><a href="#分析密文解密后位置回填" class="headerlink" title="分析密文解密后位置回填"></a>分析密文解密后位置回填</h2><ul>
+<li>分析发现bss节区中有一片地方，专门放解密后字符串的指针。frida验证下看看<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">hookbss</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-keyword">var</span> base_addr = <span class="hljs-title class_">Module</span>.<span class="hljs-title function_">findBaseAddress</span>(<span class="hljs-string">&quot;libmetasec_ml.so&quot;</span>);<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;text:&quot;</span>+base_addr.<span class="hljs-title function_">add</span>(<span class="hljs-number">0x9fcac</span>).<span class="hljs-title function_">readPointer</span>().<span class="hljs-title function_">readCString</span>())<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>IDAPython匹配bss段所有变量的位置<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> ida_name<br><br># ida segment 查看bss段范围<br># .<span class="hljs-property">bss</span>  0009FAF0    000A65E1<br>nameList = []<br><span class="hljs-keyword">for</span> addr <span class="hljs-keyword">in</span> <span class="hljs-title function_">range</span>(<span class="hljs-number">0x9FAF0</span>, <span class="hljs-number">0xA65E1</span>):<br>    # 查看当前地址是否有名字<br>    name = ida_name.<span class="hljs-title function_">get_name</span>(addr)<br>    # 是否以dword_开头<br>    <span class="hljs-keyword">if</span> name.<span class="hljs-title function_">startswith</span>(<span class="hljs-string">&#x27;dword_&#x27;</span>):<br>        nameList.<span class="hljs-title function_">append</span>(<span class="hljs-title function_">int</span>(name.<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;dword_&quot;</span>)[<span class="hljs-number">1</span>],<span class="hljs-number">16</span>))<br><span class="hljs-title function_">print</span>(nameList)<br>hook：数组放到frida代码中，查看对应内存<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">hookbss</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-keyword">const</span> addrList = [<span class="hljs-number">654064</span>, <span class="hljs-number">654068</span>, <span class="hljs-number">654136</span>, <span class="hljs-number">654140</span>, <span class="hljs-number">654144</span>, <span class="hljs-number">654160</span>, <span class="hljs-number">654164</span>, <span class="hljs-number">654168</span>, <span class="hljs-number">654172</span>, <span class="hljs-number">681436</span>]<br>    <span class="hljs-keyword">var</span> base_addr = <span class="hljs-title class_">Module</span>.<span class="hljs-title function_">findBaseAddress</span>(<span class="hljs-string">&quot;libmetasec_ml.so&quot;</span>);<br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i <span class="hljs-keyword">in</span> addrList)&#123;<br>        <span class="hljs-keyword">try</span>&#123;<br>            <span class="hljs-keyword">var</span> text = base_addr.<span class="hljs-title function_">add</span>(addrList[i]).<span class="hljs-title function_">readPointer</span>().<span class="hljs-title function_">readCString</span>();<br>            <span class="hljs-keyword">if</span>(text != <span class="hljs-literal">null</span>)&#123;<br>                <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(addrList[i]+<span class="hljs-string">&quot;: &quot;</span>+text)<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">catch</span>(e) &#123; &#125;<br>        <span class="hljs-keyword">finally</span>&#123;&#125;<br>    &#125;&#125;<br><span class="hljs-title function_">hookbss</span>();<br>回填：以注释形式回填到ida中<br><span class="hljs-keyword">import</span> idc<br>recordList = <span class="hljs-string">&quot;&quot;</span><span class="hljs-string">&quot;</span><br><span class="hljs-string">654136: %s-%s-%s</span><br><span class="hljs-string">654140: android</span><br><span class="hljs-string">654160: bd</span><br><span class="hljs-string">##### 省略</span><br><span class="hljs-string">&quot;</span><span class="hljs-string">&quot;&quot;</span><br>records = recordList.<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;\n&quot;</span>)<br><span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> <span class="hljs-attr">records</span>:<br>    <span class="hljs-keyword">if</span> <span class="hljs-attr">record</span>:<br>        address = record.<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;:&quot;</span>)[<span class="hljs-number">0</span>]<br>        address = <span class="hljs-title function_">int</span>(address)<br>        text = <span class="hljs-string">&quot;&quot;</span>.<span class="hljs-title function_">join</span>(record.<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;:&quot;</span>)[<span class="hljs-number">1</span>:])<br>        # 设置注释<br>        <span class="hljs-title function_">print</span>(text)<br>        idc.<span class="hljs-title function_">set_cmt</span>(address, text, <span class="hljs-number">1</span>)<br><br></code></pre></td></tr></table></figure></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/09/逆向/安卓逆向/8. 逆向方法论/4. SO层/代码混淆/ollvm/字符串混淆/call回填/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/05/09/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/8.%20%E9%80%86%E5%90%91%E6%96%B9%E6%B3%95%E8%AE%BA/4.%20SO%E5%B1%82/%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86/ollvm/%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%B7%B7%E6%B7%86/hook%E5%9B%9E%E5%A1%AB/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

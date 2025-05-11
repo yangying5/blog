@@ -227,15 +227,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/blog/2017/03/26/linux/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" target="_self">
-          基础知识
+        <a href="/blog/2025/05/06/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/6.%20dump%E5%86%85%E5%AD%98+%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/5.%20MemDumper%20&amp;%20unidbg/" target="_self">
+          
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/blog/2017/03/26/linux/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/06/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/6.%20dump%E5%86%85%E5%AD%98+%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/5.%20MemDumper%20&amp;%20unidbg/" target="_self">
         <div>
-          linux入门知识汇总
+          参考：  https://www.yuque.com/docs/share/b439808e-fb6b-446c-ac86-a61020eceab2 https://github.com/kp7742/MemDumper  dump 根据手机是arm还是 arm64，所以选择 memdumper文件 push 到测试环境上。 打开样例正常执行，仅 dump 目标 SO 所处的内存范围1234567
         </div>
       </a>
 
@@ -243,40 +243,309 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2017-03-26 00:00" pubdate>
-              2017-03-26
+            <time datetime="2025-05-06 20:48" pubdate>
+              2025-05-06
             </time>
           </div>
         
         
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
         
-  <a href="/blog/categories/linux/" class="category-chain-item">linux</a>
-  
-  
+      </div>
+    </article>
+  </div>
 
-      </span>
+  <div class="row mx-auto index-card">
     
-  
-</span>
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/06/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/6.%20dump%E5%86%85%E5%AD%98+%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/4.%20%E6%8E%A5%E5%85%A5unidbg/" target="_self">
+          
+        </a>
+      </h2>
 
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/06/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/6.%20dump%E5%86%85%E5%AD%98+%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/4.%20%E6%8E%A5%E5%85%A5unidbg/" target="_self">
+        <div>
+          接入流程1. 设置寄存器注意 如果目标so方法涉及系统so，需要获取系统so的值，并写入 如何获取  在运行前设置断点，在执行到目标位置 register read xn获取  不设置断点方式：expression void** $tpidr_el0; __asm__(&quot;mrs %0, tpidr_el0&quot; : &quot;=r&quot; ($tpidr_el0)); $tp
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-06 18:14" pubdate>
+              2025-05-06
+            </time>
           </div>
         
         
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/blog/tags/linux/">#linux</a>
-            
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/06/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/6.%20dump%E5%86%85%E5%AD%98+%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/3.%20lldb%20dump%E4%B8%8A%E4%B8%8B%E6%96%87/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/06/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/6.%20dump%E5%86%85%E5%AD%98+%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/3.%20lldb%20dump%E4%B8%8A%E4%B8%8B%E6%96%87/" target="_self">
+        <div>
+          参考：https://blog.seeflower.dev/archives/169/  流程命令总结1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950adb install --abi armeabi-v7a E:\Desktop\ks.apksusource e
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-06 18:06" pubdate>
+              2025-05-06
+            </time>
           </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/06/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/6.%20dump%E5%86%85%E5%AD%98+%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/2.%20lldb%20dump%E8%84%9A%E6%9C%AC/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/06/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/6.%20dump%E5%86%85%E5%AD%98+%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/2.%20lldb%20dump%E8%84%9A%E6%9C%AC/" target="_self">
+        <div>
+          参考：  https://blog.seeflower.dev/archives/166/#  https://gist.github.com/SeeFlowerX/24c4507f9ed9ba09a5d1a3dd86aeef26  附件  png &gt; py    1234567891011121314151617181920212223242526272829303132333435363
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-06 18:02" pubdate>
+              2025-05-06
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/06/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/6.%20dump%E5%86%85%E5%AD%98+%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1.%20%E7%8E%AF%E5%A2%83/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/06/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/6.%20dump%E5%86%85%E5%AD%98+%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1.%20%E7%8E%AF%E5%A2%83/" target="_self">
+        <div>
+          参考：https://blog.seeflower.dev/archives/165/  环境安装 注意：  手机最好选择64位  root手机   下载最新版termux：https://github.com/termux/termux-app/releases/tag/v0.118.0 下载安装后打开termux，先安装几个必要的软件（普通用户下安装）12345pkg install nan
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-06 17:57" pubdate>
+              2025-05-06
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/uname%E5%AE%9E%E7%8E%B0/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/uname%E5%AE%9E%E7%8E%B0/" target="_self">
+        <div>
+          参考：https://www.yuque.com/lilac-2hqvv/xdwlsg/mh6re2qy0xg421ho#  作用它会返回一系列关于主机系统的标识信息 函数原型 int uname(struct utsname *buf);   具体看看 utsname 结构体，Android 对它的注释相当详细和好懂。123456789101112131415/** The informati
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 20:44" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/sysinfo%E5%AE%9E%E7%8E%B0/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/sysinfo%E5%AE%9E%E7%8E%B0/" target="_self">
+        <div>
+          参考：https://www.yuque.com/lilac-2hqvv/xdwlsg/mh6re2qy0xg421ho#  作用 它用于获取各种各样的系统统计信息  函数原型 int sysinfo(struct sysinfo *info);  返回信息填充在 sysinfo 结构体里 12345678910111213141516struct sysinfo &#123;  long up
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 20:43" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/stat64%E8%A7%A3%E6%9E%90/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/stat64%E8%A7%A3%E6%9E%90/" target="_self">
+        <div>
+          参考：https://www.yuque.com/lilac-2hqvv/xdwlsg/ip3v0qlg5b8y620f  介绍 stat64是用于获取文件属性的系统调用  原型：  int stat(const char *path, struct stat *buf);   每个文件都有各种各样的属性，包括下面这些。 123456789101112131415struct stat &#12
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 20:43" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/gettimeofday%E5%AE%9E%E7%8E%B0/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/gettimeofday%E5%AE%9E%E7%8E%B0/" target="_self">
+        <div>
+          参考: https://www.yuque.com/lilac-2hqvv/xdwlsg/wsww25qka54fbnur  gettimeofday在 Unidbg 里的实现略有问题。  函数原型 它的调用原型如下，返回 0 代表调用成功，返回 -1 表示失败。  int gettimeofday(struct timeval *tv, struct timezone *tz);   tv 是一
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 20:43" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/getrusage%E5%AE%9E%E7%8E%B0/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/getrusage%E5%AE%9E%E7%8E%B0/" target="_self">
+        <div>
+          参考：https://www.yuque.com/lilac-2hqvv/xdwlsg/mh6re2qy0xg421ho# getrusage： NR&#x3D;77 | NR&#x3D;165  getrusage介绍 这个系统调用用于查看进程资源消耗情况，具体介绍如下。 每个进程都会消耗诸如内存和 CPU 时间之类的系统资源，getrusage 系统调用允许一个进程监控自己及其子进程已经用掉
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-05 20:43" pubdate>
+              2025-05-05
+            </time>
+          </div>
+        
+        
         
       </div>
     </article>
@@ -286,7 +555,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/blog/page/2/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/blog/">1</a><a class="page-number" href="/blog/page/2/#board">2</a><span class="page-number current">3</span>
+      <a class="extend prev" rel="prev" href="/blog/page/2/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/blog/">1</a><a class="page-number" href="/blog/page/2/#board">2</a><span class="page-number current">3</span><a class="page-number" href="/blog/page/4/#board">4</a><a class="page-number" href="/blog/page/5/#board">5</a><span class="space">&hellip;</span><a class="page-number" href="/blog/page/12/#board">12</a><a class="extend next" rel="next" href="/blog/page/4/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

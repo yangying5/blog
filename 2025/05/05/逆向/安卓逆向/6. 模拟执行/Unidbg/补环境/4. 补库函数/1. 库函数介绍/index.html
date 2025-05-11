@@ -1,0 +1,645 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="参考: https:&#x2F;&#x2F;www.yuque.com&#x2F;lilac-2hqvv&#x2F;xdwlsg&#x2F;usg3an5x2x78ug0b  在 Android Native 代码开发中，会使用各种各样的库函数，一部分依赖于底层系统调用，一部分依赖于系统环境，一部分依赖于其他库，另一部分什么都不依赖，只是单纯的工具函数， 第一类：依赖于系统调用 以 openat 为代表的各类文件访问函数都依赖于系统调用1234">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/1.%20%E5%BA%93%E5%87%BD%E6%95%B0%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="参考: https:&#x2F;&#x2F;www.yuque.com&#x2F;lilac-2hqvv&#x2F;xdwlsg&#x2F;usg3an5x2x78ug0b  在 Android Native 代码开发中，会使用各种各样的库函数，一部分依赖于底层系统调用，一部分依赖于系统环境，一部分依赖于其他库，另一部分什么都不依赖，只是单纯的工具函数， 第一类：依赖于系统调用 以 openat 为代表的各类文件访问函数都依赖于系统调用1234">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-05T10:50:50.513Z">
+<meta property="article:modified_time" content="2025-05-05T10:54:38.286Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-05 18:50" pubdate>
+          2025年5月5日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          574 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li>参考: <a target="_blank" rel="noopener" href="https://www.yuque.com/lilac-2hqvv/xdwlsg/usg3an5x2x78ug0b">https://www.yuque.com/lilac-2hqvv/xdwlsg/usg3an5x2x78ug0b</a></li>
+</ul>
+<p>在 Android Native 代码开发中，会使用各种各样的库函数，一部分依赖于底层系统调用，一部分依赖于系统环境，一部分依赖于其他库，另一部分什么都不依赖，只是单纯的工具函数，</p>
+<h1 id="第一类：依赖于系统调用"><a href="#第一类：依赖于系统调用" class="headerlink" title="第一类：依赖于系统调用"></a>第一类：依赖于系统调用</h1><ul>
+<li>以 <code>openat</code> 为代表的各类文件访问函数都依赖于系统调用<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript">.<span class="hljs-property">text</span>:0004147C                 <span class="hljs-variable constant_">EXPORT</span> __openat<br>.<span class="hljs-property">text</span>:0004147C __openat                                ; <span class="hljs-variable constant_">CODE</span> <span class="hljs-attr">XREF</span>: j___openat+<span class="hljs-number">8</span>↑j<br>.<span class="hljs-property">text</span>:0004147C                                         ; <span class="hljs-variable constant_">DATA</span> <span class="hljs-attr">XREF</span>: <span class="hljs-attr">LOAD</span>:<span class="hljs-number">00002670</span>↑o ...<br>.<span class="hljs-property">text</span>:0004147C                 <span class="hljs-variable constant_">MOV</span>             <span class="hljs-variable constant_">R12</span>, <span class="hljs-variable constant_">R7</span><br>.<span class="hljs-property">text</span>:<span class="hljs-number">00041480</span>                 <span class="hljs-variable constant_">LDR</span>             <span class="hljs-variable constant_">R7</span>, =<span class="hljs-number">0x142</span><br>.<span class="hljs-property">text</span>:<span class="hljs-number">00041484</span>                 <span class="hljs-variable constant_">SVC</span>             <span class="hljs-number">0</span><br>.<span class="hljs-property">text</span>:<span class="hljs-number">00041488</span>                 <span class="hljs-variable constant_">MOV</span>             <span class="hljs-variable constant_">R7</span>, <span class="hljs-variable constant_">R12</span><br>.<span class="hljs-property">text</span>:0004148C                 <span class="hljs-variable constant_">CMN</span>             <span class="hljs-variable constant_">R0</span>, #<span class="hljs-number">0x1000</span><br>.<span class="hljs-property">text</span>:<span class="hljs-number">00041490</span>                 <span class="hljs-variable constant_">BXLS</span>            <span class="hljs-variable constant_">LR</span><br>.<span class="hljs-property">text</span>:<span class="hljs-number">00041494</span>                 <span class="hljs-variable constant_">RSB</span>             <span class="hljs-variable constant_">R0</span>, <span class="hljs-variable constant_">R0</span>, #<span class="hljs-number">0</span><br>.<span class="hljs-property">text</span>:<span class="hljs-number">00041498</span>                 B               j___set_errno_internal<br></code></pre></td></tr></table></figure></li>
+<li>对于这一类库函数，它的执行逻辑是程序调用库函数，库函数调用操作系统的系统调用，进而实现具体功能。</li>
+</ul>
+<h1 id="第二类：依赖于系统环境和上下文"><a href="#第二类：依赖于系统环境和上下文" class="headerlink" title="第二类：依赖于系统环境和上下文"></a>第二类：依赖于系统环境和上下文</h1><ul>
+<li><p>比如在 Android Native 上高频使用的<code>__system_property_get</code>函数，用于获取系统属性，函数原型如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/* Look up a system property by name, copying its value and a</span><br><span class="hljs-comment">** \0 terminator to the provided pointer.  The total bytes</span><br><span class="hljs-comment">** copied will be no greater than PROP_VALUE_MAX.  Returns</span><br><span class="hljs-comment">** the string length of the value.  A property that is not</span><br><span class="hljs-comment">** defined is identical to a property with a length 0 value.</span><br><span class="hljs-comment">*/</span><br>int <span class="hljs-title function_">__system_property_get</span>(<span class="hljs-keyword">const</span> char *name, char *value);<br></code></pre></td></tr></table></figure></li>
+<li><p>基本用例如下。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;jni.<span class="hljs-property">h</span>&gt;<br>#include &lt;string&gt;<br>#include &lt;sys/system_properties.<span class="hljs-property">h</span>&gt;<br>#include &lt;stdexcept&gt;<br>#include &lt;android/log.<span class="hljs-property">h</span>&gt;<br><br><br>#define <span class="hljs-title function_">LOGE</span>(...) <span class="hljs-title function_">__android_log_print</span>(<span class="hljs-variable constant_">ANDROID_LOG_ERROR</span>,<span class="hljs-string">&quot;Lilac&quot;</span> ,__VA_ARGS__)<br>extern <span class="hljs-string">&quot;C&quot;</span> <span class="hljs-variable constant_">JNIEXPORT</span> jstring <span class="hljs-variable constant_">JNICALL</span><br><span class="hljs-title class_">Java</span>_com_example_getprop_MainActivity_stringFromJNI(<br>        <span class="hljs-title class_">JNIEnv</span>* env,<br>        jobject <span class="hljs-comment">/* this */</span>) &#123;<br>    char temp[<span class="hljs-number">128</span>] = <span class="hljs-string">&quot;0&quot;</span>;<br>    <span class="hljs-title function_">__system_property_get</span>(<span class="hljs-string">&quot;ro.build.id&quot;</span>, temp);<br>    <span class="hljs-title function_">LOGE</span>(<span class="hljs-string">&quot;id:%s&quot;</span>,temp);<br>    <span class="hljs-title function_">__system_property_get</span>(<span class="hljs-string">&quot;ro.build.version.sdk&quot;</span>, temp);<br>    <span class="hljs-title function_">LOGE</span>(<span class="hljs-string">&quot;version:%s&quot;</span>,temp);<br>    <span class="hljs-title function_">__system_property_get</span>(<span class="hljs-string">&quot;ro.board.platform&quot;</span>, temp);<br>    <span class="hljs-title function_">LOGE</span>(<span class="hljs-string">&quot;platform:%s&quot;</span>,temp);<br>    <span class="hljs-title function_">__system_property_get</span>(<span class="hljs-string">&quot;ro.product.cpu.abi&quot;</span>, temp);<br>    <span class="hljs-title function_">LOGE</span>(<span class="hljs-string">&quot;abi2:%s&quot;</span>,temp);<br>    <span class="hljs-title function_">__system_property_get</span>(<span class="hljs-string">&quot;ro.product.model&quot;</span>, temp);<br>    <span class="hljs-title function_">LOGE</span>(<span class="hljs-string">&quot;model:%s&quot;</span>,temp);<br>    <span class="hljs-title function_">__system_property_get</span>(<span class="hljs-string">&quot;ro.product.brand&quot;</span>, temp);<br>    <span class="hljs-title function_">LOGE</span>(<span class="hljs-string">&quot;brand:%s&quot;</span>,temp);<br>    <span class="hljs-title function_">__system_property_get</span>(<span class="hljs-string">&quot;ro.product.manufacturer&quot;</span>, temp);<br>    <span class="hljs-title function_">LOGE</span>(<span class="hljs-string">&quot;manufacturer:%s&quot;</span>,temp);<br>    <span class="hljs-keyword">return</span> env-&gt;<span class="hljs-title class_">NewStringUTF</span>(<span class="hljs-string">&quot;&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><p>这些属性信息的获取，在很大程度上来自于对<code>/dev/__properties__</code>文件的解析。</p>
+</li>
+<li><p><strong>比如getenv函数，它用于获取环境变量</strong>，具体而言，<strong>它搜索name所指向的环境字符串</strong>，并返回相关的值给字符串。</p>
+<blockquote>
+<p>char *getenv(const char *name)</p>
+</blockquote>
+</li>
+<li><p>它和setenv用于对进程的环境变量做读和取的操作，虽然底层不依赖于系统调用，但它同样十分重要。</p>
+</li>
+</ul>
+<h1 id="第三类，依赖其他库函数或底层处理"><a href="#第三类，依赖其他库函数或底层处理" class="headerlink" title="第三类，依赖其他库函数或底层处理"></a>第三类，依赖其他库函数或底层处理</h1><ul>
+<li>比如 libandroid.so 这个库，就依赖于相当多的其他的模块，提供了大量 Android 资源的访问功能。</li>
+<li>第四类不必说，几乎不用考虑它，没什么事。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/05/逆向/安卓逆向/6. 模拟执行/Unidbg/补环境/4. 补库函数/1. 库函数介绍/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/2.%20%E5%A4%84%E7%90%86%E5%BA%93%E5%87%BD%E6%95%B0%E6%80%9D%E8%B7%AF/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/2.%20%E8%A1%A5%E6%96%87%E4%BB%B6/%E8%A1%A5%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,659 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="发现文件原理 Unidbg 如何实现对所有文件操作的拦截接管，不管是库函数发起的文件操作还是系统调用 这是因为，当使用库函数时，功能的实现也仍然依赖于系统调用，fopen 是对同名系统调用fopen的简单封装，open 是对同名系统调用 open 的简单封装。 所以只需要拦截底层系统调用，就可以接管所有对文件的访问。而对系统调用的拦截，是Unicorn等CPU引擎所提供的基本功能。  打印访问路径">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/2.%20%E8%A1%A5%E6%96%87%E4%BB%B6/%E8%A1%A5%E6%96%87%E4%BB%B6%E6%B5%81%E7%A8%8B/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="发现文件原理 Unidbg 如何实现对所有文件操作的拦截接管，不管是库函数发起的文件操作还是系统调用 这是因为，当使用库函数时，功能的实现也仍然依赖于系统调用，fopen 是对同名系统调用fopen的简单封装，open 是对同名系统调用 open 的简单封装。 所以只需要拦截底层系统调用，就可以接管所有对文件的访问。而对系统调用的拦截，是Unicorn等CPU引擎所提供的基本功能。  打印访问路径">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-05T07:18:15.459Z">
+<meta property="article:modified_time" content="2025-05-05T10:05:50.419Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-05 15:18" pubdate>
+          2025年5月5日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          998 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="发现文件"><a href="#发现文件" class="headerlink" title="发现文件"></a>发现文件</h1><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ul>
+<li>Unidbg 如何实现对所有文件操作的拦截接管，不管是库函数发起的文件操作还是系统调用</li>
+<li>这是因为，<code>当使用库函数时，功能的实现也仍然依赖于系统调用，fopen 是对同名系统调用fopen的简单封装，open 是对同名系统调用 open 的简单封装</code>。</li>
+<li>所以只需要拦截底层系统调用，就可以接管所有对文件的访问。而<code>对系统调用的拦截，是Unicorn等CPU引擎所提供的基本功能</code>。</li>
+</ul>
+<h3 id="打印访问路径"><a href="#打印访问路径" class="headerlink" title="打印访问路径"></a>打印访问路径</h3><ul>
+<li>当样本做文件访问时，Unidbg重定向到本机的某个位置，进入 <code>unidbg-api/src/main/java/com/github/unidbg/file/BaseFileSystem.java</code><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">public</span> BaseFileSystem(Emulator&lt;T&gt; emulator, File rootDir) &#123;<br>    <span class="hljs-keyword">this</span>.emulator = emulator;<br>    <span class="hljs-keyword">this</span>.rootDir = rootDir;<br>    <span class="hljs-comment">// 补一行打印</span><br>    System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">&quot;virtual path: &quot;</span> + rootDir);<br>    <span class="hljs-keyword">try</span> &#123;<br>        initialize(<span class="hljs-keyword">this</span>.rootDir);<br>    &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>        <span class="hljs-keyword">throw</span> new IllegalStateException(<span class="hljs-string">&quot;initialize file system failed&quot;</span>, e);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="代码流程"><a href="#代码流程" class="headerlink" title="代码流程"></a>代码流程</h3><ul>
+<li>我们的类实现文件重定向的接口即可，只需要三个步骤，如下</li>
+</ul>
+<ol>
+<li>implements IOResolver</li>
+<li>emulator.getSyscallHandler().addIOResolver(this);</li>
+<li>重载resolve方法</li>
+</ol>
+<ul>
+<li>代码<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs scala">public <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NBridge</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractJni</span> <span class="hljs-title">implements</span> <span class="hljs-title">IOResolver</span> </span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AndroidEmulator</span> emulator;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">VM</span> vm;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Module</span> module;<br><br><br>    <span class="hljs-type">NBridge</span>()&#123;<br>    	.....    	<br>          <span class="hljs-comment">// 2</span><br>        emulator.getSyscallHandler().addIOResolver(<span class="hljs-keyword">this</span>);<br>        vm.setVerbose(<span class="hljs-literal">true</span>); <span class="hljs-comment">// 设置是否打印Jni调用细节</span><br>        ...<br>			      <br>    &#125;<br><br>    <span class="hljs-comment">// 3</span><br>    <span class="hljs-meta">@Override</span><br>    public <span class="hljs-type">FileResult</span> resolve(<span class="hljs-type">Emulator</span> emulator, <span class="hljs-type">String</span> pathname, int oflags) &#123;<br>        <span class="hljs-type">System</span>.out.println(<span class="hljs-string">&quot;open file path: &quot;</span> + pathname);  <span class="hljs-comment">// 可以查看app打开了系统的哪些路径</span><br>        <span class="hljs-keyword">if</span> ((<span class="hljs-string">&quot;/data/app/com.sankuai.meituan-TEfTAIBttUmUzuVbwRK1DQ==/base.apk&quot;</span>).equals(pathname)) &#123;<br>            <span class="hljs-comment">// 填入想要重定位的文件</span><br>            <span class="hljs-comment">// 最外层是FileResult.&lt;AndroidFileIO&gt;success，我们可以返回任意 AndroidFileIO 类型的文件，这么说有点怪，这是因为 Unidbg 是一个 Android/IOS 双端的 Native 模拟器，除了 AndroidFileIO 还有对应于 IOS 的 DarwinFileIO，所以有此限制。</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-type">FileResult</span>.success(<span class="hljs-keyword">new</span> <span class="hljs-type">SimpleFileIO</span>(oflags, <span class="hljs-keyword">new</span> <span class="hljs-type">File</span>(<span class="hljs-string">&quot;unidbg-android\\src\\test\\java\\com\\lession10\\mt.apk&quot;</span>), pathname));<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="补文件"><a href="#补文件" class="headerlink" title="补文件"></a>补文件</h1><ul>
+<li>正常情况下：只需要用 <code>SimpleFileIO</code>、<code>ByteArrayFileIO</code> 、<code>DirectoryFileIO</code>  以及虚拟文件系统去处理它</li>
+<li><code>选型思路</code>：<ul>
+<li>文件夹建议用虚拟文件系统，文件建议用实现IOResolve</li>
+<li>简单样本可以直接addIOResolver(this)，复杂样本，可以逻辑分离，把 IOResolver  从主类中摘出去，如addIOResolver(new BiliIOResolver())</li>
+</ul>
+</li>
+<li><code>执行顺序</code>：先依次进入用户自定义的 IOResolver A 和 B&lt;_**需要注意后添加IOResolver的优先级更高**_&gt;，然后是 AndroidResolver，最后是虚拟文件系统</li>
+</ul>
+<h3 id="SimpleFileIO-补充文件"><a href="#SimpleFileIO-补充文件" class="headerlink" title="SimpleFileIO: 补充文件"></a>SimpleFileIO: 补充文件</h3><figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs wren">@<span class="hljs-title class_">Override</span><br><span class="hljs-variable">public</span> <span class="hljs-title class_">FileResult</span> <span class="hljs-title function_">resolve</span>(<span class="hljs-params">Emulator</span> <span class="hljs-params">emulator</span>, <span class="hljs-params">String</span> <span class="hljs-params">pathname</span>, <span class="hljs-params">int</span> <span class="hljs-params">oflags</span>) &#123;<br>    <span class="hljs-title class_">System</span>.<span class="hljs-property">out</span>.<span class="hljs-property">println</span>(<span class="hljs-string">&quot;open file path: &quot;</span> <span class="hljs-operator">+</span> <span class="hljs-variable">pathname</span>);  <span class="hljs-comment">// 可以查看app打开了系统的哪些路径</span><br>    <span class="hljs-keyword">if</span> ((<span class="hljs-string">&quot;/data/app/com.sankuai.meituan-TEfTAIBttUmUzuVbwRK1DQ==/base.apk&quot;</span>).<span class="hljs-property">equals</span>(<span class="hljs-variable">pathname</span>)) &#123;<br>        <span class="hljs-comment">// 填入想要重定位的文件</span><br>        <span class="hljs-comment">// 最外层是FileResult.&lt;AndroidFileIO&gt;success，我们可以返回任意 AndroidFileIO 类型的文件，这么说有点怪，这是因为 Unidbg 是一个 Android/IOS 双端的 Native 模拟器，除了 AndroidFileIO 还有对应于 IOS 的 DarwinFileIO，所以有此限制。</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">FileResult</span>.<span class="hljs-property">success</span>(<span class="hljs-variable">new</span> <span class="hljs-title class_">SimpleFile</span>IO(<span class="hljs-variable">oflags</span>, <span class="hljs-variable">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;unidbg-android<span class="hljs-char escape_">\\</span>src<span class="hljs-char escape_">\\</span>test<span class="hljs-char escape_">\\</span>java<span class="hljs-char escape_">\\</span>com<span class="hljs-char escape_">\\</span>lession10<span class="hljs-char escape_">\\</span>mt.apk&quot;</span>), <span class="hljs-variable">pathname</span>));<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="ByteArrayFileIO-补充内容"><a href="#ByteArrayFileIO-补充内容" class="headerlink" title="ByteArrayFileIO: 补充内容"></a>ByteArrayFileIO: 补充内容</h3><ul>
+<li>有人可能会问，如果我不想传入文件，能不能只传入”字符串“，当然可以，从SimpleFileIO换成ByteArrayFileIO即可。<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-title class_">FileResult</span> <span class="hljs-title function_">resolve</span>(<span class="hljs-params"><span class="hljs-title class_">Emulator</span> emulator, <span class="hljs-title class_">String</span> pathname, int oflags</span>) &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;/data/data/com.roysue.readsp/shared_prefs/two.xml&quot;</span>.<span class="hljs-title function_">equals</span>(pathname)) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">FileResult</span>.<span class="hljs-title function_">success</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayFileIO</span>(oflags, pathname, <span class="hljs-string">&quot;mytest&quot;</span>.<span class="hljs-title function_">getBytes</span>()));<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="DirectoryFileIO-样本访问目录"><a href="#DirectoryFileIO-样本访问目录" class="headerlink" title="DirectoryFileIO: 样本访问目录"></a>DirectoryFileIO: 样本访问目录</h3><ul>
+<li>但对于文件夹访问而言，使用虚拟文件系统是更好的选择<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-keyword">case</span> <span class="hljs-string">&quot;/data/data/com.sankuai.meituan&quot;</span>:&#123;<br>    <span class="hljs-keyword">return</span> FileResult.&lt;AndroidFileIO&gt;success(<span class="hljs-keyword">new</span> DirectoryFileIO(oflags, pathname, <span class="hljs-keyword">new</span> <span class="hljs-keyword">File</span>(<span class="hljs-string">&quot;unidbg-android/src/test/resources/meituan/data&quot;</span>)));<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="rootfs：虚拟文件系统"><a href="#rootfs：虚拟文件系统" class="headerlink" title="rootfs：虚拟文件系统"></a>rootfs：虚拟文件系统</h3><ul>
+<li>使用Unidbg的Rootfs虚拟文件系统</li>
+<li>使用虚拟文件系统，将样本中对Android文件系统的访问重定位到本机电脑的某个目录或者叫文件夹，按照Android系统中的层级关系将文件放到这个文件夹里就可以了。</li>
+<li>初始化模拟器中的 setRootDir(new File(“target&#x2F;rootfs”)) 是指定当前项目的文件系统位置，运行测试你会在Unidbg目录中看到它。假设要访问tmp&#x2F;a.txt，你可以将电脑里的a.txt 通过adb pull出来，然后放在target&#x2F;rootfs&#x2F;tmp下，Unidbg即可完成该样本中对该文件的访问。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">emulator = <span class="hljs-title class_">AndroidEmulatorBuilder</span>.<span class="hljs-title function_">for32Bit</span>().<span class="hljs-title function_">setRootDir</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;target/rootfs&quot;</span>)).<span class="hljs-title function_">build</span>();<br></code></pre></td></tr></table></figure></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/05/逆向/安卓逆向/6. 模拟执行/Unidbg/补环境/2. 补文件/补文件流程/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/2.%20%E8%A1%A5%E6%96%87%E4%BB%B6/%E8%A1%A5so%E6%96%87%E4%BB%B6/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/3.%20%E8%A1%A5JNI/%E8%A1%A5JNI%E5%9C%BA%E6%99%AF%E6%B1%87%E6%80%BB/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

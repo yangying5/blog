@@ -1,0 +1,690 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="确定初始化流程总结 参考： https:&#x2F;&#x2F;www.yuque.com&#x2F;docs&#x2F;share&#x2F;1dce3d7c-fb24-4fe4-a3a7-2f9406ab517c#CCGfS https:&#x2F;&#x2F;www.yuque.com&#x2F;lilac-2hqvv&#x2F;lfssh8&#x2F;gxwflx1eyiherqvo    1. 获取参数和返回值 Hook 得到目标函数基本的执行参数和返回值情况  2. 验证 在附加进程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/05/04/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/1.%20%E5%88%9D%E5%A7%8B%E5%8C%96/2.%20%E7%A1%AE%E5%AE%9A%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="确定初始化流程总结 参考： https:&#x2F;&#x2F;www.yuque.com&#x2F;docs&#x2F;share&#x2F;1dce3d7c-fb24-4fe4-a3a7-2f9406ab517c#CCGfS https:&#x2F;&#x2F;www.yuque.com&#x2F;lilac-2hqvv&#x2F;lfssh8&#x2F;gxwflx1eyiherqvo    1. 获取参数和返回值 Hook 得到目标函数基本的执行参数和返回值情况  2. 验证 在附加进程">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-04T12:44:01.308Z">
+<meta property="article:modified_time" content="2025-05-04T13:15:17.233Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-04 20:44" pubdate>
+          2025年5月4日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="确定初始化流程总结"><a href="#确定初始化流程总结" class="headerlink" title="确定初始化流程总结"></a>确定初始化流程总结</h1><ul>
+<li>参考：<ul>
+<li><a target="_blank" rel="noopener" href="https://www.yuque.com/docs/share/1dce3d7c-fb24-4fe4-a3a7-2f9406ab517c#CCGfS">https://www.yuque.com/docs/share/1dce3d7c-fb24-4fe4-a3a7-2f9406ab517c#CCGfS</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.yuque.com/lilac-2hqvv/lfssh8/gxwflx1eyiherqvo">https://www.yuque.com/lilac-2hqvv/lfssh8/gxwflx1eyiherqvo</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="1-获取参数和返回值"><a href="#1-获取参数和返回值" class="headerlink" title="1. 获取参数和返回值"></a>1. 获取参数和返回值</h3><ul>
+<li>Hook 得到目标函数基本的执行参数和返回值情况</li>
+</ul>
+<h3 id="2-验证"><a href="#2-验证" class="headerlink" title="2. 验证"></a>2. 验证</h3><ul>
+<li>在附加进程的情况下 Frida Call ,验证返回结果是否无误，这步骤是为了确认 Call 代码是否正常无误</li>
+</ul>
+<h3 id="3-通过-Hook-判断目标函数是否有初始化函数-确定时机"><a href="#3-通过-Hook-判断目标函数是否有初始化函数-确定时机" class="headerlink" title="3. 通过 Hook 判断目标函数是否有初始化函数 &amp; 确定时机"></a>3. 通过 Hook 判断目标函数是否有初始化函数 &amp; 确定时机</h3><h4 id="判断目标函数是否有初始化函数"><a href="#判断目标函数是否有初始化函数" class="headerlink" title="判断目标函数是否有初始化函数"></a>判断目标函数是否有初始化函数</h4><ul>
+<li>如果一个函数<code>不存在初始化函数</code>，那么<code>在 SO 顺利装载到内存中并执行完 JNI_OnLoad 之后，它就应该能正常执行了</code>，在之前分析 <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38851536/article/details/118000259?spm=1001.2014.3001.5501">美团</a> 的一篇文章里我们写了下面这样的 Frida 代码。&lt;在 JNI_OnLoad 结束的时机发起 Frida Call ,确认是否正常无误，如果有问题，比如报错、返回空字符串等等说明有初始化函数&gt;<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-keyword">var</span> android_dlopen_ext = Module.findExportByName(<span class="hljs-literal">null</span>, <span class="hljs-string">&quot;android_dlopen_ext&quot;</span>);<br><span class="hljs-keyword">if</span> (android_dlopen_ext != <span class="hljs-literal">null</span>) &#123;<br>    Interceptor.attach(android_dlopen_ext, &#123;<br>        <span class="hljs-attr">onEnter</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">args</span>) &#123;<br>            this.hook = <span class="hljs-literal">false</span>;<br>            <span class="hljs-keyword">var</span> soName = args[<span class="hljs-number">0</span>].readCString();<br>            <span class="hljs-keyword">if</span> (soName.<span class="hljs-built_in">indexOf</span>(<span class="hljs-string">&quot;libmtguard.so&quot;</span>) !== <span class="hljs-number">-1</span>) &#123;<br>                this.hook = <span class="hljs-literal">true</span>;<br>            &#125;<br>        &#125;,<br>        <span class="hljs-attr">onLeave</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">retval</span>) &#123;<br>            <span class="hljs-keyword">if</span> (this.hook) &#123;<br>                <span class="hljs-keyword">var</span> jniOnload = Module.findExportByName(<span class="hljs-string">&quot;libmtguard.so&quot;</span>, <span class="hljs-string">&quot;JNI_OnLoad&quot;</span>);<br>                Interceptor.attach(jniOnload, &#123;<br>                    <span class="hljs-attr">onEnter</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">args</span>) &#123;<br>                        <span class="hljs-built_in">console</span>.<span class="hljs-built_in">log</span>(<span class="hljs-string">&quot;Enter Mtguard JNI OnLoad&quot;</span>);<br>                    &#125;,<br>                    <span class="hljs-attr">onLeave</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">retval</span>) &#123;<br>                        <span class="hljs-built_in">console</span>.<span class="hljs-built_in">log</span>(<span class="hljs-string">&quot;After Mtguard JNI OnLoad&quot;</span>);<br>                        call_mtgsig();<br>                    &#125;<br>                &#125;);<br>            &#125;<br>        &#125;<br>    &#125;);<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">call_mtgsig</span>(<span class="hljs-params"></span>) &#123;<br>    Java.perform(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">var</span> jinteger = Java.use(<span class="hljs-string">&quot;java.lang.Integer&quot;</span>)<br>        <span class="hljs-keyword">var</span> jstring = Java.use(<span class="hljs-string">&quot;java.lang.String&quot;</span>);<br>        <span class="hljs-keyword">var</span> NBridge = Java.use(<span class="hljs-string">&quot;com.meituan.android.common.mtguard.NBridge&quot;</span>)<br>        <span class="hljs-keyword">var</span> objArr = [jstring.$<span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;9b69f861-e054-4bc4-9daf-d36ae205ed3e&quot;</span>), jstring.$<span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;GET /aggroup/homepage/display __reqTraceID=5ca01019-fafc-4f92-a80e-82ce1389aab7&amp;abStrategy=d&amp;allowToTrack=1&amp;ci=1&amp;cityId=1&amp;clearTimeStamp=-1&amp;clientName=android&amp;clientType=android&amp;firstPageAbtest=old&amp;globalId=&amp;limitForYouXuan=25&amp;msid=96E3002678491E51616650388270&amp;offsetForYouXuan=0&amp;os_version=8.1.0&amp;phone_model=Nexus%205X&amp;scene=youxuanZhuanqu&amp;showStyle=1&amp;topic_session_id=4324505e-ccc6-4f7a-9943-d65223bbb9a7&amp;userid=-1&amp;utm_campaign=AgroupBgroupC0E0Ghomepage&amp;utm_content=96E3002678491E5&amp;utm_medium=android&amp;utm_source=wandoujia&amp;utm_term=1100090405&amp;uuid=00000000000005FB514BD2BA040ABADC24C8D31AD4F18A162330366877733119&amp;version_name=11.9.405&amp;wifi-cur=0&amp;wifi-mac=02%3A00%3A00%3A00%3A00%3A00%08&amp;wifi-name=%3Cunknown%20ssid%3E%08&amp;wifi-strength=-10%08&amp;withRegion=0&quot;</span>).getBytes(), jinteger.valueOf(<span class="hljs-number">2</span>)]<br>        <span class="hljs-keyword">var</span> result = NBridge.main(<span class="hljs-number">203</span>, objArr);<br>        <span class="hljs-built_in">console</span>.<span class="hljs-built_in">log</span>(<span class="hljs-string">&quot;result:&quot;</span>+result);<br>    &#125;)<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="确定时机"><a href="#确定时机" class="headerlink" title="确定时机"></a>确定时机</h4><ul>
+<li>JNI_OnLoad时机：如果一个函数<code>不存在初始化函数</code>，那么<code>在 SO 顺利装载到内存中并执行完 JNI_OnLoad 之后，它就应该能正常执行了</code>，在之前分析 <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38851536/article/details/118000259?spm=1001.2014.3001.5501">美团</a> 的一篇文章里我们写了下面这样的 Frida 代码。&lt;在 JNI_OnLoad 结束的时机发起 Frida Call ,确认是否正常无误，如果有问题，比如报错、返回空字符串等等说明有初始化函数&gt;</li>
+<li>init_array时机：更早。有时候也要关注init_array之类的更早时机，参考同一路径下笔记:<a target="_blank" rel="noopener" href="https://note.youdao.com/s/8tatZBf5">init_array初始化问题</a>。 当发现so执行结果不一致，需要考虑初始化问题，确定是否为init_array初始化问题。比如字符串混淆，一般在init_array做解密处理。eg: <a target="_blank" rel="noopener" href="https://bbs.pediy.com/thread-249071.htm">孤挺花 字符串混淆</a></li>
+</ul>
+<h4 id="经验"><a href="#经验" class="headerlink" title="经验"></a>经验</h4><ul>
+<li><p><strong>要在attach和spawn模式下都测试一遍， 尽量是测试机第一次安装app且第一次启动</strong></p>
+<ul>
+<li>call mtgsig 的参数来自于 Hook，在 attach 模式下函数返回符合预期的结果，但 spawn 模式下放在 JNI_Onload 刚执行完的时机去 call，结果如何？我们发现是 null，这说明它有初始化函数，对于其他样本也同理，如果 JNI_Onload 执行结束的时机不能正常 Call 出结果，那必然有初始化函数</li>
+</ul>
+</li>
+<li><p>问题：就是 Frida Spawn Hook 这些函数经常会出错，没法捕捉到最早的那些执行流。这个问题有两个简单解法</p>
+<ul>
+<li>使用 Frida Native Hook，即对目标函数所对应的 Native 实现做 Hook，稳定性比 JAVA Hook 好很多，但缺点也不是没有—— Native Hook 在 Hook 代码编写、参数和返回值打印等方面都更复杂一些些。 </li>
+<li>使用 Lsposed 或其他 JAVA Hook 框架，可以稳定准确不遗漏的 Hook 目标函数。r0ysue大佬对此出过一个很好的<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Lb4y1o7Y9/?spm_id_from=333.999.0.0">教学视频</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="4-确定初始化函数"><a href="#4-确定初始化函数" class="headerlink" title="4. 确定初始化函数"></a>4. 确定初始化函数</h3><ul>
+<li>在 JNI_OnLoad 结束的时机 Hook SO 中所有动静态绑定的 Java Native 函数，在其执行前或执行后调用目标函数，确认初始化函数; 一般初始化方法要么是动静态绑定函数，要么是自身依靠参数控制<blockquote>
+<p><code>一般而言，初始化函数都是 SO 中的导出函数，否则很难介入和影响 SO 的内部环境，形成”初始化“的效果</code>，但这并非绝对，也可以在任意 JAVA&#x2F;Native 方法中修改目标 SO 的内存，实现初始化，但这种情况非常少见，我们不做讨论，只关注于初始化函数是 SO 中导出函数这种常见情况。</p>
+<p>怎么确认初始化函数是哪一个？在那篇文章里，我们 Hook 目标 SO 的所有导出函数，然后在每个函数执行前（你也可以选择为执行后，并无差别）尝试调用我们的目标函数。</p>
+</blockquote>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">var</span> android_dlopen_ext = Module.findExportByName(<span class="hljs-literal">null</span>, <span class="hljs-string">&quot;android_dlopen_ext&quot;</span>);<br><span class="hljs-keyword">if</span> (android_dlopen_ext != <span class="hljs-literal">null</span>) &#123;<br>    Interceptor.attach(android_dlopen_ext, &#123;<br>        onEnter: function (args) &#123;<br>            <span class="hljs-keyword">this</span>.hook = <span class="hljs-literal">false</span>;<br>            <span class="hljs-keyword">var</span> soName = args[<span class="hljs-number">0</span>].readCString();<br>            <span class="hljs-keyword">if</span> (soName.indexOf(<span class="hljs-string">&quot;libmtguard.so&quot;</span>) !== -<span class="hljs-number">1</span>) &#123;<br>                <span class="hljs-keyword">this</span>.hook = <span class="hljs-literal">true</span>;<br>            &#125;<br>        &#125;,<br>        onLeave: function (retval) &#123;<br>            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.hook) &#123;<br>                <span class="hljs-keyword">var</span> jniOnload = Module.findExportByName(<span class="hljs-string">&quot;libmtguard.so&quot;</span>, <span class="hljs-string">&quot;JNI_OnLoad&quot;</span>);<br>                Interceptor.attach(jniOnload, &#123;<br>                    onEnter: function (args) &#123;<br>                        console.log(<span class="hljs-string">&quot;Enter Mtguard JNI OnLoad&quot;</span>);<br>                    &#125;,<br>                    onLeave: function (retval) &#123;<br>                        console.log(<span class="hljs-string">&quot;After Mtguard JNI OnLoad&quot;</span>);<br>                        hook_mtso();<br>                    &#125;<br>                &#125;);<br>            &#125;<br>        &#125;<br>    &#125;);<br>&#125;<br><br><br>function hook_mtso() &#123;<br>    Java.perform(function () &#123;<br>        Java.use(<span class="hljs-string">&quot;com.meituan.android.common.mtguard.NBridge&quot;</span>).main.implementation = function(arg1, arg2) &#123;<br>            console.log(<span class="hljs-string">&quot;call com/meituan/android/common/mtguard/NBridge, main(I[Ljava/lang/Object;)[Ljava/lang/Object;&quot;</span>);<br>            call_mtgsig();<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.main(arg1, arg2);<br>        &#125;<br><br>        Java.use(<span class="hljs-string">&quot;com.meituan.android.common.mtguard.NBridge<span class="hljs-variable">$SIUACollector</span>&quot;</span>).getHWProperty.implementation = function() &#123;<br>            console.log(<span class="hljs-string">&quot;com/meituan/android/common/mtguard/NBridge<span class="hljs-variable">$SIUACollector</span>, getHWProperty()Ljava/lang/String;&quot;</span>);<br>            call_mtgsig();<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.getHWProperty();<br>        &#125;<br><br>        Java.use(<span class="hljs-string">&quot;com.meituan.android.common.mtguard.NBridge<span class="hljs-variable">$SIUACollector</span>&quot;</span>).getEnvironmentInfo.implementation = function() &#123;<br>            console.log(<span class="hljs-string">&quot;com/meituan/android/common/mtguard/NBridge<span class="hljs-variable">$SIUACollector</span>, getEnvironmentInfo()Ljava/lang/String;&quot;</span>);<br>            call_mtgsig();<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.getEnvironmentInfo();<br>        &#125;<br><br>        Java.use(<span class="hljs-string">&quot;com.meituan.android.common.mtguard.NBridge<span class="hljs-variable">$SIUACollector</span>&quot;</span>).getEnvironmentInfoExtra.implementation = function() &#123;<br>            console.log(<span class="hljs-string">&quot;com/meituan/android/common/mtguard/NBridge<span class="hljs-variable">$SIUACollector</span>, getEnvironmentInfoExtra()Ljava/lang/String;&quot;</span>);<br>            call_mtgsig();<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.getEnvironmentInfoExtra();<br>        &#125;<br><br>        Java.use(<span class="hljs-string">&quot;com.meituan.android.common.mtguard.NBridge<span class="hljs-variable">$SIUACollector</span>&quot;</span>).getHWStatus.implementation = function() &#123;<br>            console.log(<span class="hljs-string">&quot;com/meituan/android/common/mtguard/NBridge<span class="hljs-variable">$SIUACollector</span>, getHWStatus()Ljava/lang/String;&quot;</span>);<br>            call_mtgsig();<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.getHWStatus();<br>        &#125;<br><br>        Java.use(<span class="hljs-string">&quot;com.meituan.android.common.mtguard.NBridge<span class="hljs-variable">$SIUACollector</span>&quot;</span>).getHWEquipmentInfo.implementation = function() &#123;<br>            console.log(<span class="hljs-string">&quot;com/meituan/android/common/mtguard/NBridge<span class="hljs-variable">$SIUACollector</span>, getHWEquipmentInfo()Ljava/lang/String;&quot;</span>);<br>            call_mtgsig();<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.getHWEquipmentInfo();<br>        &#125;<br><br>        Java.use(<span class="hljs-string">&quot;com.meituan.android.common.mtguard.NBridge<span class="hljs-variable">$SIUACollector</span>&quot;</span>).getUserAction.implementation = function() &#123;<br>            console.log(<span class="hljs-string">&quot;com/meituan/android/common/mtguard/NBridge<span class="hljs-variable">$SIUACollector</span>, getUserAction()Ljava/lang/String;&quot;</span>);<br>            call_mtgsig();<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.getUserAction();<br>        &#125;<br><br>        Java.use(<span class="hljs-string">&quot;com.meituan.android.common.mtguard.NBridge<span class="hljs-variable">$SIUACollector</span>&quot;</span>).getPlatformInfo.implementation = function() &#123;<br>            console.log(<span class="hljs-string">&quot;com/meituan/android/common/mtguard/NBridge<span class="hljs-variable">$SIUACollector</span>, getPlatformInfo()Ljava/lang/String;&quot;</span>);<br>            call_mtgsig();<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.getPlatformInfo();<br>        &#125;<br><br>        Java.use(<span class="hljs-string">&quot;com.meituan.android.common.mtguard.NBridge<span class="hljs-variable">$SIUACollector</span>&quot;</span>).getLocationInfo.implementation = function() &#123;<br>            console.log(<span class="hljs-string">&quot;com/meituan/android/common/mtguard/NBridge<span class="hljs-variable">$SIUACollector</span>, getLocationInfo()Ljava/lang/String;&quot;</span>);<br>            call_mtgsig();<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.getLocationInfo();<br>        &#125;<br><br>        Java.use(<span class="hljs-string">&quot;com.meituan.android.common.mtguard.NBridge<span class="hljs-variable">$SIUACollector</span>&quot;</span>).startCollection.implementation = function() &#123;<br>            console.log(<span class="hljs-string">&quot;com/meituan/android/common/mtguard/NBridge<span class="hljs-variable">$SIUACollector</span>, startCollection()Ljava/lang/String;&quot;</span>);<br>            call_mtgsig();<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.startCollection();<br>        &#125;<br><br>        Java.use(<span class="hljs-string">&quot;com.meituan.android.common.mtguard.NBridge<span class="hljs-variable">$SIUACollector</span>&quot;</span>).getExternalEquipmentInfo.implementation = function() &#123;<br>            console.log(<span class="hljs-string">&quot;com/meituan/android/common/mtguard/NBridge<span class="hljs-variable">$SIUACollector</span>, getExternalEquipmentInfo()Ljava/lang/String;&quot;</span>);<br>            call_mtgsig();<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.getExternalEquipmentInfo();<br>        &#125;<br>    &#125;)<br>&#125;<br><br><br>function call_mtgsig() &#123;<br>    Java.perform(function () &#123;<br>        <span class="hljs-keyword">var</span> jinteger = Java.use(<span class="hljs-string">&quot;java.lang.Integer&quot;</span>)<br>        <span class="hljs-keyword">var</span> jstring = Java.use(<span class="hljs-string">&quot;java.lang.String&quot;</span>);<br>        <span class="hljs-keyword">var</span> NBridge = Java.use(<span class="hljs-string">&quot;com.meituan.android.common.mtguard.NBridge&quot;</span>)<br>        <span class="hljs-keyword">var</span> objArr = [jstring.$new(<span class="hljs-string">&quot;9b69f861-e054-4bc4-9daf-d36ae205ed3e&quot;</span>), jstring.$new(<span class="hljs-string">&quot;GET /aggroup/homepage/display __reqTraceID=5ca01019-fafc-4f92-a80e-82ce1389aab7&amp;abStrategy=d&amp;allowToTrack=1&amp;ci=1&amp;cityId=1&amp;clearTimeStamp=-1&amp;clientName=android&amp;clientType=android&amp;firstPageAbtest=old&amp;globalId=&amp;limitForYouXuan=25&amp;msid=96E3002678491E51616650388270&amp;offsetForYouXuan=0&amp;os_version=8.1.0&amp;phone_model=Nexus%205X&amp;scene=youxuanZhuanqu&amp;showStyle=1&amp;topic_session_id=4324505e-ccc6-4f7a-9943-d65223bbb9a7&amp;userid=-1&amp;utm_campaign=AgroupBgroupC0E0Ghomepage&amp;utm_content=96E3002678491E5&amp;utm_medium=android&amp;utm_source=wandoujia&amp;utm_term=1100090405&amp;uuid=00000000000005FB514BD2BA040ABADC24C8D31AD4F18A162330366877733119&amp;version_name=11.9.405&amp;wifi-cur=0&amp;wifi-mac=02%3A00%3A00%3A00%3A00%3A00%08&amp;wifi-name=%3Cunknown%20ssid%3E%08&amp;wifi-strength=-10%08&amp;withRegion=0&quot;</span>).getBytes(), jinteger.valueOf(<span class="hljs-number">2</span>)]<br>        <span class="hljs-keyword">var</span> result = NBridge.main(<span class="hljs-number">203</span>, objArr);<br>        console.log(<span class="hljs-string">&quot;result:&quot;</span>+result);<br>    &#125;)<br>&#125;<br><br><span class="hljs-comment">// frida -U -f com.sankuai.meituan -l testOnJniOnLoad.js</span><br></code></pre></td></tr></table></figure></li>
+<li>在某一个时机以后，目标函数会返回预期的结果。这个样本相对简单，前面只有一个函数就跑出了结果。如果前面有数个函数，比如 A- B -C -D -A - E - C - targetResult，那么需要多次测试，并且结合主动调用，区分出初始化函数和无关函数，如果对这些函数的模拟执行并不复杂，那么直接当成初始化函数去做模拟执行也无伤大雅</li>
+</ul>
+<h1 id="经验之谈"><a href="#经验之谈" class="headerlink" title="经验之谈"></a>经验之谈</h1><ol>
+<li><p>对于简单样本而言，初始化函数往往是另一个函数，比如下面这样的经典代码</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-type">static</span> native <span class="hljs-type">String</span> <span class="hljs-title">nativeCall</span><span class="hljs-params">(<span class="hljs-type">String</span> arg1, <span class="hljs-type">int</span> arg2)</span></span>;<br><br><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-type">static</span> native <span class="hljs-type">void</span> <span class="hljs-title">nativeInit</span><span class="hljs-params">()</span></span>;<br><br><span class="hljs-type">static</span> &#123;<br>    System.<span class="hljs-built_in">loadLibrary</span>(<span class="hljs-string">&quot;native-lib&quot;</span>);<br>    <span class="hljs-built_in">nativeInit</span>();<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><p>但对于复杂样本而言，初始化函数往往是”自身“，就像下面这样。</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs processing"><span class="hljs-comment">// 函数有多个参数，或采用可变参数，其中某个入参充当”调用号“的作用，引导进入不同的分支和逻辑，其中一些充当初始化的作用，其他是不同的业务逻辑</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">native</span> <span class="hljs-built_in">Object</span> <span class="hljs-title function_">a</span>(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> i2, <span class="hljs-type">long</span> j, <span class="hljs-built_in">String</span> <span class="hljs-built_in">str</span>, <span class="hljs-built_in">Object</span> obj);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在观测初始化函数这一场景时，<code>Frida 灵活方便，但从实际体验和过往经验看，使用 Lsposed Hook 是更好的选择，Frida 常常会遗漏流程，甚至无响应</code>，目前尚不清楚这是样本做了对应的 Anti ，还是其他的问题，但总体来说，如果读者使用 Frida 分析目标样本，无法得到符合预期的观测结果时，建议换 Lsposed 测试</p>
+</li>
+<li><p>4.一旦熟悉 Frida Native Call + Hook 这一套，再加上些许经验，你可能会感觉分析初始化函数不再能难倒你，这时候要警惕陷入机械式的分析，<code>三把斧中静态分析 JAVA 代码同样不可或缺，比如小红书的shield的so</code></p>
+<blockquote>
+<p>它的初始化函数是initializeNative和initialize，但 intercept 的第二个参数是 initialize 返回的指针，静态分析上述代码可以轻松意识到这一点。但如果仅通过 Frida Call&#x2F;Hook 去分析，认为参数 2 是固定值，那么在 Unidbg 中模拟执行一定会出问题。只关注参数的具体值，而不静态分析其语义，这就是一种机械式的分析思路，要避免</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="补充：init-array时机-更早-流程"><a href="#补充：init-array时机-更早-流程" class="headerlink" title="补充：init_array时机[更早]流程"></a>补充：init_array时机[更早]流程</h1><ul>
+<li>有时候也要关注init_array之类的更早时机，参考同一路径下笔记:<a target="_blank" rel="noopener" href="https://note.youdao.com/s/8tatZBf5">init_array初始化问题</a></li>
+</ul>
+<h3 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h3><ol>
+<li>当发现so执行结果不一致，需要考虑初始化问题，确定是否为init_array初始化问题。比如字符串混淆，一般在init_array做解密处理。eg: <a target="_blank" rel="noopener" href="https://bbs.pediy.com/thread-249071.htm">孤挺花 字符串混淆</a></li>
+<li>通过以下unidbg和真机运行so结果对比，即可得知少运行了哪些so中方法</li>
+<li>得到方法地址后，通过如下方式，让unidbg运行指定方法</li>
+</ol>
+<h3 id="unidbg运行指定方法"><a href="#unidbg运行指定方法" class="headerlink" title="unidbg运行指定方法"></a>unidbg运行指定方法</h3><ul>
+<li>src&#x2F;main&#x2F;java&#x2F;com&#x2F;github&#x2F;unidbg&#x2F;linux&#x2F;AndroidElfLoader.java&lt;可通过debug运行断点在vm.loadLibrary方法处一步步跟&gt;<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;InitFunction&gt; initFunctionList = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();<br>.....<br><span class="hljs-keyword">if</span> (elfFile.file_type == ElfFile.FT_DYN) &#123; <span class="hljs-comment">// not executable</span><br>    <span class="hljs-built_in">int</span> <span class="hljs-keyword">init</span> = dynamicStructure.getInit();<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">init</span> != <span class="hljs-number">0</span>) &#123;<br>        initFunctionList.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> LinuxInitFunction(load_base, soName, <span class="hljs-keyword">init</span>));<br>    &#125;<br><br>    <span class="hljs-comment">// 添加init_array 需要执行so方法</span><br>    <span class="hljs-keyword">if</span>(soName.<span class="hljs-keyword">equals</span>(<span class="hljs-string">&quot;libshield.so&quot;</span>))&#123;<br>        <span class="hljs-built_in">int</span>[] addressList = <span class="hljs-keyword">new</span> <span class="hljs-built_in">int</span>[]&#123;<span class="hljs-number">0xa0e1</span>, <span class="hljs-number">0xc0d5</span>&#125;;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> address: addressList)&#123;<br>            initFunctionList.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> LinuxInitFunction(load_base, soName, address));<br>        &#125;<br>    &#125;<br> ...<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="undibg和frida对比，找到缺少运行哪个方法"><a href="#undibg和frida对比，找到缺少运行哪个方法" class="headerlink" title="undibg和frida对比，找到缺少运行哪个方法"></a>undibg和frida对比，找到缺少运行哪个方法</h3><h4 id="unidbg查看init-Array运行了哪些初始化函数"><a href="#unidbg查看init-Array运行了哪些初始化函数" class="headerlink" title="unidbg查看init_Array运行了哪些初始化函数"></a>unidbg查看init_Array运行了哪些初始化函数</h4><ul>
+<li>打开日志开关，运行后搜索”CallInitFunction”<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">..</span><span class="hljs-built_in">..</span><span class="hljs-built_in">..</span><span class="hljs-built_in">..</span><br>&gt;&gt;&gt; <span class="hljs-attribute">SP</span>=0xbffff730 <span class="hljs-attribute">LR</span>=RX@0x4018911b[libc.so]0x4811b <span class="hljs-attribute">PC</span>=RX@0x40182284[libc.so]0x41284 cpsr: <span class="hljs-attribute">N</span>=0, <span class="hljs-attribute">Z</span>=0, <span class="hljs-attribute">C</span>=0, <span class="hljs-attribute">V</span>=0, <span class="hljs-attribute">T</span>=0, <span class="hljs-attribute">mode</span>=0b10000<br>&gt;&gt;&gt; <span class="hljs-attribute">d0</span>=0x0(0.0) <span class="hljs-attribute">d1</span>=0x3933312032203120(3.696225012140986E-33) <span class="hljs-attribute">d2</span>=0x3220302034203736(3.0022298612178987E-67) <span class="hljs-attribute">d3</span>=0x3436333832203235(3.536676186840298E-57) <span class="hljs-attribute">d4</span>=0x2030203020302030(1.2027122125173386E-153) <span class="hljs-attribute">d5</span>=0x2030203020302030(1.2027122125173386E-153) <span class="hljs-attribute">d6</span>=0x2030203020302030(1.2027122125173386E-153) <span class="hljs-attribute">d7</span>=0x2030203020302030(1.2027122125173386E-153)<br>&gt;&gt;&gt; <span class="hljs-attribute">d8</span>=0x0(0.0) <span class="hljs-attribute">d9</span>=0x0(0.0) <span class="hljs-attribute">d10</span>=0x0(0.0) <span class="hljs-attribute">d11</span>=0x0(0.0) <span class="hljs-attribute">d12</span>=0x0(0.0) <span class="hljs-attribute">d13</span>=0x0(0.0) <span class="hljs-attribute">d14</span>=0x0(0.0) <span class="hljs-attribute">d15</span>=0x0(0.0)<br>[16:40:42 528] <span class="hljs-built_in">DEBUG</span> [com.github.unidbg.linux.ARM32SyscallHandler] (ARM32SyscallHandler:1813) - mprotect <span class="hljs-attribute">address</span>=0x400ac000, <span class="hljs-attribute">alignedAddress</span>=0x400ac000, <span class="hljs-attribute">offset</span>=0, <span class="hljs-attribute">length</span>=4096, <span class="hljs-attribute">alignedLength</span>=4096, <span class="hljs-attribute">prot</span>=0x1<br>[16:40:42 529] <span class="hljs-built_in">DEBUG</span> [com.github.unidbg.AbstractEmulator] (AbstractEmulator:400) - emulate RX@0x40009e91[libshield.so]0x9e91 finished <span class="hljs-attribute">sp</span>=unidbg@0xbffff758, <span class="hljs-attribute">offset</span>=2ms<br>[16:40:42 532] <span class="hljs-built_in">DEBUG</span> [com.github.unidbg.linux.AbsoluteInitFunction] (AbsoluteInitFunction:44) - [libshield.so]CallInitFunction: <span class="hljs-attribute">address</span>=0x0, <span class="hljs-attribute">ptr</span>=RW@0x4009482c[libshield.so]0x9482c, <span class="hljs-attribute">func</span>=<span class="hljs-literal">null</span><br>[libshield.so]CallInitFunction: RX@0x40009b71[libshield.so]0x9b71, <span class="hljs-attribute">offset</span>=1ms<br>[libshield.so]CallInitFunction: RX@0x40009bc9[libshield.so]0x9bc9, <span class="hljs-attribute">offset</span>=1ms<br>[libshield.so]CallInitFunction: RX@0x40009c21[libshield.so]0x9c21, <span class="hljs-attribute">offset</span>=1ms<br>[libshield.so]CallInitFunction: RX@0x40009c79[libshield.so]0x9c79, <span class="hljs-attribute">offset</span>=0ms<br>[libshield.so]CallInitFunction: RX@0x40009c89[libshield.so]0x9c89, <span class="hljs-attribute">offset</span>=1ms<br>[libshield.so]CallInitFunction: RX@0x40009cd9[libshield.so]0x9cd9, <span class="hljs-attribute">offset</span>=1ms<br>[libshield.so]CallInitFunction: RX@0x40009db5[libshield.so]0x9db5, <span class="hljs-attribute">offset</span>=0ms<br>[libshield.so]CallInitFunction: RX@0x40009e91[libshield.so]0x9e91, <span class="hljs-attribute">offset</span>=2ms<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="frida-查看真实样本init-array运行了哪些初始化函数"><a href="#frida-查看真实样本init-array运行了哪些初始化函数" class="headerlink" title="frida 查看真实样本init_array运行了哪些初始化函数"></a>frida 查看真实样本init_array运行了哪些初始化函数</h4><ul>
+<li>参考：<a target="_blank" rel="noopener" href="https://bbs.pediy.com/thread-267430.htm">https://bbs.pediy.com/thread-267430.htm</a><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">* frida -U -f com.xingin.xhs -l hookInitArray.js --no-pause</span><br><span class="hljs-comment">* */</span><br><br>function hook_constructor() &#123;<br><br>    <span class="hljs-keyword">if</span> (Process.pointerSize == <span class="hljs-number">4</span>) &#123;<br>        <span class="hljs-keyword">var</span> linker = Process.findModuleByName(<span class="hljs-string">&quot;linker&quot;</span>);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">var</span> linker = Process.findModuleByName(<span class="hljs-string">&quot;linker64&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">var</span> addr_call_function = <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">var</span> addr_g_ld_debug_verbosity = <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">var</span> addr_async_safe_format_log = <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">if</span> (linker) &#123;<br>        <span class="hljs-comment">//console.log(&quot;found linker&quot;);</span><br>        <span class="hljs-keyword">var</span> symbols = linker.enumerateSymbols();<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; symbols.length; i++) &#123;<br>            <span class="hljs-keyword">var</span> name = symbols[i].name;<br>            <span class="hljs-keyword">if</span> (name.indexOf(<span class="hljs-string">&quot;call_function&quot;</span>) &gt;= <span class="hljs-number">0</span>) &#123;<br>                addr_call_function = symbols[i].address;<br>                <span class="hljs-comment">// console.log(&quot;call_function&quot;,JSON.stringify(symbols[i]));</span><br>            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (name.indexOf(<span class="hljs-string">&quot;g_ld_debug_verbosity&quot;</span>) &gt;= <span class="hljs-number">0</span>) &#123;<br>                addr_g_ld_debug_verbosity = symbols[i].address;<br><br>                ptr(addr_g_ld_debug_verbosity).writeInt(<span class="hljs-number">2</span>);<br><br>            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (name.indexOf(<span class="hljs-string">&quot;async_safe_format_log&quot;</span>) &gt;= <span class="hljs-number">0</span> &amp;&amp; name.indexOf(<span class="hljs-string">&#x27;va_list&#x27;</span>) &lt; <span class="hljs-number">0</span>) &#123;<br>                <span class="hljs-comment">// console.log(&quot;async_safe_format_log&quot;,JSON.stringify(symbols[i]));</span><br>                addr_async_safe_format_log = symbols[i].address;<br><br>            &#125;<br><br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (addr_async_safe_format_log) &#123;<br>        Interceptor.attach(addr_async_safe_format_log, &#123;<br>            onEnter: function (args) &#123;<br>                <span class="hljs-keyword">this</span>.log_level = args[<span class="hljs-number">0</span>];<br>                <span class="hljs-keyword">this</span>.tag = ptr(args[<span class="hljs-number">1</span>]).readCString()<br>                <span class="hljs-keyword">this</span>.fmt = ptr(args[<span class="hljs-number">2</span>]).readCString()<br>                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.fmt.indexOf(<span class="hljs-string">&quot;c-tor&quot;</span>) &gt;= <span class="hljs-number">0</span> &amp;&amp; <span class="hljs-keyword">this</span>.fmt.indexOf(<span class="hljs-string">&#x27;Done&#x27;</span>) &lt; <span class="hljs-number">0</span>) &#123;<br>                    <span class="hljs-keyword">this</span>.function_type = ptr(args[<span class="hljs-number">3</span>]).readCString(), <span class="hljs-comment">// func_type</span><br>                        <span class="hljs-keyword">this</span>.so_path = ptr(args[<span class="hljs-number">5</span>]).readCString();<br>                    <span class="hljs-keyword">var</span> strs = new Array(); <span class="hljs-comment">//定义一数组</span><br>                    strs = <span class="hljs-keyword">this</span>.so_path.split(<span class="hljs-string">&quot;/&quot;</span>); <span class="hljs-comment">//字符分割</span><br>                    <span class="hljs-keyword">this</span>.so_name = strs.pop();<br>                    <span class="hljs-keyword">this</span>.func_offset = ptr(args[<span class="hljs-number">4</span>]).sub(Module.findBaseAddress(<span class="hljs-keyword">this</span>.so_name))<br>                    console.log(<span class="hljs-string">&quot;func_type:&quot;</span>, <span class="hljs-keyword">this</span>.function_type,<br>                        <span class="hljs-string">&#x27;\nso_name:&#x27;</span>, <span class="hljs-keyword">this</span>.so_name,<br>                        <span class="hljs-string">&#x27;\nso_path:&#x27;</span>, <span class="hljs-keyword">this</span>.so_path,<br>                        <span class="hljs-string">&#x27;\nfunc_offset:&#x27;</span>, <span class="hljs-keyword">this</span>.func_offset<br>                    );<br>                    console.warn(<span class="hljs-string">&quot;======================================================*&quot;</span>)<br>                    <span class="hljs-comment">// hook代码在这加</span><br>                &#125;<br>            &#125;,<br>            onLeave: function (retval) &#123;<br>            &#125;<br>        &#125;)<br>    &#125;<br><br><br>&#125;<br><br>hook_constructor()<br><br></code></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;InitFunction&gt; initFunctionList = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();<br>.....<br><span class="hljs-keyword">if</span> (elfFile.file_type == ElfFile.FT_DYN) &#123; <span class="hljs-comment">// not executable</span><br>    <span class="hljs-built_in">int</span> <span class="hljs-keyword">init</span> = dynamicStructure.getInit();<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">init</span> != <span class="hljs-number">0</span>) &#123;<br>        initFunctionList.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> LinuxInitFunction(load_base, soName, <span class="hljs-keyword">init</span>));<br>    &#125;<br><br>    <span class="hljs-comment">// 添加init_array 需要执行so方法</span><br>    <span class="hljs-keyword">if</span>(soName.<span class="hljs-keyword">equals</span>(<span class="hljs-string">&quot;libshield.so&quot;</span>))&#123;<br>        <span class="hljs-built_in">int</span>[] addressList = <span class="hljs-keyword">new</span> <span class="hljs-built_in">int</span>[]&#123;<span class="hljs-number">0xa0e1</span>, <span class="hljs-number">0xc0d5</span>&#125;;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> address: addressList)&#123;<br>            initFunctionList.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> LinuxInitFunction(load_base, soName, address));<br>        &#125;<br>    &#125;<br> ...<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/04/逆向/安卓逆向/6. 模拟执行/Unidbg/补环境/1. 初始化/2. 确定初始化流程总结/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/05/04/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/RPC%20Server/unidbg%20rpc%E5%A6%82%E4%BD%95%E6%8F%90%E9%80%9F/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/05/04/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/1.%20%E5%88%9D%E5%A7%8B%E5%8C%96/1.%20%E6%80%BB%E7%BA%B2/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,645 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="介绍_Android是基于Linux内核的操作系统，存在系统环境变量这一概念_，如下通过adb shell 查看系统环境变量的key和value。_每个Android进程会继承系统环境变量_，除此之外，也可以通过如下API增删环境变量 123456&#x2F;&#x2F; java层public static void setenv(String name, String value, boolean overwri">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/getEnv/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="介绍_Android是基于Linux内核的操作系统，存在系统环境变量这一概念_，如下通过adb shell 查看系统环境变量的key和value。_每个Android进程会继承系统环境变量_，除此之外，也可以通过如下API增删环境变量 123456&#x2F;&#x2F; java层public static void setenv(String name, String value, boolean overwri">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-05T11:57:03.614Z">
+<meta property="article:modified_time" content="2025-05-05T12:01:35.314Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-05 19:57" pubdate>
+          2025年5月5日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          657 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>_Android是基于Linux内核的操作系统，存在系统环境变量这一概念_，如下通过adb shell 查看系统环境变量的key和value。<br>_每个Android进程会继承系统环境变量_，除此之外，也可以通过如下API增删环境变量</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// java层</span><br>public <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setenv</span>(<span class="hljs-title class_">String</span> name, <span class="hljs-title class_">String</span> value, boolean overwrite);<br>public <span class="hljs-keyword">static</span> <span class="hljs-title class_">String</span> <span class="hljs-title function_">getenv</span>(<span class="hljs-title class_">String</span> name);<br><span class="hljs-comment">// so层</span><br>int <span class="hljs-title function_">setenv</span>(<span class="hljs-keyword">const</span> char *name, <span class="hljs-keyword">const</span> char *value, int overwrite);<br>char *<span class="hljs-title function_">getenv</span>(<span class="hljs-keyword">const</span> char *name);<br></code></pre></td></tr></table></figure>
+<p>我们可以<code>设置进程环境变量，在目标函数中检测或使用此环境变量，如果不存在，说明目标函数的执行环境就存在问题</code>，有可能由Unidbg执行或者重打包SO 单独Call。</p>
+<h1 id="现象总结"><a href="#现象总结" class="headerlink" title="现象总结"></a>现象总结</h1><ul>
+<li>getenv()用来取得参数envvar环境变量的内容。参数为环境变量的名称，如果该变量存在则会返回指向该内容的指针，如果不存在则返回null。</li>
+<li>此处就是getenv没取到值，但样本的程序里没有考虑取不到值的情况，所以strlen(null)报错。</li>
+<li>为什么会我们取不到值呢？<ul>
+<li>Android存在一些默认的系统环境变量，除此之外我们还可以自己增加环境变量。</li>
+<li>但是Unidbg没有这些环境变量，这就导致得不到结果啦。我们可以通过adb 查看自己机子的环境变量</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs shell">C:\Users\pr0214&gt;adb shell<br>bullhead:/ $ export<br>ANDROID_ASSETS<br>ANDROID_BOOTLOGO<br>ANDROID_DATA<br>ANDROID_ROOT<br>ANDROID_SOCKET_adbd<br>ANDROID_STORAGE<br>ASEC_MOUNTPOINT<br>BOOTCLASSPATH<br>DOWNLOAD_CACHE<br>EXTERNAL_STORAGE<br>HOME<br>HOSTNAME<br>LOGNAME<br>PATH<br>SHELL<br>SYSTEMSERVERCLASSPATH<br>TERM<br>TMPDIR<br>USER<br>bullhead:/ $ echo $HOME<br>/<br>bullhead:/ $ echo $ANDROID_DATA<br>/data<br>bullhead:/ $ echo $SYSTEMSERVERCLASSPATH<br>/system/framework/services.jar:/system/framework/ethernet-service.jar:/system/framework/wifi-service.jar:/system/framework/com.android.location.provider.jar<br>bullhead:/ $ echo $PATH<br>/sbin:/system/sbin:/system/bin:/system/xbin:/vendor/bin:/vendor/xbin<br>bullhead:/ $<br></code></pre></td></tr></table></figure>
+
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><ol>
+<li><p>方式1：在 <code>src/main/java/com/github/unidbg/linux/AndroidElfLoader.java</code> 中增加系统环境变量是最简单的办法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs javascript">public <span class="hljs-title class_">AndroidElfLoader</span>(<span class="hljs-title class_">Emulator</span>&lt;<span class="hljs-title class_">AndroidFileIO</span>&gt; emulator, <span class="hljs-title class_">UnixSyscallHandler</span>&lt;<span class="hljs-title class_">AndroidFileIO</span>&gt; syscallHandler) &#123;<br>    <span class="hljs-variable language_">super</span>(emulator, syscallHandler);<br><br>    <span class="hljs-comment">// init stack</span><br>    stackSize = <span class="hljs-variable constant_">STACK_SIZE_OF_PAGE</span> * emulator.<span class="hljs-title function_">getPageAlign</span>();<br>    backend.<span class="hljs-title function_">mem_map</span>(<span class="hljs-variable constant_">STACK_BASE</span> - stackSize, stackSize, <span class="hljs-title class_">UnicornConst</span>.<span class="hljs-property">UC_PROT_READ</span> | <span class="hljs-title class_">UnicornConst</span>.<span class="hljs-property">UC_PROT_WRITE</span>);<br><br>    <span class="hljs-title function_">setStackPoint</span>(<span class="hljs-variable constant_">STACK_BASE</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">environ</span> = <span class="hljs-title function_">initializeTLS</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>[] &#123;<br>            <span class="hljs-string">&quot;ANDROID_DATA=/data&quot;</span>,<br>            <span class="hljs-string">&quot;ANDROID_ROOT=/system&quot;</span>,<br>            <span class="hljs-string">&quot;PATH=/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin&quot;</span><br>    &#125;);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setErrno</span>(<span class="hljs-number">0</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>方式2：call setenv 添加环境变量</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript">public <span class="hljs-keyword">void</span> <span class="hljs-title function_">setEnv</span>(<span class="hljs-params"></span>)&#123;<br>        <span class="hljs-title class_">Symbol</span> setenv = <span class="hljs-variable language_">module</span>.<span class="hljs-title function_">findSymbolByName</span>(<span class="hljs-string">&quot;setenv&quot;</span>, <span class="hljs-literal">true</span>);<br>        setenv.<span class="hljs-title function_">call</span>(emulator, <span class="hljs-string">&quot;PATH&quot;</span>, <span class="hljs-string">&quot;/sbin:/system/sbin:/system/bin:/system/xbin:/vendor/bin:/vendor/xbin&quot;</span>, <span class="hljs-number">0</span>);<br>    &#125;;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>方式3：hook getenv 返回正确环境变量</p>
+</li>
+</ol>
+<ul>
+<li>但考虑一个问题，如果没有setenv函数怎么办，毕竟不是所有的get都有对应的set。所以方法二就是Hook了。即Hook getEnv函数，将返回值改成正确的。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs javascript">public <span class="hljs-keyword">void</span> <span class="hljs-title function_">hookgetEnv</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-title class_">IHookZz</span> hookZz = <span class="hljs-title class_">HookZz</span>.<span class="hljs-title function_">getInstance</span>(emulator);<br><br>    hookZz.<span class="hljs-title function_">wrap</span>(<span class="hljs-variable language_">module</span>.<span class="hljs-title function_">findSymbolByName</span>(<span class="hljs-string">&quot;getenv&quot;</span>), <span class="hljs-keyword">new</span> <span class="hljs-title class_">WrapCallback</span>&lt;<span class="hljs-title class_">EditableArm32RegisterContext</span>&gt;() &#123;<br>        <span class="hljs-title class_">String</span> name;<br>        @<span class="hljs-title class_">Override</span><br>        public <span class="hljs-keyword">void</span> <span class="hljs-title function_">preCall</span>(<span class="hljs-params">Emulator&lt;?&gt; emulator, EditableArm32RegisterContext ctx, HookEntryInfo info</span>) &#123;<br>            name = ctx.<span class="hljs-title function_">getPointerArg</span>(<span class="hljs-number">0</span>).<span class="hljs-title function_">getString</span>(<span class="hljs-number">0</span>);<br>        &#125;<br>        @<span class="hljs-title class_">Override</span><br>        public <span class="hljs-keyword">void</span> <span class="hljs-title function_">postCall</span>(<span class="hljs-params">Emulator&lt;?&gt; emulator, EditableArm32RegisterContext ctx, HookEntryInfo info</span>) &#123;<br>            <span class="hljs-keyword">switch</span> (name)&#123;<br>                <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;PATH&quot;</span>:&#123;<br>                    <span class="hljs-title class_">MemoryBlock</span> replaceBlock = memory.<span class="hljs-title function_">malloc</span>(<span class="hljs-number">0x100</span>, <span class="hljs-literal">true</span>);<br>                    <span class="hljs-title class_">UnidbgPointer</span> replacePtr = replaceBlock.<span class="hljs-title function_">getPointer</span>();<br>                    <span class="hljs-title class_">String</span> pathValue = <span class="hljs-string">&quot;/sbin:/system/sbin:/system/bin:/system/xbin:/vendor/bin:/vendor/xbin&quot;</span>;<br>                    replacePtr.<span class="hljs-title function_">write</span>(<span class="hljs-number">0</span>, pathValue.<span class="hljs-title function_">getBytes</span>(<span class="hljs-title class_">StandardCharsets</span>.<span class="hljs-property">UTF_8</span>), <span class="hljs-number">0</span>, pathValue.<span class="hljs-title function_">length</span>());<br>                    ctx.<span class="hljs-title function_">setR0</span>(replacePtr.<span class="hljs-title function_">toIntPeer</span>());<br>                &#125;<br>            &#125;<br><br>        &#125;<br>    &#125;);<br>&#125;;<br><br></code></pre></td></tr></table></figure></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/05/逆向/安卓逆向/6. 模拟执行/Unidbg/补环境/4. 补库函数/补库函数实现/getEnv/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/5.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/1.%20%E8%A1%A5%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E6%B5%81%E7%A8%8B/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/dladdr/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

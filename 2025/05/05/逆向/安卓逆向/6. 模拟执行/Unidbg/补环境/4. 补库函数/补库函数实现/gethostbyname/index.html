@@ -1,0 +1,672 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="case 引入 我们可以通过IP查主机名，或者反之，通过主机名查IP。 Android 基于Linux，可以使用Linux的API实现等效功能，在DEMO中，先通过IP得到雅虎的域名，再用雅虎的域名获取IP。12345678910111213141516171819202122232425262728293031323334353637383940414243#include &lt;jni.h&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/gethostbyname/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="case 引入 我们可以通过IP查主机名，或者反之，通过主机名查IP。 Android 基于Linux，可以使用Linux的API实现等效功能，在DEMO中，先通过IP得到雅虎的域名，再用雅虎的域名获取IP。12345678910111213141516171819202122232425262728293031323334353637383940414243#include &lt;jni.h&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746445141550.jpg">
+<meta property="article:published_time" content="2025-05-05T11:08:07.116Z">
+<meta property="article:modified_time" content="2025-05-05T12:43:23.363Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746445141550.jpg">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-05 19:08" pubdate>
+          2025年5月5日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="case-引入"><a href="#case-引入" class="headerlink" title="case 引入"></a>case 引入</h1><ul>
+<li>我们可以通过IP查主机名，或者反之，通过主机名查IP。<br><img src="/blog/../../../../../../../../images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746445141550.jpg" srcset="/blog/img/loading.gif" lazyload></li>
+<li>Android 基于Linux，可以使用Linux的API实现等效功能，在DEMO中，先通过IP得到雅虎的域名，再用雅虎的域名获取IP。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;jni.<span class="hljs-property">h</span>&gt;<br>#include &lt;string&gt;<br>#include &lt;android/log.<span class="hljs-property">h</span>&gt;<br>#include &lt;arpa/inet.<span class="hljs-property">h</span>&gt;<br>#include &lt;netdb.<span class="hljs-property">h</span>&gt;<br><br>#define <span class="hljs-title function_">LOGE</span>(...) <span class="hljs-title function_">__android_log_print</span>(<span class="hljs-variable constant_">ANDROID_LOG_ERROR</span>,<span class="hljs-string">&quot;Lilac&quot;</span> ,__VA_ARGS__)<br><br>extern <span class="hljs-string">&quot;C&quot;</span><br><span class="hljs-variable constant_">JNIEXPORT</span> <span class="hljs-keyword">void</span> <span class="hljs-variable constant_">JNICALL</span><br><span class="hljs-title class_">Java</span>_com_example_hostnameandip_MainActivity_hostnameandip(<span class="hljs-title class_">JNIEnv</span> *env, jobject thiz) &#123;<br>  int i;<br>  struct hostent *host;<br>  struct sockaddr_in addr&#123;&#125;;<br><br>  <span class="hljs-comment">// struct hostent * gethostbyaddr(const char *addr, socklen_t len, int family);</span><br>  <span class="hljs-comment">// addr: 含有IP地址信息的in_addr结构体指针</span><br>  <span class="hljs-title function_">memset</span>(&amp;addr, <span class="hljs-number">0</span>, <span class="hljs-title function_">sizeof</span>(addr));<br>  addr.<span class="hljs-property">sin_addr</span>.<span class="hljs-property">s_addr</span> = <span class="hljs-title function_">inet_addr</span>(<span class="hljs-string">&quot;180.222.102.202&quot;</span>);<br><br>  host = <span class="hljs-title function_">gethostbyaddr</span>((<span class="hljs-keyword">const</span> char*)&amp;addr.<span class="hljs-property">sin_addr</span>, <span class="hljs-number">4</span>, <span class="hljs-variable constant_">AF_INET</span>);<br><br>  <span class="hljs-title function_">LOGE</span>(<span class="hljs-string">&quot;Hostname %s \n&quot;</span>,host -&gt; h_name);<br><br>  char *name = host -&gt; h_name;<br>  <span class="hljs-comment">//INET_ADDRSTRLEN值为16，用来标识ipv4地址长度</span><br>  char str[<span class="hljs-variable constant_">INET_ADDRSTRLEN</span>];<br>  <span class="hljs-comment">//根据主机名获取ip</span><br>  struct hostent *hptr = <span class="hljs-title function_">gethostbyname</span>(name);<br><br>  <span class="hljs-keyword">if</span>(hptr == nullptr)<br>   &#123;<br>    <span class="hljs-title function_">hstrerror</span>(h_errno);<br>   &#125;<br><br>  <span class="hljs-comment">//hostent中的h_addr_list是一个数组</span><br>  char **pptr = hptr-&gt;h_addr_list;<br>  <span class="hljs-keyword">for</span>(; *pptr != nullptr; pptr++)<br>   &#123;<br>    <span class="hljs-comment">//打印所有IP</span><br>    <span class="hljs-title function_">LOGE</span>(<span class="hljs-string">&quot;%s&quot;</span>, <span class="hljs-title function_">inet_ntop</span>(hptr-&gt;h_addrtype, *pptr, str, <span class="hljs-title function_">sizeof</span>(str)));<br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>观察发现，代码中使用 <code>gethostbyname</code> 以及 <code>gethostbyaddr</code> 函数<code>实现了主机名和IP地址之间的转换</code>。</li>
+</ul>
+<h2 id="首先看-gethostbyname"><a href="#首先看-gethostbyname" class="headerlink" title="首先看 gethostbyname"></a>首先看 gethostbyname</h2><blockquote>
+<p>struct hostent *gethostbyname(const char *name);</p>
+</blockquote>
+<ul>
+<li><p>入参是指向主机名的指针，返回值是由主机相关信息组成的 hostent 结构体的指针，gethostbyaddr API 所获取的也是这个结构体，只不过一个使用主机名来获取，另一个通过IP地址来获取。（这两个函数都比较老了，现在还可以用 getaddrinfo 和 getnameinfo 函数。）</p>
+</li>
+<li><p>hostent  结构体长这样</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">hostent</span> &#123;<br>  <span class="hljs-type">char</span> *h_name;      <span class="hljs-comment">/* official name of host */</span><br>  <span class="hljs-type">char</span> **h_aliases;     <span class="hljs-comment">/* alias list */</span><br>  <span class="hljs-type">int</span>  h_addrtype;    <span class="hljs-comment">/* host address type */</span><br>  <span class="hljs-type">int</span>  h_length;     <span class="hljs-comment">/* length of address */</span><br>  <span class="hljs-type">char</span> **h_addr_list;    <span class="hljs-comment">/* list of addresses */</span><br>&#125;<br><span class="hljs-meta">#<span class="hljs-keyword">define</span> h_addr h_addr_list[0] <span class="hljs-comment">/* for backward compatibility */</span></span><br><br><span class="hljs-type">char</span> *h_name 表示的是主机的规范名。例如 www.google.com 的规范名其实是 www.l.google.com 。<br><span class="hljs-type">char</span>  h_aliases 表示的是主机的别名。 www.google.com 就是google他自己的别名。有的时候，有的主机可能有好几个别名，这些，其实都是为了易于用户记忆而为自己的网站多取的名字。<br><span class="hljs-type">int</span>  h_addrtype 表示的是主机ip地址的类型，到底是<span class="hljs-built_in">ipv4</span>(AF_INET)，还是<span class="hljs-built_in">ipv6</span>(AF_INET6)<br><span class="hljs-type">int</span>  h_length 表示的是主机ip地址的长度<br><span class="hljs-type">int</span>  h_addr_lisst 表示的是主机的ip地址，注意，这个是以网络字节序存储的，通过调用<span class="hljs-built_in">inet_ntop</span>()展示这个IP地址。<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>接下来使用Unidbg 模拟执行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs javascript">package com.<span class="hljs-property">lessionpro</span>.<span class="hljs-property">lession2</span>;<br><br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">AndroidEmulator</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">Emulator</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">Module</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">arm</span>.<span class="hljs-property">context</span>.<span class="hljs-property">RegisterContext</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">hook</span>.<span class="hljs-property">hookzz</span>.<span class="hljs-property">HookEntryInfo</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">hook</span>.<span class="hljs-property">hookzz</span>.<span class="hljs-property">HookZz</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">hook</span>.<span class="hljs-property">hookzz</span>.<span class="hljs-property">IHookZz</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">hook</span>.<span class="hljs-property">hookzz</span>.<span class="hljs-property">InstrumentCallback</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">android</span>.<span class="hljs-property">AndroidEmulatorBuilder</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">android</span>.<span class="hljs-property">AndroidResolver</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">android</span>.<span class="hljs-property">dvm</span>.<span class="hljs-property">DalvikModule</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">android</span>.<span class="hljs-property">dvm</span>.<span class="hljs-property">DvmClass</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">android</span>.<span class="hljs-property">dvm</span>.<span class="hljs-property">DvmObject</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">android</span>.<span class="hljs-property">dvm</span>.<span class="hljs-property">VM</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">memory</span>.<span class="hljs-property">Memory</span>;<br><br><span class="hljs-keyword">import</span> java.<span class="hljs-property">io</span>.<span class="hljs-property">File</span>;<br><br>public <span class="hljs-keyword">class</span> <span class="hljs-title class_">HostNameAndIp</span>&#123;<br>  private final <span class="hljs-title class_">AndroidEmulator</span> emulator;<br>  private final <span class="hljs-variable constant_">VM</span> vm;<br>  private final <span class="hljs-title class_">Module</span> <span class="hljs-variable language_">module</span>;<br><br>  <span class="hljs-title class_">HostNameAndIp</span>() &#123;<br><br>    <span class="hljs-comment">// 创建模拟器实例</span><br>    emulator = <span class="hljs-title class_">AndroidEmulatorBuilder</span>.<span class="hljs-title function_">for32Bit</span>().<span class="hljs-title function_">build</span>();<br><br>    <span class="hljs-comment">// 模拟器的内存操作接口</span><br>    final <span class="hljs-title class_">Memory</span> memory = emulator.<span class="hljs-title function_">getMemory</span>();<br>    <span class="hljs-comment">// 设置系统类库解析</span><br>    memory.<span class="hljs-title function_">setLibraryResolver</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">AndroidResolver</span>(<span class="hljs-number">23</span>));<br>    <span class="hljs-comment">// 创建Android虚拟机</span><br>    vm = emulator.<span class="hljs-title function_">createDalvikVM</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;unidbg-android/src/test/resources/lessionpro/lession2/app-debug.apk&quot;</span>));<br><br><br>    <span class="hljs-comment">// 加载so到虚拟内存</span><br>    <span class="hljs-title class_">DalvikModule</span> dm = vm.<span class="hljs-title function_">loadLibrary</span>(<span class="hljs-string">&quot;hostnameandip&quot;</span>, <span class="hljs-literal">true</span>);<br>    <span class="hljs-comment">// 加载好的 libhookinunidbg.so对应为一个模块</span><br>    <span class="hljs-variable language_">module</span> = dm.<span class="hljs-title function_">getModule</span>();<br><br>    <span class="hljs-comment">// 执行JNIOnLoad（如果有的话）</span><br>    dm.<span class="hljs-title function_">callJNI_OnLoad</span>(emulator);<br><br>   &#125;<br><br><br>  public <span class="hljs-keyword">void</span> <span class="hljs-title function_">call</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-title class_">DvmClass</span> dvmClass = vm.<span class="hljs-title function_">resolveClass</span>(<span class="hljs-string">&quot;com/example/hostnameandip/MainActivity&quot;</span>);<br>    <span class="hljs-title class_">String</span> methodSign = <span class="hljs-string">&quot;hostnameandip()V&quot;</span>;<br>    <span class="hljs-title class_">DvmObject</span>&lt;?&gt; dvmObject = dvmClass.<span class="hljs-title function_">newObject</span>(<span class="hljs-literal">null</span>);<br><br>    dvmObject.<span class="hljs-title function_">callJniMethodObject</span>(emulator, methodSign);<br><br>   &#125;<br><br>  public <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span>(<span class="hljs-params"><span class="hljs-built_in">String</span>[] args</span>) &#123;<br>    <span class="hljs-title class_">HostNameAndIp</span> demo2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HostNameAndIp</span>();<br>    demo2.<span class="hljs-title function_">call</span>();<br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><p>从日志可以发现，gethostbyaddr 顺利执行，但 gethostbyname 报错， 点开报错点发现，Unidbg没有实现 gethostbyname 的逻辑。只有getaddrinfo 和 gethostbyaddr，而上面提到过的 gethostbyname以及 getnameinfo 这两个API尚未实现。</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs aspectj"><span class="hljs-comment">// src/main/java/com/github/unidbg/linux/file/DnsProxyDaemon.java</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">byte</span>[] handle(<span class="hljs-keyword">byte</span>[] request) <span class="hljs-keyword">throws</span> IOException &#123;<br>  baos.write(request);<br>  <span class="hljs-keyword">byte</span>[] data = baos.toByteArray();<br>  <span class="hljs-keyword">int</span> endIndex = <span class="hljs-number">-1</span>;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; data.length; i++) &#123;<br>    <span class="hljs-keyword">if</span> (data[i] == <span class="hljs-number">0</span>) &#123;<br>      endIndex = i;<br>      <span class="hljs-keyword">break</span>;<br>     &#125;<br>   &#125;<br>  <span class="hljs-keyword">if</span> (endIndex == <span class="hljs-number">-1</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;<br>   &#125;<br>  baos.reset();<br>  String command = <span class="hljs-keyword">new</span> String(data, <span class="hljs-number">0</span>, endIndex);<br>  <span class="hljs-keyword">if</span> (command.startsWith(<span class="hljs-string">&quot;getaddrinfo&quot;</span>)) &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">return</span> <span class="hljs-title">getaddrinfo</span><span class="hljs-params">(command)</span></span>;<br>   &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (command.startsWith(<span class="hljs-string">&quot;gethostbyaddr&quot;</span>)) &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">return</span> <span class="hljs-title">gethostbyaddr</span><span class="hljs-params">(command)</span></span>;<br>   &#125;<br>  <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> AbstractMethodError(command);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><ul>
+<li>这个样例的两种办法，其内在逻辑并不一致，感兴趣的可以独立复现一下嗷。</li>
+</ul>
+<h3 id="方案一：修改Unidbg源码，增加-gethostbyname-功能"><a href="#方案一：修改Unidbg源码，增加-gethostbyname-功能" class="headerlink" title="方案一：修改Unidbg源码，增加 gethostbyname 功能"></a>方案一：修改Unidbg源码，增加 gethostbyname 功能</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><code class="hljs javascript">@<span class="hljs-title class_">Override</span><br>public byte[] <span class="hljs-title function_">handle</span>(byte[] request) throws <span class="hljs-title class_">IOException</span> &#123;<br>  baos.<span class="hljs-title function_">write</span>(request);<br>  byte[] data = baos.<span class="hljs-title function_">toByteArray</span>();<br>  int endIndex = -<span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; data.<span class="hljs-property">length</span>; i++) &#123;<br>    <span class="hljs-keyword">if</span> (data[i] == <span class="hljs-number">0</span>) &#123;<br>      endIndex = i;<br>      <span class="hljs-keyword">break</span>;<br>     &#125;<br>   &#125;<br>  <span class="hljs-keyword">if</span> (endIndex == -<span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>   &#125;<br>  baos.<span class="hljs-title function_">reset</span>();<br>  <span class="hljs-title class_">String</span> command = <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(data, <span class="hljs-number">0</span>, endIndex);<br>  <span class="hljs-keyword">if</span> (command.<span class="hljs-title function_">startsWith</span>(<span class="hljs-string">&quot;getaddrinfo&quot;</span>)) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-title function_">getaddrinfo</span>(command);<br>   &#125;<br>  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (command.<span class="hljs-title function_">startsWith</span>(<span class="hljs-string">&quot;gethostbyaddr&quot;</span>)) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-title function_">gethostbyaddr</span>(command);<br>   &#125;<br>  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(command.<span class="hljs-title function_">startsWith</span>(<span class="hljs-string">&quot;gethostbyname&quot;</span>))&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-title function_">gethostbyname</span>(command);<br>   &#125;<br>  <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AbstractMethodError</span>(command);<br>&#125;<br><br>private byte[] <span class="hljs-title function_">gethostbyname</span>(<span class="hljs-params"><span class="hljs-built_in">String</span> command</span>) &#123;<br>  <span class="hljs-title class_">ByteBuffer</span> buffer = <span class="hljs-title class_">ByteBuffer</span>.<span class="hljs-title function_">allocate</span>(<span class="hljs-number">1024</span>);<br><br>  <span class="hljs-title class_">String</span>[] tokens = command.<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;\\s&quot;</span>);<br>  <span class="hljs-title class_">String</span> host = tokens[<span class="hljs-number">2</span>];<br><br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-title class_">InetAddress</span> address = <span class="hljs-title class_">InetAddress</span>.<span class="hljs-title function_">getByName</span>(host);<br>    byte[] addr = address.<span class="hljs-title function_">getAddress</span>();<br><br>    <span class="hljs-keyword">if</span> (addr == <span class="hljs-literal">null</span>) &#123;<br>      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnknownHostException</span>();<br>     &#125; <span class="hljs-keyword">else</span> &#123;<br>      buffer.<span class="hljs-title function_">put</span>((<span class="hljs-title class_">DnsProxyQueryResult</span> + <span class="hljs-string">&quot;\0&quot;</span>).<span class="hljs-title function_">getBytes</span>());<br>      byte[] bytes = host.<span class="hljs-title function_">getBytes</span>(<span class="hljs-title class_">StandardCharsets</span>.<span class="hljs-property">UTF_8</span>);<br>      buffer.<span class="hljs-title function_">putInt</span>(bytes.<span class="hljs-property">length</span> + <span class="hljs-number">1</span>);<br>      buffer.<span class="hljs-title function_">put</span>(bytes);<br>      buffer.<span class="hljs-title function_">put</span>((byte) <span class="hljs-number">0</span>); <span class="hljs-comment">// NULL-terminated string</span><br><br>      buffer.<span class="hljs-title function_">putInt</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">// null to indicate we&#x27;re done aliases</span><br><br>      buffer.<span class="hljs-title function_">putInt</span>(<span class="hljs-title class_">SocketIO</span>.<span class="hljs-property">AF_INET</span>); <span class="hljs-comment">// addrtype</span><br>      buffer.<span class="hljs-title function_">putInt</span>(<span class="hljs-number">4</span>); <span class="hljs-comment">// unknown length</span><br><br>      buffer.<span class="hljs-title function_">putInt</span>(<span class="hljs-number">0x10</span>);<br>      buffer.<span class="hljs-title function_">put</span>(addr);<br>      buffer.<span class="hljs-title function_">putInt</span>(<span class="hljs-number">0</span>);<br>      buffer.<span class="hljs-title function_">putInt</span>(<span class="hljs-number">0</span>);<br>      buffer.<span class="hljs-title function_">putInt</span>(<span class="hljs-number">0</span>);<br>      buffer.<span class="hljs-title function_">putInt</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">// null to indicate we&#x27;re done addr_list</span><br>     &#125;<br>   &#125; <span class="hljs-keyword">catch</span> (<span class="hljs-title class_">UnknownHostException</span> e) &#123;<br>    buffer.<span class="hljs-title function_">put</span>((<span class="hljs-title class_">DnsProxyOperationFailed</span> + <span class="hljs-string">&quot;\0&quot;</span>).<span class="hljs-title function_">getBytes</span>());<br>    buffer.<span class="hljs-title function_">putInt</span>(<span class="hljs-number">0</span>);<br>   &#125;<br><br>  buffer.<span class="hljs-title function_">flip</span>();<br>  byte[] response = <span class="hljs-keyword">new</span> byte[buffer.<span class="hljs-title function_">remaining</span>()];<br>  buffer.<span class="hljs-title function_">get</span>(response);<br>  <span class="hljs-keyword">if</span> (log.<span class="hljs-title function_">isDebugEnabled</span>()) &#123;<br>    <span class="hljs-title class_">Inspector</span>.<span class="hljs-title function_">inspect</span>(response, <span class="hljs-string">&quot;gethostbyname&quot;</span>);<br>   &#125;<br>  <span class="hljs-keyword">return</span> response;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><code class="hljs javascript">package com.<span class="hljs-property">lessionpro</span>.<span class="hljs-property">lession2</span>;<br><br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">AndroidEmulator</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">Emulator</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">Module</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">arm</span>.<span class="hljs-property">HookStatus</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">arm</span>.<span class="hljs-property">context</span>.<span class="hljs-property">RegisterContext</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">hook</span>.<span class="hljs-property">HookContext</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">hook</span>.<span class="hljs-property">ReplaceCallback</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">hook</span>.<span class="hljs-property">hookzz</span>.<span class="hljs-property">HookEntryInfo</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">hook</span>.<span class="hljs-property">hookzz</span>.<span class="hljs-property">HookZz</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">hook</span>.<span class="hljs-property">hookzz</span>.<span class="hljs-property">IHookZz</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">hook</span>.<span class="hljs-property">hookzz</span>.<span class="hljs-property">InstrumentCallback</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">android</span>.<span class="hljs-property">AndroidEmulatorBuilder</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">android</span>.<span class="hljs-property">AndroidResolver</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">android</span>.<span class="hljs-property">dvm</span>.<span class="hljs-property">DalvikModule</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">android</span>.<span class="hljs-property">dvm</span>.<span class="hljs-property">DvmClass</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">android</span>.<span class="hljs-property">dvm</span>.<span class="hljs-property">DvmObject</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">linux</span>.<span class="hljs-property">android</span>.<span class="hljs-property">dvm</span>.<span class="hljs-property">VM</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">memory</span>.<span class="hljs-property">Memory</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">memory</span>.<span class="hljs-property">MemoryBlock</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">pointer</span>.<span class="hljs-property">UnidbgPointer</span>;<br><span class="hljs-keyword">import</span> com.<span class="hljs-property">github</span>.<span class="hljs-property">unidbg</span>.<span class="hljs-property">utils</span>.<span class="hljs-property">Inspector</span>;<br><span class="hljs-keyword">import</span> unicorn.<span class="hljs-property">ArmConst</span>;<br><br><span class="hljs-keyword">import</span> java.<span class="hljs-property">io</span>.<span class="hljs-property">File</span>;<br><br>public <span class="hljs-keyword">class</span> <span class="hljs-title class_">HostNameAndIp</span>&#123;<br>  private final <span class="hljs-title class_">AndroidEmulator</span> emulator;<br>  private final <span class="hljs-variable constant_">VM</span> vm;<br>  private final <span class="hljs-title class_">Module</span> <span class="hljs-variable language_">module</span>;<br><br>  <span class="hljs-title class_">HostNameAndIp</span>() &#123;<br><br>    <span class="hljs-comment">// 创建模拟器实例</span><br>    emulator = <span class="hljs-title class_">AndroidEmulatorBuilder</span>.<span class="hljs-title function_">for32Bit</span>().<span class="hljs-title function_">build</span>();<br><br>    <span class="hljs-comment">// 模拟器的内存操作接口</span><br>    final <span class="hljs-title class_">Memory</span> memory = emulator.<span class="hljs-title function_">getMemory</span>();<br>    <span class="hljs-comment">// 设置系统类库解析</span><br>    memory.<span class="hljs-title function_">setLibraryResolver</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">AndroidResolver</span>(<span class="hljs-number">23</span>));<br>    <span class="hljs-comment">// 创建Android虚拟机</span><br>    vm = emulator.<span class="hljs-title function_">createDalvikVM</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;unidbg-android/src/test/resources/lessionpro/lession2/app-debug.apk&quot;</span>));<br><br><br>    <span class="hljs-comment">// 加载so到虚拟内存</span><br>    <span class="hljs-title class_">DalvikModule</span> dm = vm.<span class="hljs-title function_">loadLibrary</span>(<span class="hljs-string">&quot;hostnameandip&quot;</span>, <span class="hljs-literal">true</span>);<br>    <span class="hljs-comment">// 加载好的 libhookinunidbg.so对应为一个模块</span><br>    <span class="hljs-variable language_">module</span> = dm.<span class="hljs-title function_">getModule</span>();<br><br>    <span class="hljs-comment">// 执行JNIOnLoad（如果有的话）</span><br>    dm.<span class="hljs-title function_">callJNI_OnLoad</span>(emulator);<br><br>   &#125;<br><br><br>  public <span class="hljs-keyword">void</span> <span class="hljs-title function_">call</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-title class_">DvmClass</span> dvmClass = vm.<span class="hljs-title function_">resolveClass</span>(<span class="hljs-string">&quot;com/example/hostnameandip/MainActivity&quot;</span>);<br>    <span class="hljs-title class_">String</span> methodSign = <span class="hljs-string">&quot;hostnameandip()V&quot;</span>;<br>    <span class="hljs-title class_">DvmObject</span>&lt;?&gt; dvmObject = dvmClass.<span class="hljs-title function_">newObject</span>(<span class="hljs-literal">null</span>);<br><br>    dvmObject.<span class="hljs-title function_">callJniMethodObject</span>(emulator, methodSign);<br><br>   &#125;<br><br>  public <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span>(<span class="hljs-params"><span class="hljs-built_in">String</span>[] args</span>) &#123;<br>    <span class="hljs-title class_">HostNameAndIp</span> demo2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HostNameAndIp</span>();<br>    demo2.<span class="hljs-title class_">ReplaceGetrusage</span>();<br>    demo2.<span class="hljs-title function_">call</span>();<br>   &#125;<br><br>  public <span class="hljs-keyword">void</span> <span class="hljs-title class_">ReplaceGetrusage</span>() &#123;<br>    final <span class="hljs-title class_">HookZz</span> hook = <span class="hljs-title class_">HookZz</span>.<span class="hljs-title function_">getInstance</span>(emulator);<br>    hook.<span class="hljs-title function_">replace</span>(<span class="hljs-variable language_">module</span>.<span class="hljs-title function_">findSymbolByName</span>(<span class="hljs-string">&quot;gethostbyname&quot;</span>), <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReplaceCallback</span>() &#123;<br>      @<span class="hljs-title class_">Override</span><br>      public <span class="hljs-title class_">HookStatus</span> <span class="hljs-title function_">onCall</span>(<span class="hljs-params">Emulator&lt;?&gt; emulator, HookContext context, long originFunction</span>) &#123;<br>        <span class="hljs-title class_">MemoryBlock</span> memoryBlock = emulator.<span class="hljs-title function_">getMemory</span>().<span class="hljs-title function_">malloc</span>(<span class="hljs-number">20</span>, <span class="hljs-literal">true</span>);<br>        <span class="hljs-title class_">UnidbgPointer</span> host = memoryBlock.<span class="hljs-title function_">getPointer</span>();<br><br>        <span class="hljs-comment">// h_name</span><br>        <span class="hljs-title class_">String</span> h_name = <span class="hljs-string">&quot;media-router-fp74.prod.media.vip.tp2.yahoo.com &quot;</span>;<br>        int h_name_length = h_name.<span class="hljs-title function_">length</span>();<br>        <span class="hljs-title class_">MemoryBlock</span> h_name_block = emulator.<span class="hljs-title function_">getMemory</span>().<span class="hljs-title function_">malloc</span>(h_name_length+<span class="hljs-number">1</span>, <span class="hljs-literal">true</span>);<br>        <span class="hljs-title class_">UnidbgPointer</span> h_name_ptr=h_name_block.<span class="hljs-title function_">getPointer</span>();<br>        h_name_ptr.<span class="hljs-title function_">write</span>(h_name.<span class="hljs-title function_">getBytes</span>());<br><br>        host.<span class="hljs-title function_">setPointer</span>(<span class="hljs-number">0</span>, h_name_ptr);<br><br>        <span class="hljs-comment">// h_aliases</span><br>        <span class="hljs-title class_">MemoryBlock</span> h_aliases_block = emulator.<span class="hljs-title function_">getMemory</span>().<span class="hljs-title function_">malloc</span>(<span class="hljs-number">4</span>, <span class="hljs-literal">true</span>);<br>        host.<span class="hljs-title function_">setPointer</span>(<span class="hljs-number">4</span>, h_aliases_block.<span class="hljs-title function_">getPointer</span>());<br><br>        <span class="hljs-comment">// h_addrtype</span><br>        host.<span class="hljs-title function_">setInt</span>(<span class="hljs-number">8</span>, <span class="hljs-number">2</span>);<br><br>        <span class="hljs-comment">// h_length</span><br>        host.<span class="hljs-title function_">setInt</span>(<span class="hljs-number">12</span>, <span class="hljs-number">4</span>);<br><br>        <span class="hljs-comment">// h_addr_list</span><br>        <span class="hljs-title class_">MemoryBlock</span> h_addr_list_block = emulator.<span class="hljs-title function_">getMemory</span>().<span class="hljs-title function_">malloc</span>(<span class="hljs-number">4</span>, <span class="hljs-literal">true</span>);<br>        host.<span class="hljs-title function_">setPointer</span>(<span class="hljs-number">16</span>, h_addr_list_block.<span class="hljs-title function_">getPointer</span>());<br><br>        <span class="hljs-title class_">MemoryBlock</span> h_addr_block = emulator.<span class="hljs-title function_">getMemory</span>().<span class="hljs-title function_">malloc</span>(<span class="hljs-number">4</span>, <span class="hljs-literal">true</span>);<br>        h_addr_block.<span class="hljs-title function_">getPointer</span>().<span class="hljs-title function_">setInt</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0xCA66DEB4</span>);<br>        h_addr_list_block.<span class="hljs-title function_">getPointer</span>().<span class="hljs-title function_">setPointer</span>(<span class="hljs-number">0</span>, h_addr_block.<span class="hljs-title function_">getPointer</span>());<br><br>        emulator.<span class="hljs-title function_">getBackend</span>().<span class="hljs-title function_">reg_write</span>(<span class="hljs-title class_">ArmConst</span>.<span class="hljs-property">UC_ARM_REG_R0</span>, host.<span class="hljs-property">peer</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">HookStatus</span>.<span class="hljs-title function_">RET</span>(emulator, context.<span class="hljs-title function_">getLR</span>());<br>       &#125;<br><br>     &#125;, <span class="hljs-literal">false</span>);<br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/05/逆向/安卓逆向/6. 模拟执行/Unidbg/补环境/4. 补库函数/补库函数实现/gethostbyname/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/free/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/4.%20%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0/%E8%A1%A5%E5%BA%93%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0/getrusage/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

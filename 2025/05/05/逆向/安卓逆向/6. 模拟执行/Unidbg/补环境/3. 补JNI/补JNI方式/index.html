@@ -1,0 +1,639 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="结合补充JNI的方式来做 按照提示一步步的补充，可以使用多种方式 方式1：继承自AbstractJni，缺少的JNI在AbstractJni类中补充 方式2：不继承AbstractJni，新建JNI类补充，在主类中声明引用 vm.setJni(new TongDunJNI(emulator));    模拟Native调用JAVA的方式 缺啥补啥，其原理是JAVA的反射 主要两点改变  LibBi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨颖的博客">
+<meta property="og:url" content="http://example.com/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/3.%20%E8%A1%A5JNI/%E8%A1%A5JNI%E6%96%B9%E5%BC%8F/index.html">
+<meta property="og:site_name" content="杨颖的博客">
+<meta property="og:description" content="结合补充JNI的方式来做 按照提示一步步的补充，可以使用多种方式 方式1：继承自AbstractJni，缺少的JNI在AbstractJni类中补充 方式2：不继承AbstractJni，新建JNI类补充，在主类中声明引用 vm.setJni(new TongDunJNI(emulator));    模拟Native调用JAVA的方式 缺啥补啥，其原理是JAVA的反射 主要两点改变  LibBi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746427087210.jpg">
+<meta property="article:published_time" content="2025-05-05T06:36:33.676Z">
+<meta property="article:modified_time" content="2025-05-05T06:41:29.509Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746427087210.jpg">
+  
+  
+  
+  <title>杨颖的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-05 14:36" pubdate>
+          2025年5月5日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          581 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="结合补充JNI的方式来做"><a href="#结合补充JNI的方式来做" class="headerlink" title="结合补充JNI的方式来做"></a>结合补充JNI的方式来做</h1><ul>
+<li>按照提示一步步的补充，可以使用多种方式</li>
+<li>方式1：继承自AbstractJni，缺少的JNI在AbstractJni类中补充</li>
+<li>方式2：不继承AbstractJni，新建JNI类补充，在主类中声明引用<blockquote>
+<p>vm.setJni(new TongDunJNI(emulator));</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="模拟Native调用JAVA的方式"><a href="#模拟Native调用JAVA的方式" class="headerlink" title="模拟Native调用JAVA的方式"></a>模拟Native调用JAVA的方式</h1><ul>
+<li>缺啥补啥，其原理是JAVA的反射</li>
+<li>主要两点改变 <ul>
+<li>LibBili1 不继承自AbstractJni </li>
+<li>vm.setJni(this);改成 vm.setDvmClassFactory(new ProxyClassFactory());</li>
+</ul>
+</li>
+<li>case<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lession6;<br><br><span class="hljs-keyword">import</span> com.github.unidbg.AndroidEmulator;<br><span class="hljs-keyword">import</span> com.github.unidbg.Module;<br><span class="hljs-keyword">import</span> com.github.unidbg.linux.android.AndroidEmulatorBuilder;<br><span class="hljs-keyword">import</span> com.github.unidbg.linux.android.AndroidResolver;<br><span class="hljs-keyword">import</span> com.github.unidbg.linux.android.dvm.*;<br><span class="hljs-keyword">import</span> com.github.unidbg.linux.android.dvm.jni.ProxyClassFactory;<br><span class="hljs-keyword">import</span> com.github.unidbg.memory.Memory;<br><br><span class="hljs-keyword">import</span> java.io.File;<br><span class="hljs-keyword">import</span> java.util.ArrayList;<br><span class="hljs-keyword">import</span> java.util.List;<br><span class="hljs-keyword">import</span> java.util.TreeMap;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LibBili1</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> AndroidEmulator emulator;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> VM vm;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Module <span class="hljs-keyword">module</span>;<br><br>    LibBili1()&#123;<br>        emulator = AndroidEmulatorBuilder.for32Bit().setProcessName(<span class="hljs-string">&quot;com.bilibili.app&quot;</span>).build(); <span class="hljs-comment">// 创建模拟器实例</span><br>        <span class="hljs-keyword">final</span> <span class="hljs-type">Memory</span> <span class="hljs-variable">memory</span> <span class="hljs-operator">=</span> emulator.getMemory(); <span class="hljs-comment">// 模拟器的内存操作接口</span><br>        memory.setLibraryResolver(<span class="hljs-keyword">new</span> <span class="hljs-title class_">AndroidResolver</span>(<span class="hljs-number">23</span>)); <span class="hljs-comment">// 设置系统类库解析</span><br><br>        vm = emulator.createDalvikVM(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;unidbg-android\\src\\test\\java\\com\\lession6\\bilibili.apk&quot;</span>)); <span class="hljs-comment">// 创建Android虚拟机</span><br>        vm.setDvmClassFactory(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ProxyClassFactory</span>());<br>        vm.setVerbose(<span class="hljs-literal">true</span>); <span class="hljs-comment">// 设置是否打印Jni调用细节</span><br>        <span class="hljs-type">DalvikModule</span> <span class="hljs-variable">dm</span> <span class="hljs-operator">=</span> vm.loadLibrary(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;unidbg-android\\src\\test\\java\\com\\lession6\\libbili.so&quot;</span>), <span class="hljs-literal">true</span>);<br>        <span class="hljs-keyword">module</span> = dm.getModule(); <span class="hljs-comment">//</span><br>        dm.callJNI_OnLoad(emulator);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">s</span><span class="hljs-params">()</span>&#123;<br>        List&lt;Object&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(<span class="hljs-number">10</span>);<br>        list.add(vm.getJNIEnv()); <span class="hljs-comment">// 第一个参数是env</span><br>        list.add(<span class="hljs-number">0</span>); <span class="hljs-comment">// 第二个参数，实例方法是jobject，静态方法是jclazz，直接填0，一般用不到。</span><br><br>        TreeMap&lt;String, String&gt; keymap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;String, String&gt;();<br>        keymap.put(<span class="hljs-string">&quot;ad_extra&quot;</span>, <span class="hljs-string">&quot;E1133C23F36571A3F1FDE6B325B17419AAD45287455E5292A19CF51300EAF0F2664C808E2C407FBD9E50BD48F8ED17334F4E2D3A07153630BF62F10DC5E53C42E32274C6076A5593C23EE6587F453F57B8457654CB3DCE90FAE943E2AF5FFAE78E574D02B8BBDFE640AE98B8F0247EC0970D2FD46D84B958E877628A8E90F7181CC16DD22A41AE9E1C2B9CB993F33B65E0B287312E8351ADC4A9515123966ACF8031FF4440EC4C472C78C8B0C6C8D5EA9AB9E579966AD4B9D23F65C40661A73958130E4D71F564B27C4533C14335EA64DD6E28C29CD92D5A8037DCD04C8CCEAEBECCE10EAAE0FAC91C788ECD424D8473CAA67D424450431467491B34A1450A781F341ABB8073C68DBCCC9863F829457C74DBD89C7A867C8B619EBB21F313D3021007D23D3776DA083A7E09CBA5A9875944C745BB691971BFE943BD468138BD727BF861869A68EA274719D66276BD2C3BB57867F45B11D6B1A778E7051B317967F8A5EAF132607242B12C9020328C80A1BBBF28E2E228C8C7CDACD1F6CC7500A08BA24C4B9E4BC9B69E039216AA8B0566B0C50A07F65255CE38F92124CB91D1C1C39A3C5F7D50E57DCD25C6684A57E1F56489AE39BDBC5CFE13C540CA025C42A3F0F3DA9882F2A1D0B5B1B36F020935FD64D58A47EF83213949130B956F12DB92B0546DADC1B605D9A3ED242C8D7EF02433A6C8E3C402C669447A7F151866E66383172A8A846CE49ACE61AD00C1E42223&quot;</span>);<br>        keymap.put(<span class="hljs-string">&quot;appkey&quot;</span>, <span class="hljs-string">&quot;1d8b6e7d45233436&quot;</span>);<br>        keymap.put(<span class="hljs-string">&quot;autoplay_card&quot;</span>, <span class="hljs-string">&quot;11&quot;</span>);<br>        keymap.put(<span class="hljs-string">&quot;banner_hash&quot;</span>, <span class="hljs-string">&quot;10687342131252771522&quot;</span>);<br>        keymap.put(<span class="hljs-string">&quot;build&quot;</span>, <span class="hljs-string">&quot;6180500&quot;</span>);<br>        keymap.put(<span class="hljs-string">&quot;c_locale&quot;</span>, <span class="hljs-string">&quot;zh_CN&quot;</span>);<br>        keymap.put(<span class="hljs-string">&quot;channel&quot;</span>, <span class="hljs-string">&quot;shenma117&quot;</span>);<br>        keymap.put(<span class="hljs-string">&quot;column&quot;</span>, <span class="hljs-string">&quot;2&quot;</span>);<br>        keymap.put(<span class="hljs-string">&quot;device_name&quot;</span>, <span class="hljs-string">&quot;MIX2S&quot;</span>);<br>        keymap.put(<span class="hljs-string">&quot;device_type&quot;</span>, <span class="hljs-string">&quot;0&quot;</span>);<br>        keymap.put(<span class="hljs-string">&quot;flush&quot;</span>, <span class="hljs-string">&quot;6&quot;</span>);<br>        keymap.put(<span class="hljs-string">&quot;ts&quot;</span>, <span class="hljs-string">&quot;1612693177&quot;</span>);<br><br><br>        <span class="hljs-type">DvmClass</span> <span class="hljs-variable">Map</span> <span class="hljs-operator">=</span> vm.resolveClass(<span class="hljs-string">&quot;java/util/Map&quot;</span>);<br>        <span class="hljs-type">DvmClass</span> <span class="hljs-variable">AbstractMap</span> <span class="hljs-operator">=</span> vm.resolveClass(<span class="hljs-string">&quot;java/util/AbstractMap&quot;</span>,Map);<br>        DvmObject&lt;?&gt; input_map = vm.resolveClass(<span class="hljs-string">&quot;java/util/TreeMap&quot;</span>, AbstractMap).newObject(keymap);<br>        list.add(vm.addLocalObject(input_map));<br>        <span class="hljs-type">Number</span> <span class="hljs-variable">number</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">module</span>.callFunction(emulator, <span class="hljs-number">0x1c97</span>, list.toArray())[<span class="hljs-number">0</span>];<br>        <span class="hljs-type">DvmObject</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> vm.getObject(number.intValue());<br>    &#125;;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span>&#123;<br>        <span class="hljs-type">LibBili1</span> <span class="hljs-variable">test</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LibBili1</span>();<br>        System.out.println(<span class="hljs-string">&quot;Start call&quot;</span>);<br>        test.s();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>运行报错：<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus">java<span class="hljs-selector-class">.lang</span><span class="hljs-selector-class">.ClassNotFoundException</span>: com<span class="hljs-selector-class">.bilibili</span><span class="hljs-selector-class">.nativelibrary</span><span class="hljs-selector-class">.SignedQuery</span><br>	at java.base/jdk<span class="hljs-selector-class">.internal</span><span class="hljs-selector-class">.loader</span><span class="hljs-selector-class">.BuiltinClassLoader</span><span class="hljs-selector-class">.loadClass</span>(BuiltinClassLoader<span class="hljs-selector-class">.java</span>:<span class="hljs-number">581</span>)<br>	at java.base/jdk<span class="hljs-selector-class">.internal</span><span class="hljs-selector-class">.loader</span>.ClassLoaders<span class="hljs-variable">$AppClassLoader</span><span class="hljs-selector-class">.loadClass</span>(ClassLoaders<span class="hljs-selector-class">.java</span>:<span class="hljs-number">178</span>)<br>	at java.base/java<span class="hljs-selector-class">.lang</span><span class="hljs-selector-class">.ClassLoader</span><span class="hljs-selector-class">.loadClass</span>(ClassLoader<span class="hljs-selector-class">.java</span>:<span class="hljs-number">521</span>)<br>	at com<span class="hljs-selector-class">.github</span><span class="hljs-selector-class">.unidbg</span><span class="hljs-selector-class">.linux</span><span class="hljs-selector-class">.android</span><span class="hljs-selector-class">.dvm</span><span class="hljs-selector-class">.jni</span><span class="hljs-selector-class">.ProxyClassLoader</span><span class="hljs-selector-class">.loadClass</span>(ProxyClassLoader<span class="hljs-selector-class">.java</span>:<span class="hljs-number">22</span>)<br></code></pre></td></tr></table></figure></li>
+<li>接下来补充SIgnedQuery整个类以及其中涉及到的类，红框即为我们补充的三个类,运行后一步到位出结果<br><img src="/blog/../../../../../../../images/android/%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/1746427087210.jpg" srcset="/blog/img/loading.gif" lazyload></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/05/逆向/安卓逆向/6. 模拟执行/Unidbg/补环境/3. 补JNI/补JNI方式/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2025/05/05/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/%E8%A1%A5%E7%8E%AF%E5%A2%83/3.%20%E8%A1%A5JNI/%E8%8E%B7%E5%8F%96JNI%E8%B0%83%E7%94%A8%E7%BB%93%E6%9E%9C/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/05/04/%E9%80%86%E5%90%91/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/6.%20%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C/Unidbg/Anti-unidbg/Anti-Unidbg%E5%BC%80%E7%AF%87/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
